@@ -51,8 +51,8 @@ class CustomUserManager(UserManager):
 class User(AbstractUser):
     segundo_nombre = models.CharField("segundo nombre", max_length=150, blank=True)
     segundo_apellido = models.CharField("segundo apellido", max_length=150, blank=True)
-    cedula = models.IntegerField("cedula", unique=True, null=True, blank=False)
-    telefono = models.IntegerField("telefono", null=False, blank=False)
+    cedula = models.BigIntegerField("cedula", unique=True, null=True, blank=False)
+    telefono = models.BigIntegerField("telefono", null=False, blank=False)
     security_question = models.CharField("pregunta de seguridad", max_length=255, null=False, blank=False)
     security_answer = models.CharField("respuesta de seguridad", max_length=255, null=False, blank=False)
 
