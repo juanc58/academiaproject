@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="px-40 flex flex-1 justify-center py-14 bg-[url(/static/fondoindex.jpg)] bg-repeat bg-top">
+
+      <div class="mx-auto container max-w-5xl md:w-3/4 shadow-md bg-white">
+        <div class="bg-gray-100 p-4 border-t-2 bg-opacity-5 border-[#F9CE69] rounded-t">
+        <div class="max-w-sm mx-auto md:w-full md:mx-0 ">
+            <div class="inline-flex items-center space-x-4 mb-14 m-auto">
+              <!-- icon -->
+              <svg class="size-9 object-cover ml-3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 9H6" stroke="#F9CE69" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M15.5 11C14.1193 11 13 9.88071 13 8.5C13 7.11929 14.1193 6 15.5 6C16.8807 6 18 7.11929 18 8.5C18 9.88071 16.8807 11 15.5 11Z" stroke="#F9CE69" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 6H9" stroke="#F9CE69" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M18 18L13.5 15L11 17L6 13" stroke="#F9CE69" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 20.4V3.6C3 3.26863 3.26863 3 3.6 3H20.4C20.7314 3 21 3.26863 21 3.6V20.4C21 20.7314 20.7314 21 20.4 21H3.6C3.26863 21 3 20.7314 3 20.4Z" stroke="#F9CE69" stroke-width="1.5"></path> </g></svg>
+              <h1 class="text-gray-800 text-xl font-bold m-auto ">Estadistica</h1>
+              
+            </div>
+          </div>
+<div style="max-width:1100px;">
+  <canvas id="statsChart" width="1000" height="360"></canvas>
+</div>
+    </div>
+        </div>
+    
+
+
+</main>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const labels = {{ labels|safe }};
+const viewsData = {{ views_data|safe }};
+const addsData = {{ adds_data|safe }};
+const pdfsData = {{ pdfs_data|safe }};
+const loginsData = {{ logins_data|safe }};
+
+const ctx = document.getElementById('statsChart').getContext('2d');
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [
+            { label: 'Consultas', data: viewsData, borderColor: '#1f77b4', backgroundColor: 'rgba(31,119,180,0.08)', fill:true },
+            { label: 'Altas (agregados)', data: addsData, borderColor: '#2ca02c', backgroundColor: 'rgba(44,160,44,0.08)', fill:true },
+            { label: 'PDF impresos', data: pdfsData, borderColor: '#ff7f0e', backgroundColor: 'rgba(255,127,14,0.08)', fill:true },
+            { label: 'Logins', data: loginsData, borderColor: '#d62728', backgroundColor: 'rgba(214,39,40,0.08)', fill:true }
+        ]
+    },
+    options: {
+        responsive: true,
+        interaction: { mode: 'index', intersect: false },
+        stacked: false,
+        plugins: { legend: { position: 'top' } },
+        scales: {
+            y: { beginAtZero: true },
+        }
+    }
+});
+</script>
+{% endblock %}

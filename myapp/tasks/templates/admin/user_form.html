@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load form_tags %}
+
+{% block content %}
+<main class="px-8 py-8">
+  <div class="max-w-3xl mx-auto bg-white p-6 rounded shadow">
+    <div class="flex flex-no-wrap">
+    <h1 class="text-2xl font-bold mb-4">{% if create %}Crear Usuario{% else %}Editar Usuario{% endif %}</h1>
+    <svg class="size-8 ml-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" stroke="#F9CE69" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M19.2101 15.74L15.67 19.2801C15.53 19.4201 15.4 19.68 15.37 19.87L15.18 21.22C15.11 21.71 15.45 22.05 15.94 21.98L17.29 21.79C17.48 21.76 17.75 21.63 17.88 21.49L21.42 17.95C22.03 17.34 22.32 16.63 21.42 15.73C20.53 14.84 19.8201 15.13 19.2101 15.74Z" stroke="#F9CE69" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M18.7001 16.25C19.0001 17.33 19.84 18.17 20.92 18.47" stroke="#F9CE69" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3.40991 22C3.40991 18.13 7.25994 15 11.9999 15C13.0399 15 14.0399 15.15 14.9699 15.43" stroke="#F9CE69" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+    </div>
+    <form method="post">{% csrf_token %}
+      <div class="grid grid-cols-1 gap-4">
+        {% if not create and form.non_field_errors %}
+          <div class="text-red-600">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        {% if form.username %}
+        <div>
+          <label class="flex flex-no-wrap block text-sm font-medium text-gray-700">Nombre de usuario<p class="text-red-600">*</p></label>
+          {{ form.username|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.username.errors %}<p class="text-sm text-red-600">{{ form.username.errors|join:", " }}</p>{% endif %}
+          {% if form.username.help_text %}<p class="text-xs text-gray-500">Min. 8 Caracteres</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {# Password fields (present in creation form) #}
+        {% if create and form.password1 %}
+        <div>
+          <label class="flex flex-no-wrap block text-sm font-medium text-gray-700">Contraseña<p class="text-red-600">*</p></label>
+          {{ form.password1|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.password1.errors %}<p class="text-sm text-red-600">{{ form.password1.errors|join:", " }}</p>{% endif %}
+          {% if form.password1.help_text %}<p class="text-xs text-gray-500">Minimo 8 Caracteres y 1 Numero</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if create and form.password2 %}
+        <div>
+          <label class="flex flex-no-wrap block text-sm font-medium text-gray-700">Confirmar contraseña<p class="text-red-600">*</p></label>
+          {{ form.password2|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.password2.errors %}<p class="text-sm text-red-600">{{ form.password2.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.first_name %}
+        <div>
+          <label class="flex flex-no-wrap block text-sm font-medium text-gray-700">Nombre<p class="text-red-600">*</p></label>
+          {{ form.first_name|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.first_name.errors %}<p class="text-sm text-red-600">{{ form.first_name.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.segundo_nombre %}
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Segundo nombre</label>
+          {{ form.segundo_nombre|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.segundo_nombre.errors %}<p class="text-sm text-red-600">{{ form.segundo_nombre.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.last_name %}
+        <div>
+          <label class="flex flex-no-wrap block text-sm font-medium text-gray-700">Apellido<p class="text-red-600">*</p></label>
+          {{ form.last_name|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.last_name.errors %}<p class="text-sm text-red-600">{{ form.last_name.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.segundo_apellido %}
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Segundo apellido</label>
+          {{ form.segundo_apellido|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.segundo_apellido.errors %}<p class="text-sm text-red-600">{{ form.segundo_apellido.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.cedula %}
+        <div>
+          <label class="flex flex-no-wrap block text-sm font-medium text-gray-700">Cédula<p class="text-red-600">*</p></label>
+          {{ form.cedula|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.cedula.errors %}<p class="text-sm text-red-600">{{ form.cedula.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.telefono %}
+        <div>
+          <label class="flex flex-no-wrap block text-sm font-medium text-gray-700">Teléfono<p class="text-red-600">*</p></label>
+          {{ form.telefono|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.telefono.errors %}<p class="text-sm text-red-600">{{ form.telefono.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.email %}
+        <div>
+          <label class="flex flex-no-wrap block text-sm font-medium text-gray-700">Correo electrónico<p class="text-red-600">*</p></label>
+          {{ form.email|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.email.errors %}<p class="text-sm text-red-600">{{ form.email.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.security_question %}
+        <div>
+          <label class="flex flex-no-wrap block text-sm font-medium text-gray-700">Pregunta de seguridad<p class="text-red-600">*</p></label>
+          {{ form.security_question|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.security_question.errors %}<p class="text-sm text-red-600">{{ form.security_question.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.security_answer %}
+        <div>
+          <label class="flex flex-no-wrap block text-sm font-medium text-gray-700">Respuesta de seguridad<p class="text-red-600">*</p></label>
+          {{ form.security_answer|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.security_answer.errors %}<p class="text-sm text-red-600">{{ form.security_answer.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.is_superuser %}
+        <div>
+          <label class="inline-flex items-center gap-2">
+            {{ form.is_superuser }}
+            <span class="text-sm font-medium text-gray-700">Superusuario</span>
+          </label>
+          {% if form.is_superuser.errors %}<p class="text-sm text-red-600">{{ form.is_superuser.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.is_active %}
+        <div>
+          <label class="inline-flex items-center gap-2">
+            {{ form.is_active }}
+            <span class="text-sm font-medium text-gray-700">Activo</span>
+          </label>
+          {% if form.is_active.errors %}<p class="text-sm text-red-600">{{ form.is_active.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+        {% if not create %}
+          <div class="pt-4 border-t mt-4">
+            <h3 class="text-sm font-semibold mb-2">Cambiar contraseña</h3>
+            <label class="block text-sm font-medium text-gray-700">Nueva contraseña</label>
+            <input type="password" name="new_password1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+            <label class="block text-sm font-medium text-gray-700 mt-2">Confirmar nueva contraseña</label>
+            <input type="password" name="new_password2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+            <p class="text-xs text-gray-500 mt-1">Si dejas estos campos vacíos, la contraseña no cambiará.</p>
+          </div>
+        {% endif %}
+      </div>
+      <div class="mt-6 flex gap-3">
+        <button type="submit" class="bg-[#F9CE69] text-white px-4 py-2 rounded">Guardar</button>
+        <a href="{% url 'admin_users' %}" class="px-4 py-2 rounded border">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</main>
+{% endblock %}

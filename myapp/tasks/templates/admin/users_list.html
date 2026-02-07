@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="px-8 py-8">
+  <div class="max-w-8xl mx-auto bg-white p-6 rounded shadow">
+    <div class="flex items-center justify-between mb-6">
+      <div class="inline-flex items-center space-x-4">
+        <h1 class="text-2xl font-bold">Gestionar Usuarios</h1>
+        <svg class="size-8 ml-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" stroke="#F9CE69" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M19.2101 15.74L15.67 19.2801C15.53 19.4201 15.4 19.68 15.37 19.87L15.18 21.22C15.11 21.71 15.45 22.05 15.94 21.98L17.29 21.79C17.48 21.76 17.75 21.63 17.88 21.49L21.42 17.95C22.03 17.34 22.32 16.63 21.42 15.73C20.53 14.84 19.8201 15.13 19.2101 15.74Z" stroke="#F9CE69" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M18.7001 16.25C19.0001 17.33 19.84 18.17 20.92 18.47" stroke="#F9CE69" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3.40991 22C3.40991 18.13 7.25994 15 11.9999 15C13.0399 15 14.0399 15.15 14.9699 15.43" stroke="#F9CE69" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+      </div>
+      <div>
+        <a href="{% url 'admin_user_add' %}" class="inline-flex items-center gap-2 bg-[#F9CE69] text-white px-4 py-2 rounded">Crear usuario</a>
+        <a href="{% url 'admin_panel' %}" class="inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded">Volver</a>
+      </div>
+    </div>
+
+    <form method="get" class="mb-4">
+      <input type="text" name="q" value="{{ q|default:'' }}" placeholder="Buscar usuario, nombre o cédula" class="w-full p-2 border rounded" />
+    </form>
+    <div class="overflow-x-auto">
+      <table class="w-full table-auto border-collapse">
+        <thead>
+          <tr class="bg-[#F9CE69] text-white">
+            <th class="px-4 py-2 text-left">Usuario</th>
+            <th class="px-4 py-2 text-left">Nombre</th>
+            <th class="px-4 py-2 text-left">Apellido</th>
+            <th class="px-4 py-2 text-left">Cédula</th>
+            <th class="px-4 py-2 text-left">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for u in users %}
+          <tr class="border-t">
+            <td class="px-4 py-2 font-semibold">{{ u.username }}</td>
+            <td class="px-4 py-2">{{ u.first_name }}</td>
+            <td class="px-4 py-2">{{ u.last_name }}</td>
+            <td class="px-4 py-2">{{ u.cedula|default:'-' }}</td>
+            <td class="px-4 py-2">
+              <a href="{% url 'admin_user_edit' u.pk %}" class="text-blue-600 hover:underline mr-5">Editar</a>
+              <a href="{% url 'admin_user_delete' u.pk %}" class="text-red-600 hover:underline">Eliminar</a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="5" class="px-4 py-6 text-center text-gray-600">No hay usuarios</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <!-- paginación -->
+    <div class="mt-4">
+      {% with params="q="|add:q %}
+      <div class="flex items-center justify-between border-t border-white/10 px-4 py-3 sm:px-6">
+        <div class="flex flex-1 justify-between sm:hidden">
+          {% if users.has_previous %}
+            <a href="?{{ params }}&page={{ users.previous_page_number }}" class="relative inline-flex items-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-gray-200 hover:bg-white/10">Anterior</a>
+          {% else %}
+            <span class="relative inline-flex items-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-gray-500">Anterior</span>
+          {% endif %}
+          {% if users.has_next %}
+            <a href="?{{ params }}&page={{ users.next_page_number }}" class="relative ml-3 inline-flex items-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-gray-200 hover:bg-white/10">Siguiente</a>
+          {% else %}
+            <span class="relative ml-3 inline-flex items-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-gray-500">Siguiente</span>
+          {% endif %}
+        </div>
+        <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+          <div>
+            <p class="text-lg text-black">
+              Mostrando
+              <span class="font-medium">{{ users.start_index|default:1 }}</span>
+              a
+              <span class="font-medium">{{ users.end_index|default:users.paginator.per_page }}</span>
+              de
+              <span class="font-medium">{{ users.paginator.count }}</span>
+              resultados
+            </p>
+          </div>
+          <div>
+            <nav aria-label="Paginación" class="isolate inline-flex -space-x-px rounded-md">
+              {% if users.has_previous %}
+              <a href="?{{ params }}&page={{ users.previous_page_number }}" class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 hover:bg-white/5 focus:z-20">
+                <span class="sr-only">Anterior</span>
+                <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="w-5 h-5">
+                  <path d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" fill-rule="evenodd" />
+                </svg>
+              </a>
+              {% else %}
+              <span class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-600">
+                <span class="sr-only">Anterior</span>
+                <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="w-5 h-5">
+                  <path d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" fill-rule="evenodd" />
+                </svg>
+              </span>
+              {% endif %}
+
+              {# Mostrar algunos números de página: actual -2 .. actual +2 #}
+              {% for i in users.paginator.page_range %}
+                {% if i >= users.number|add:'-2' and i <= users.number|add:'2' %}
+                  {% if i == users.number %}
+                    <a aria-current="page" class="relative z-10 inline-flex items-center bg-[#F9CE69] px-6 py-4 text-lg font-semibold text-white">{{ i }}</a>
+                  {% else %}
+                    <a href="?{{ params }}&page={{ i }}" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-black hover:bg-white/5">{{ i }}</a>
+                  {% endif %}
+                {% elif i == 1 or i == users.paginator.num_pages %}
+                  <a href="?{{ params }}&page={{ i }}" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-200 hover:bg-white/5">{{ i }}</a>
+                {% elif forloop.first and users.number > 4 %}
+                  <span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-400">...</span>
+                {% elif forloop.last and users.number < users.paginator.num_pages|add:'-3' %}
+                  <span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-400">...</span>
+                {% endif %}
+              {% endfor %}
+
+              {% if users.has_next %}
+              <a href="?{{ params }}&page={{ users.next_page_number }}" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 hover:bg-white/5 focus:z-20">
+                <span class="sr-only">Siguiente</span>
+                <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="w-5 h-5">
+                  <path d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+                </svg>
+              </a>
+              {% else %}
+              <span class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-600">
+                <span class="sr-only">Siguiente</span>
+                <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="w-5 h-5">
+                  <path d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+                </svg>
+              </span>
+              {% endif %}
+            </nav>
+          </div>
+        </div>
+      </div>
+      {% endwith %}
+    </div>
+  </div>
+</main>
+{% endblock %}

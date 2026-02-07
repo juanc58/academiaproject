@@ -1,0 +1,663 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<main class="px-8 py-8 bg-[url(/static/fondoindex.jpg)] bg-repeat bg-top">
+  
+<div class=" container max-w-md shadow-xl md:w-3/4  bg-[#ffffff] mb-4 rounded-xl">
+    <div class="bg-gray-100 p-4 border-t-2 bg-opacity-5 border-[#4741A6] rounded-lg">
+          <div class="max-w-sm mx-auto md:w-full md:mx-0">
+            <div class="inline-flex items-center space-x-14">
+
+              <svg class="size-9 object-cover" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M26,3H9C7.3,3,6,4.3,6,6v0c0,1.7,1.3,3,3,3h17v10" stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M18,29H9c-1.7,0-3-1.3-3-3v0V6" stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <line x1="26" y1="6" x2="9" y2="6" stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <line x1="10" y1="9" x2="10" y2="29" stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M25.5,18.5c1.9,1.9,1.9,5.1,0,7c-0.5,0.5-1,0.8-1.6,1.1c-1.8,0.7-3.9,0.4-5.4-1.1c-1.9-1.9-1.9-5.1,0-7 S23.6,16.6,25.5,18.5z" stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M26.5,24l3.9,3.6c0.8,0.8,0.8,2,0,2.8l0,0c-0.8,0.8-2,0.8-2.8,0l-3.5-3.5" stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              <h1 class="text-black text-xl font-bold ">Busqueda de Bibliografía</h1>
+            </div>
+          </div>
+        </div>
+        
+</div>
+<!-- Botón para abrir modal de carrito (lista de préstamos) -->
+              <div class="flex inline-flex mb-4">
+                <button id="open-cart-top" class="ml-4 inline-flex items-center px-3 py-2 bg-yellow-400 text-black rounded">Lista préstamos</button>
+              </div>
+
+
+<!-- Formulario de búsqueda y filtros (ocupando 2 columnas en pantallas grandes) -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 ">
+      
+      <div class="lg:col-span-2 bg-white rounded-lg shadow-sm p-5 border-[#8ae4ff] border-solid border-4">
+        <form method="GET" class="space-y-4">
+          <div class="flex flex-col md:flex-row md:items-center md:gap-4">
+            <input name="q" value="{{ q|default:'' }}" placeholder="Buscar por título, autor, cota..." 
+                   class="flex-1 px-4 py-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-200" />
+
+            <div class="mt-3 md:mt-0 flex gap-3">
+              <select name="materia" class="px-3 py-3 border rounded-lg bg-white">
+                  <option value="">Clasificaciones</option>
+                  {% for m in materias %}
+                    <option value="{{ m.id }}" {% if selected_materia == m.id|stringformat:'s' %}selected{% endif %}>{{ m.label }}</option>
+                  {% endfor %}
+              </select>
+
+              
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center md:gap-4">
+            <select id="filter_field" name="filter_field" class="px-3 py-3 border rounded-lg bg-white w-full md:w-1/3">
+              <option value="">Filtrar por: </option>
+              <option value="autor" {% if filter_field == 'autor' %}selected{% endif %}>Autor</option>
+              <option value="titulo" {% if filter_field == 'titulo' %}selected{% endif %}>Título</option>
+              <option value="editorial" {% if filter_field == 'editorial' %}selected{% endif %}>Editorial</option>
+              <option value="fecha_publicacion" {% if filter_field == 'fecha_publicacion' %}selected{% endif %}>Año publicación</option>
+            </select>
+
+            <input type="text" id="filter_value" name="filter_value" placeholder="Texto a filtrar" value="{{ filter_value|default:'' }}" class="px-3 py-3 border rounded-lg flex-1" />
+
+          <div class="mt-3 md:mt-0 flex gap-3">
+
+            <select name="sort_by" class="px-3 py-3 border rounded-lg bg-white">
+                <option value="">Ordenar por:</option>
+                <option value="autor" {% if sort_by == 'autor' %}selected{% endif %}>Autor</option>
+                <option value="titulo" {% if sort_by == 'titulo' %}selected{% endif %}>Título</option>
+                <option value="fecha_publicacion" {% if sort_by == 'fecha_publicacion' %}selected{% endif %}>Año</option>
+              </select>
+
+              <select name="order" class="px-3 py-3 border rounded-lg bg-white">
+                <option value="asc" {% if order == 'asc' %}selected{% endif %}>Ascendente  </option>
+                <option value="desc" {% if order == 'desc' %}selected{% endif %}>Descendente  </option>
+              </select>
+            </div>
+            
+            <div class="flex flex-col md:flex-row gap-2 w-full md:w-auto">
+              <button type="submit" class="w-full md:w-auto px-4 py-3 bg-green-300 hover:bg-green-400 text-black rounded-lg shadow">Aplicar</button>
+              <a href="{% url 'tasks' %}" class="w-full md:w-auto px-4 py-3 border rounded-lg text-black hover:bg-red-400 bg-red-300 text-center">Limpiar</a>
+            </div>
+            </div>
+
+          <div id="year_range" class="hidden md:flex gap-2 items-center">
+            <input type="number" name="min_year" placeholder="Año desde" value="{{ min_year|default:'' }}" class="px-3 py-2 border rounded-lg w-36" />
+            <input type="number" name="max_year" placeholder="Año hasta" value="{{ max_year|default:'' }}" class="px-3 py-2 border rounded-lg w-36" />
+          </div>
+        </form>
+      </div>
+
+      <!-- Aside: últimos consultados -->
+      <aside id="recent-books-container" class="bg-white rounded-lg shadow-sm p-4 border-[#F9CE69] border-solid border-4">
+        <div class="flex items-center justify-between mb-3">
+          <h4 class="text-xl text-[#4741A6] font-semibold text-slate-800">Últimos consultados</h4>
+          <button id="clear-recent-books" class="text-md text-red-500 hover:underline">Limpiar</button>
+        </div>
+        <div class="text-md text-slate-500 mb-3">
+          <span id="recent-count"></span>
+        </div>
+        <ul id="recent-books-list" class="space-y-2 text-sm text-slate-700" style="list-style:none;padding:0;margin:0;max-height:420px;overflow:auto;"></ul>
+      </aside>
+    </div>
+
+            <!-- Lista de libros: diseño tipo "task2" -->
+            <div class="books-list" style="margin-top:12px; display:flex; flex-direction:column; gap:12px;">
+              {% for task in tasks %}
+                <article style="background:#f7fafc;border:2px solid #6b7280;border-radius:8px;overflow:hidden;display:flex;align-items:stretch;">
+                  <!-- Izquierda: metadatos -->
+                  <div style="padding:12px;border-right:1px solid #6b7280;min-width:220px;display:flex;flex-direction:column;gap:6px;">
+                    <div style="font-size:12px;color:#6b7280;">COTA</div>
+                    <div style="font-weight:600;color:#111827;">{{ task.cota|default:"-" }}</div>
+
+          <div style="font-size:12px;color:#6b7280;margin-top:8px;">Clasificación</div>
+          <div style="font-weight:600;color:#111827;">
+            {% if task.classification %}
+              {# Mostrar solo la etiqueta legible (label). Si por alguna razón label no está disponible, usar la representación del objeto #}
+              {{ task.classification.label|default:task.classification }}
+            {% else %}
+              -
+            {% endif %}
+          </div>
+
+                    <div style="font-size:12px;color:#6b7280;margin-top:8px;">Año de Publicacion</div>
+                    <div style="font-size:13px;color:#374151;">{% if task.fecha_publicacion %}{{ task.fecha_publicacion }}{% else %}{{ task.created_at|date:"Y-m-d" }}{% endif %}</div>
+                    <div style="font-size:12px;color:#6b7280;margin-top:8px;">Cantidad</div>
+                    <div style="font-size:13px;color:#374151;" data-book-count="{{ task.id }}">Prestados: {{ task.prestados|default:0 }} / {{ task.total|default:0 }}</div>
+                  </div>
+
+                  <!-- Centro: información principal -->
+                  <div style="flex:1;padding:12px 16px;display:flex;flex-direction:column;gap:6px;">
+                    <h3 style="margin:0;font-size:16px;color:#0f172a;font-weight:600;">
+                      <a class="book-link" href="{% url 'task_detail' task.id %}"
+                         data-id="{{ task.id }}"
+                         data-title="{{ task.titulo|escape }}"
+                         data-author="{{ task.autor|default:''|escape }}"
+                         data-cota="{{ task.cota|default:''|escape }}"
+                         data-portada="{% if task.portada %}{{ task.portada.url }}{% else %}{% endif %}"
+                         data-detail-url="{% url 'task_detail' task.id %}"
+                         style="color:#0366d6;text-decoration:none;">
+                        {{ task.titulo }}
+                      </a>
+                    </h3>
+
+                    <div style="color:#374151;font-size:14px;">Autor: <span style="font-weight:500;">{{ task.autor|default:"-" }}</span></div>
+                    {% if task.editorial %}<div style="color:#4b5563;font-size:13px;">Editorial: {{ task.editorial }}</div>{% endif %}
+                    {% if task.subtitulo %}<div style="color:#4b5563;font-size:13px;">Subtítulo: {{ task.subtitulo }}</div>{% endif %}
+
+                    {% if task.descripcion %}
+                      <div style="color:#4b5563;font-size:13px;">Descripción: {{ task.descripcion|truncatechars:140 }}</div>
+                    {% endif %}
+
+                    {% if task.contenido %}
+                      <div style="color:#4b5563;font-size:13px;">Contenido: {{ task.contenido }}</div>
+                    {% endif %}
+
+                    
+                  </div>
+
+                  <!-- Derecha: portada y estado -->
+                  <div style="padding:12px;border-left:1px solid #6b7280;display:flex;flex-direction:column;align-items:center;gap:10px;min-width:150px;">
+                    {% if task.portada %}
+                      <a href="{{ task.portada.url }}" target="_blank" rel="noopener" style="display:block;width:100%;text-align:center;">
+                        <img src="{{ task.portada.url }}" alt="Portada {{ task.titulo }}" style="max-width:120px;height:auto;border-radius:4px;border:1px solid #e2e8f0;" />
+                      </a>
+                    {% else %}
+                      <div style="width:120px;height:160px;background:#eef2f7;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#9ca3af;font-size:12px;">Sin portada</div>
+                    {% endif %}
+
+                   
+
+                    <button type="button" class="open-detail-btn" data-id="{{ task.id }}" data-title="{{ task.titulo|escape }}" data-author="{{ task.autor|default:''|escape }}" data-cota="{{ task.cota|default:''|escape }}" data-portada="{% if task.portada %}{{ task.portada.url }}{% else %}{% endif %}" data-detail-url="{% url 'task_detail' task.id %}"
+                      style="font-size:12px;color:#fff;background-color:#314158;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;text-decoration:underline;">
+                                      {% if task.is_active or user.is_superuser %}Detalle/Editar{% else %}Detalle{% endif %}
+                    </button>
+                    
+                    <!-- Botón añadir a carrito -->
+                    {% if task.is_active %}
+                      {% if task.total > task.prestados %}
+                        <button class="add-to-cart" data-id="{{ task.id }}" style="font-size:12px;color:#111;background-color:#F9CE69;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;">Solicitar préstamo</button>
+                      {% else %}
+                        <button disabled class="text-sm px-3 py-2 bg-gray-300 text-gray-700 rounded" title="No hay ejemplares disponibles">Agotado</button>
+                      {% endif %}
+                    {% else %}
+                      <button disabled class="text-sm px-3 py-2 bg-gray-300 text-gray-700 rounded" title="Libro inactivo">Inactivo</button>
+                    {% endif %}
+                  </div>
+                </article>
+              {% empty %}
+                <div style="color:#6b7280;">No se encontraron libros.</div>
+              {% endfor %}
+            </div>
+
+            <!-- Paginación (conserva parámetros de búsqueda) -->
+            <div class="mt-4">
+                {% with params="q="|add:q|add:"&materia="|add:selected_materia|add:"&sort_by="|add:sort_by|add:"&order="|add:order|add:"&filter_field="|add:filter_field|add:"&filter_value="|add:filter_value|add:"&min_year="|add:min_year|add:"&max_year="|add:max_year %}
+                <div class="flex items-center justify-between border-t border-white/10 px-4 py-3 sm:px-6">
+                  <div class="flex flex-1 justify-between sm:hidden">
+                    {% if tasks.has_previous %}
+                      <a href="?{{ params }}&page={{ tasks.previous_page_number }}" class="relative inline-flex items-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-gray-200 hover:bg-white/10">Anterior</a>
+                    {% else %}
+                      <span class="relative inline-flex items-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-gray-500">Anterior</span>
+                    {% endif %}
+                    {% if tasks.has_next %}
+                      <a href="?{{ params }}&page={{ tasks.next_page_number }}" class="relative ml-3 inline-flex items-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-gray-200 hover:bg-white/10">Siguiente</a>
+                    {% else %}
+                      <span class="relative ml-3 inline-flex items-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-gray-500">Siguiente</span>
+                    {% endif %}
+                  </div>
+                  <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                    <div>
+                      <p class="text-lg text-black">
+                        Mostrando
+                        <span class="font-medium">{{ tasks.start_index|default:1 }}</span>
+                        a
+                        <span class="font-medium">{{ tasks.end_index|default:tasks.paginator.per_page }}</span>
+                        de
+                        <span class="font-medium">{{ tasks.paginator.count }}</span>
+                        resultados
+                      </p>
+                    </div>
+                    <div>
+                      <nav aria-label="Paginación" class="isolate inline-flex -space-x-px rounded-md">
+                        {% if tasks.has_previous %}
+                        <a href="?{{ params }}&page={{ tasks.previous_page_number }}" class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 hover:bg-white/5 focus:z-20">
+                          <span class="sr-only">Anterior</span>
+                          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="w-5 h-5">
+                            <path d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" fill-rule="evenodd" />
+                          </svg>
+                        </a>
+                        {% else %}
+                        <span class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-600">
+                          <span class="sr-only">Anterior</span>
+                          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="w-5 h-5">
+                            <path d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" fill-rule="evenodd" />
+                          </svg>
+                        </span>
+                        {% endif %}
+
+                        {# Mostrar algunos números de página: actual -2 .. actual +2 #}
+                        {% for i in tasks.paginator.page_range %}
+                          {% if i >= tasks.number|add:'-2' and i <= tasks.number|add:'2' %}
+                            {% if i == tasks.number %}
+                              <a aria-current="page" class="relative z-10 inline-flex items-center bg-indigo-500 px-6 py-4 text-lg font-semibold text-white">{{ i }}</a>
+                            {% else %}
+                              <a href="?{{ params }}&page={{ i }}" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-black hover:bg-white/5">{{ i }}</a>
+                            {% endif %}
+                          {% elif i == 1 or i == tasks.paginator.num_pages %}
+                            <a href="?{{ params }}&page={{ i }}" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-200 hover:bg-white/5">{{ i }}</a>
+                          {% elif forloop.first and tasks.number > 4 %}
+                            <span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-400">...</span>
+                          {% elif forloop.last and tasks.number < tasks.paginator.num_pages|add:'-3' %}
+                            <span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-400">...</span>
+                          {% endif %}
+                        {% endfor %}
+
+                        {% if tasks.has_next %}
+                        <a href="?{{ params }}&page={{ tasks.next_page_number }}" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 hover:bg-white/5 focus:z-20">
+                          <span class="sr-only">Siguiente</span>
+                          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="w-5 h-5">
+                            <path d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+                          </svg>
+                        </a>
+                        {% else %}
+                        <span class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-600">
+                          <span class="sr-only">Siguiente</span>
+                          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="w-5 h-5">
+                            <path d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+                          </svg>
+                        </span>
+                        {% endif %}
+                      </nav>
+                    </div>
+                  </div>
+                </div>
+                {% endwith %}
+            </div>
+
+        </div>
+
+    </div>
+</main>
+
+<script>
+  // indicar al front si el usuario está autenticado
+  window.USER_IS_AUTH = {% if user.is_authenticated %}true{% else %}false{% endif %};
+
+  // Mensaje global para no autenticados al solicitar préstamo
+  window.MSG_MUST_LOGIN_FOR_LOAN = 'Para solicitar un préstamo debes iniciar sesión';
+
+</script>
+
+<script>
+// Contador de carrito flotante
+;(function(){
+  const badge = document.createElement('div');
+  badge.id = 'cart-badge';
+  badge.style.position = 'fixed';
+  badge.style.right = '16px';
+  badge.style.bottom = '86px';
+  badge.style.background = '#111827';
+  badge.style.color = 'white';
+  badge.style.padding = '8px 10px';
+  badge.style.borderRadius = '999px';
+  badge.style.fontSize = '13px';
+  badge.style.cursor = 'pointer';
+  badge.title = 'Ver Prestamos';
+  badge.textContent = 'Prestamos: 0';
+  badge.addEventListener('click', function(){ window.location.href = '{% url "cart_view" %}'; });
+  document.body.appendChild(badge);
+
+  function setCount(n){ badge.textContent = 'Prestamos: ' + n; }
+
+  async function fetchCartCount() {
+    try {
+      const response = await fetch('{% url "cart_json" %}', { credentials: 'same-origin' });
+      if (!response.ok) throw new Error('Error al obtener el estado del carrito');
+      const data = await response.json();
+      if (data && data.count !== undefined) {
+        setCount(data.count);
+        localStorage.setItem('loan_cart_count', JSON.stringify(data.count));
+      }
+    } catch (error) {
+      console.error('Error al sincronizar el contador del carrito:', error);
+    }
+  }
+
+  // handler para botones añadir
+  document.querySelectorAll('button.add-to-cart').forEach(function(btn){
+    btn.addEventListener('click', async function(){
+      // si el usuario no está autenticado, mostrar mensaje y no proceder
+      try{
+        if(window.USER_IS_AUTH === false){
+          alert(window.MSG_MUST_LOGIN_FOR_LOAN);
+          return;
+        }
+      }catch(e){ /* si algo falla, continuar con la comprobación en servidor */ }
+      const id = btn.getAttribute('data-id');
+      try {
+        const response = await fetch('{% url "cart_add" 0 %}'.replace('/0/', '/' + id + '/'), {
+          method: 'POST',
+          headers: (function(){
+            var headers = {'X-Requested-With':'XMLHttpRequest'};
+            try{
+              var t = document.querySelector('input[name=csrfmiddlewaretoken]');
+              if(t && t.value) headers['X-CSRFToken'] = t.value;
+              else {
+                // fallback: leer cookie csrftoken
+                function getCookie(name){
+                  var v = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+                  return v ? v.pop() : '';
+                }
+                headers['X-CSRFToken'] = getCookie('csrftoken');
+              }
+            }catch(e){ }
+            return headers;
+          })()
+        });
+        const data = await response.json();
+        if (!data) return;
+        if (data.ok === false) {
+          alert(data.message || 'No hay ejemplares disponibles');
+          return;
+        }
+        if (data.count !== undefined) {
+          setCount(data.count);
+          localStorage.setItem('loan_cart_count', JSON.stringify(data.count));
+        }
+      } catch (error) {
+        console.error('Error al añadir al carrito:', error);
+      }
+    });
+  });
+
+  // Sincronizar estado inicial del carrito
+  document.addEventListener('DOMContentLoaded', function() {
+    const current = (function(){
+      try {
+        return JSON.parse(localStorage.getItem('loan_cart_count') || 'null');
+      } catch (e) {
+        return null;
+      }
+    })();
+    if (current !== null) {
+      setCount(current);
+    } else {
+      fetchCartCount();
+    }
+  });
+})();
+</script>
+
+<!-- Modal compartido para ver y gestionar carrito -->
+<div id="cart-modal-global" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+  <!-- inner modal: limit height and allow internal scroll when content is large -->
+  <div class="bg-white rounded-lg w-11/12 max-w-3xl p-6 m-auto mt-6" style="max-height: calc(100vh - 80px); overflow-y: auto;">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-lg font-semibold">Carrito de solicitudes</h3>
+      <button id="close-cart-global" class="text-gray-600">Cerrar</button>
+    </div>
+    <div id="cart-contents-global" style="max-height:50vh; overflow-y:auto;">
+      <p class="text-sm text-gray-600">Cargando...</p>
+    </div>
+    <div id="cart-error-global" class="text-sm text-red-600 mb-2 hidden"></div>
+    <div class="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-2" id="receiver-inputs-global">
+      <div>
+        <input id="receiver_cedula_global" name="receiver_cedula" placeholder="Cédula receptor" class="border rounded px-2 py-1 w-full" />
+        <div id="err_receiver_cedula" class="text-sm text-red-600 mt-1 hidden"></div>
+      </div>
+      <div>
+        <input id="receiver_first_name_global" name="receiver_first_name" placeholder="Nombre receptor" class="border rounded px-2 py-1 w-full" />
+        <div id="err_receiver_first_name" class="text-sm text-red-600 mt-1 hidden"></div>
+      </div>
+      <div>
+        <input id="receiver_last_name_global" name="receiver_last_name" placeholder="Apellido receptor" class="border rounded px-2 py-1 w-full" />
+        <div id="err_receiver_last_name" class="text-sm text-red-600 mt-1 hidden"></div>
+      </div>
+    </div>
+    <div class="mt-4 flex gap-2 justify-end">
+      <button id="checkout-btn-global" class="px-4 py-2 bg-indigo-600 text-white rounded">Confirmar solicitud</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function(){
+    const modal = document.getElementById('cart-modal-global');
+    const openTop = document.getElementById('open-cart-top');
+    const closeTop = document.getElementById('close-cart-global');
+    const contents = document.getElementById('cart-contents-global');
+    const checkoutBtn = document.getElementById('checkout-btn-global');
+
+    function getCSRF(){
+      try{ var t = document.querySelector('input[name=csrfmiddlewaretoken]'); if(t) return t.value; }catch(e){}
+      function getCookie(name){var v = document.cookie.match('(^|;)\\s*'+name+'\\s*=\\s*([^;]+)'); return v ? v.pop() : '';}
+      return getCookie('csrftoken');
+    }
+
+    function fetchCart(){
+      contents.innerHTML = '<p class="text-sm text-gray-600">Cargando...</p>';
+      fetch('{% url "cart_json" %}', {credentials: 'same-origin'})
+        .then(r=>r.json()).then(data=>{
+          if(!data || !data.items) { contents.innerHTML = '<div class="text-sm text-gray-600">No hay items.</div>'; return; }
+          renderCart(data.items, data.loan_cart_user);
+        }).catch(()=>{ contents.innerHTML = '<div class="text-sm text-gray-600">Error cargando carrito.</div>'; });
+    }
+
+    function renderCart(items, loan_user){
+      if(!items.length){ contents.innerHTML = '<div class="text-sm text-gray-600">No hay libros en el carrito.</div>'; return; }
+      let html = '<div class="space-y-3">';
+      items.forEach(b=>{
+        html += `<div class="flex items-center justify-between border p-3 rounded">
+          <div class="flex items-center gap-4">
+            ${b.portada ? `<img src="${b.portada}" class="w-16 h-20 object-cover rounded" alt="${b.titulo}">` : '<div class="w-16 h-20 bg-gray-100 rounded flex items-center justify-center text-sm text-gray-500">Sin portada</div>'}
+            <div>
+              <div class="font-semibold">${escapeHtml(b.titulo)}</div>
+              <div class="text-sm text-gray-600">Autor: ${escapeHtml(b.autor || '-')}</div>
+              <div class="text-sm text-gray-600">Cota: ${escapeHtml(b.cota || '-')}</div>
+              <div class="text-sm text-gray-600">Prestados: ${b.prestados} / ${b.total}</div>
+            </div>
+          </div>
+          <div class="text-right">
+            <form onsubmit="return false;" data-id="${b.id}">
+              <button class="remove-btn px-3 py-1 bg-red-500 text-white rounded text-sm">Quitar</button>
+            </form>
+          </div>
+        </div>`;
+      });
+      html += '</div>';
+      html += `<div class="mt-3 text-sm text-gray-700">Solicitado por: <span class="font-medium">${escapeHtml(loan_user||'')}</span></div>`;
+      contents.innerHTML = html;
+      contents.querySelectorAll('form[data-id]').forEach(f=>{
+        f.addEventListener('submit', function(e){ e.preventDefault(); const id = f.getAttribute('data-id'); removeFromCart(id); });
+        const btn = f.querySelector('.remove-btn'); if(btn) btn.addEventListener('click', function(e){ e.preventDefault(); const id = f.getAttribute('data-id'); removeFromCart(id); });
+      });
+    }
+
+    function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>"'`=\/]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;","/":"\/","=`":"&#61;"}[c] || c; }); }
+
+    function removeFromCart(id){
+      fetch('{% url "cart_remove" 0 %}'.replace('/0/','/' + id + '/'), { method: 'POST', headers: {'X-CSRFToken': getCSRF(), 'X-Requested-With':'XMLHttpRequest'}, credentials: 'same-origin' })
+        .then(r=>r.json()).then(data=>{ if(data && data.ok){ fetchCart(); } }).catch(()=>{});
+    }
+
+    function doCheckout(){
+      // leer inputs del receptor del modal global
+      var ced = (document.getElementById('receiver_cedula_global') || {}).value || '';
+      var fn = (document.getElementById('receiver_first_name_global') || {}).value || '';
+      var ln = (document.getElementById('receiver_last_name_global') || {}).value || '';
+      // Validación mínima en cliente y mostrar errores inline
+  var errEl = document.getElementById('cart-error-global');
+  function showError(msg){ if(errEl){ errEl.textContent = msg; errEl.classList.remove('hidden'); } else alert(msg); }
+  function clearError(){ if(errEl){ errEl.textContent = ''; errEl.classList.add('hidden'); } }
+  function clearFieldErrors(){ ['receiver_cedula','receiver_first_name','receiver_last_name'].forEach(function(f){ var e = document.getElementById('err_' + f); if(e){ e.textContent=''; e.classList.add('hidden'); } }); }
+  function setFieldError(field, msg){ var e = document.getElementById('err_' + field); if(e){ e.textContent = msg; e.classList.remove('hidden'); } else showError(msg); }
+  clearError(); clearFieldErrors();
+      if(!ced || !fn || !ln){
+        // mostrar errores por campo
+        if(!ced) setFieldError('receiver_cedula', 'La cédula es obligatoria.');
+        if(!fn) setFieldError('receiver_first_name', 'El nombre es obligatorio.');
+        if(!ln) setFieldError('receiver_last_name', 'El apellido es obligatorio.');
+        showError('Complete los campos requeridos.');
+        return;
+      }
+      // cédula solo dígitos
+      if(!/^[0-9]+$/.test(ced)){
+        setFieldError('receiver_cedula', 'La cédula debe contener solo dígitos.');
+        showError('Corrija los errores del formulario.');
+        return;
+      }
+
+      var params = new URLSearchParams();
+      params.append('receiver_cedula', ced);
+      params.append('receiver_first_name', fn);
+      params.append('receiver_last_name', ln);
+
+      fetch('{% url "cart_checkout" %}', {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': getCSRF(),
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: params.toString(),
+        credentials: 'same-origin'
+      }).then(r=>{
+        if(!r.ok) return r.json().then(j=>{ throw j; });
+        return r.json();
+      }).then(data=>{
+        if(data && data.ok){ fetchCart(); clearError(); clearFieldErrors(); modal.classList.add('hidden'); }
+        else { showError('No se pudo procesar la solicitud'); }
+      }).catch(err=>{
+        try{
+          if(err && err.errors){
+            // asignar errores por campo
+            Object.keys(err.errors).forEach(function(k){ setFieldError(k, err.errors[k]); });
+            showError('Corrija los errores indicados.');
+          } else if(err && err.error) showError(err.error);
+          else showError('Error al confirmar solicitud');
+        }catch(e){ showError('Error al confirmar solicitud'); }
+      });
+    }
+
+    if(openTop){ openTop.addEventListener('click', function(){ modal.classList.remove('hidden'); fetchCart(); }); }
+    if(closeTop){ closeTop.addEventListener('click', function(){ modal.classList.add('hidden'); }); }
+    if(checkoutBtn){ checkoutBtn.addEventListener('click', function(){ if(confirm('Confirmar solicitud de los libros listados?')) doCheckout(); }); }
+
+    // Exponer función global para refrescar modal y contadores desde otras páginas
+    window.refreshCartModal = function(){
+      // refresca modal si está visible
+      try{ if(modal && !modal.classList.contains('hidden')) fetchCart(); }catch(e){}
+      // además, obtener información y actualizar badge y contadores en page
+      fetch('{% url "cart_json" %}', {credentials:'same-origin'}).then(r=>r.json()).then(data=>{
+        if(!data || !data.items) return;
+        // actualizar badge con suma de prestados/total del primer item (o número de items)
+        try{
+          var badge = document.getElementById('cart-badge');
+          if(badge){
+            // si hay al menos un item intentar mostrar prestados/total del primero
+            var it = data.items[0];
+            if(it && it.prestados !== undefined && it.total !== undefined){ badge.textContent = 'Prestado: ' + it.prestados + '/' + it.total; }
+            else { badge.textContent = 'Prestamos: ' + data.items.length; }
+          }
+        }catch(e){}
+        // actualizar contadores por libro en la lista principal
+        try{
+          data.items.forEach(function(it){
+            var el = document.querySelector('[data-book-count="' + it.id + '"]');
+            if(el) el.textContent = 'Prestados: ' + it.prestados + ' / ' + it.total;
+          });
+        }catch(e){}
+      }).catch(()=>{});
+    };
+
+  })();
+</script>
+
+<script>
+  (function(){
+    const STORAGE_KEY = 'recent_books_consulted_v1';
+    const MAX_ITEMS = 5;
+    const listEl = document.getElementById('recent-books-list');
+    const countEl = document.getElementById('recent-count');
+    const clearBtn = document.getElementById('clear-recent-books');
+
+    function readList(){
+      try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }catch(e){ return []; }
+    }
+    function writeList(arr){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }catch(e){} }
+
+    function pushBook(book){
+      if(!book || !book.id) return;
+      const arr = readList().filter(b=>b.id !== book.id);
+      arr.unshift(book);
+      if(arr.length > MAX_ITEMS) arr.length = MAX_ITEMS;
+      writeList(arr);
+      renderList();
+    }
+
+    function renderList(){
+      const arr = readList();
+      if(!listEl) return;
+      countEl.textContent = arr.length + (arr.length === 1 ? ' libro' : ' libros');
+      if(arr.length === 0){ listEl.innerHTML = '<li class="text-sm text-gray-500">No hay libros recientes.</li>'; return; }
+      listEl.innerHTML = arr.map(b=>{
+        const img = b.portada ? `<img src="${b.portada}" alt="${escapeHtml(b.title)}" style="width:36px;height:44px;object-fit:cover;border-radius:3px;margin-right:8px;">` : '<div style="width:36px;height:44px;background:#f3f4f6;display:inline-block;border-radius:3px;margin-right:8px;vertical-align:middle"></div>';
+        return `<li style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px dashed #eee;">`+
+                `${img}`+
+                `<div style="flex:1;min-width:0"><a href="${b.detail_url || '#'}" class="recent-link" data-id="${b.id}" style="display:block;color:#0366d6;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(b.title)}</a><div style="font-size:12px;color:#6b7280">${escapeHtml(b.author||'-')} · ${escapeHtml(b.cota||'-')}</div></div>`+
+                `</li>`;
+      }).join('');
+    }
+
+    function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>"]+/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c] || c; }); }
+
+    // Hook links and buttons to record consult and open popup
+    function attachHandlers(){
+      document.querySelectorAll('a.book-link, button.open-detail-btn').forEach(function(el){
+        el.addEventListener('click', function(e){
+          // If it's a link, allow default navigation only after recording
+          const id = el.getAttribute('data-id');
+          const title = el.getAttribute('data-title') || el.textContent || '';
+          const author = el.getAttribute('data-author') || '';
+          const cota = el.getAttribute('data-cota') || '';
+          const portada = el.getAttribute('data-portada') || '';
+          const detail = el.getAttribute('data-detail-url') || el.href || '#';
+          const book = { id: String(id), title: title, author: author, cota: cota, portada: portada, detail_url: detail };
+          pushBook(book);
+
+          // If element is a button we need to open the popup window manually
+          if(el.tagName.toLowerCase() === 'button'){
+            e.preventDefault();
+            window.open(detail, 'bookDetail', 'width=720,height=680,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes');
+          } else {
+            // for anchor links that previously opened in popup via onclick, open popup instead of navigating
+            e.preventDefault();
+            window.open(detail, 'bookDetail', 'width=720,height=680,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes');
+          }
+        });
+      });
+      // allow clicking recent items to open popup WITHOUT modifying the stored recent list
+      document.addEventListener('click', function(e){
+        const a = e.target.closest && e.target.closest('a.recent-link');
+        if(!a) return;
+        e.preventDefault();
+        const href = a.getAttribute('href');
+        // do NOT pushBook here — we must not change order or metadata when opening from recent list
+        window.open(href, 'bookDetail', 'width=720,height=680,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes');
+      });
+    }
+
+    if(clearBtn){ clearBtn.addEventListener('click', function(){ writeList([]); renderList(); }); }
+
+    // initial render + attach
+    renderList();
+    attachHandlers();
+
+    // Expose for debugging/testing
+    window.__recentBooks = { read: readList, push: pushBook, clear: function(){ writeList([]); renderList(); } };
+  })();
+</script>
+
+{% endblock %}

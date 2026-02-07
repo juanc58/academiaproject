@@ -1,0 +1,183 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Editar libro</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+</head>
+<body class="bg-gray-200 p-6">
+  <div class="max-w-6xl mx-auto bg-white shadow rounded-lg p-6 border-[#F9CE69] border-solid border-4">
+    <div class="flex items-start justify-between mb-4">
+      <div>
+        <h2 class="text-2xl font-semibold text-gray-800">Editar: {{ book.titulo }}</h2>
+      </div>
+      <div>
+        <button onclick="window.close()" class="px-3 py-2 bg-red-100 text-red-700 rounded hover:bg-red-200">Cerrar</button>
+      </div>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="space-y-4 ">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Campos principales (excluye cota y portada) -->
+        <div class="md:col-span-2">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {# Mostrar la cota completa al inicio de esta columna (antes de autor) #}
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-gray-700">{{ form.cota.label }}
+                {% if form.cota.help_text %}
+                <button type="button" class="help-btn" data-help="{{ form.cota.help_text|escapejs }}" aria-label="Ayuda {{ form.cota.label }}"
+                  style="margin-left:8px;cursor:help;border:none;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:#f6f6f6;font-size:16px;color:#2563eb;">?
+                </button>
+                {% endif %}
+              </label>
+              <div class="mt-1">{{ form.cota }}</div>
+              {% if form.cota.errors %}<p class="text-sm text-[#ff0000] mt-1">{{ form.cota.errors }}</p>{% endif %}
+            </div>
+
+            {% for field in form %}
+              {# Omitir aquí campos que no se deben mostrar en esta vista: portada (se maneja a la derecha), classification y dictionary_entry, y cota (ya renderizada) #}
+              {% if field.name == 'portada' or field.name == 'classification' or field.name == 'dictionary_entry' or field.name == 'cota' %}
+                {# ocultado en esta vista #}
+              {% else %}
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">{{ field.label }} 
+                    {% if field.help_text %}
+                    <button type="button" class="help-btn" data-help="{{ field.help_text|escapejs }}" aria-label="Ayuda {{ field.label }}"
+                      style="margin-left:8px;cursor:help;border:none;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:#f6f6f6;font-size:16px;color:#2563eb;">
+                      ?
+                    </button>
+                  {% endif %}</label>
+                  <div class="mt-1">{{ field }}</div>
+                  {% if field.errors %}<p class="text-sm text-[#ff0000] mt-1">{{ field.errors }}</p>{% endif %}
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Columna derecha: Portada con preview (la cota se muestra arriba en la columna principal) -->
+        <div class="flex flex-col items-center">
+          <div class="w-full mb-4">
+            {# La cota se muestra en la columna principal; aquí dejamos solo la portada #}
+          </div>
+
+          <div class="w-full">
+            <label class="block text-lg font-bold text-black mb-2">Portada</label>
+            <div class="mb-3">
+              {% if book.portada %}
+                <img src="{{ book.portada.url }}" alt="Portada {{ book.titulo }}" class="w-48 h-auto rounded border mx-auto" />
+              {% else %}
+                <div class="w-48 h-64 bg-gray-100 rounded border flex items-center justify-center text-gray-400 mx-auto">Sin portada</div>
+              {% endif %}
+            </div>
+            <div>
+              {% comment %} Renderizado manual del campo portada para textos en español {% endcomment %}
+              {% if book.portada %}
+                <p class="text-lg my-4">Imagen Actual: <a href="{{ book.portada.url }}">{{ book.portada.name }}</a></p>
+                <label for="{{ form.portada.id_for_label }}-clear_id" style="margin-left:8px; font-weight:normal;">
+                  <input type="checkbox" name="{{ form.portada.name }}-clear" id="{{ form.portada.id_for_label }}-clear_id"> Borrar
+                </label>
+                <p class="my-4">Cambiar Imagen: <input type="file" name="{{ form.portada.name }}" id="{{ form.portada.id_for_label }}"></p>
+              {% else %}
+                <p>Seleccionar archivo: <input type="file" name="{{ form.portada.name }}" id="{{ form.portada.id_for_label }}"></p>
+              {% endif %}
+            </div>
+            {% if form.portada.help_text %}
+              <button type="button" class="help-btn" data-help="{{ form.portada.help_text|escapejs }}" aria-label="Ayuda Portada" style="margin-left:8px;cursor:help;border:none;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:#f6f6f6;font-size:16px;color:#2563eb;">?</button>
+            {% endif %}
+            {% if form.portada.errors %}<p class="text-sm text-[#ff0000] mt-1">{{ form.portada.errors }}</p>{% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-3 mt-2">
+        <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">Guardar</button>
+        <button type="button" onclick="window.close()" class="px-4 py-2 bg-gray-100 border rounded">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>
+
+<!-- Help modal (igual que en create_task) -->
+<div id="help-modal" role="dialog" aria-modal="true" class="fixed inset-0 bg-black/40 hidden z-50">
+  <div class="max-w-2xl mx-auto mt-20 bg-white p-6 rounded-lg shadow-lg relative">
+    <button id="help-close" aria-label="Cerrar ayuda" class="absolute right-3 top-3 text-slate-600">✕</button>
+    <h3 class="text-lg font-semibold mb-2">Recomendaciones</h3>
+    <div id="help-modal-text" class="text-sm text-slate-700 leading-relaxed"></div>
+  </div>
+</div>
+
+<!-- Floating help toggle -->
+<div class="fixed bottom-4 right-4 z-50">
+  <button id="toggle-help-btn" type="button" class="w-12 h-12 rounded-full transition-all shadow hover:shadow-lg transform hover:scale-105 bg-[#F9CE69] flex items-center justify-center" aria-label="Mostrar/ocultar ayudas" style="border:none;outline:none;cursor:pointer;">
+    <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 20H12.01" stroke="#ffffff" stroke-width="2" stroke-linecap="round"></path><path d="M7 9C7 7.87439 7 6.83566 7.99963 6C8.91184 4.78555 10.3642 4 12 4C14.7614 4 17 6.23858 17 9C17 11.4212 15.279 13.4405 12.9936 13.9013C12.4522 14.0104 12 14.4477 12 15V15V16" stroke="#ffffff" stroke-width="2" stroke-linecap="round"></path></svg>
+  </button>
+</div>
+
+<script>
+;(function(){
+  function openHelp(text){
+    const modal = document.getElementById('help-modal');
+    const content = document.getElementById('help-modal-text');
+    if(!modal || !content) return;
+    content.textContent = text;
+    modal.classList.remove('hidden');
+  }
+  function closeHelp(){ const modal = document.getElementById('help-modal'); if(modal) modal.classList.add('hidden'); }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    // enlazar botones help-btn
+    document.querySelectorAll('button.help-btn').forEach(function(btn){
+      btn.addEventListener('click', function(e){
+        e.preventDefault();
+        const text = btn.getAttribute('data-help') || '';
+        openHelp(text);
+      });
+      btn.addEventListener('keydown', function(ev){
+        if(ev.key === 'Enter' || ev.key === ' ') {
+          ev.preventDefault();
+          const text = btn.getAttribute('data-help') || '';
+          openHelp(text);
+        }
+      });
+    });
+
+    document.getElementById('help-close') && document.getElementById('help-close').addEventListener('click', closeHelp);
+    document.getElementById('help-modal') && document.getElementById('help-modal').addEventListener('click', function(e){ if(e.target === this) closeHelp(); });
+
+    // toggle help buttons visibility
+    function setHelpBtnsVisible(visible) {
+      document.querySelectorAll('button.help-btn').forEach(function(btn){ btn.style.display = visible ? '' : 'none'; });
+    }
+    setHelpBtnsVisible(false);
+    var toggleBtn = document.getElementById('toggle-help-btn');
+    var helpVisible = false;
+    if(toggleBtn){ toggleBtn.addEventListener('click', function(){ helpVisible = !helpVisible; setHelpBtnsVisible(helpVisible); }); }
+  });
+})();
+</script>
+
+<!-- Box para mostrar clasificación/descripcion extraída del diccionario -->
+<style>#cota-info-box-edit{padding:8px;border-radius:6px;background:#f8fafc;border:1px solid #e6eef6;margin-top:8px;}</style>
+<div id="cota-info-box-edit" class="mx-auto max-w-3xl px-4 hidden"></div>
+
+<script>
+;(function(){
+  // si existe un campo de búsqueda dict-search en esta plantilla, conectarlo
+  var search = document.getElementById('dict-search');
+  var results = document.getElementById('dict-results');
+  function hideResults(){ if(results) { results.classList.add('hidden'); results.innerHTML = ''; } }
+  function escHtml(s){ if(!s) return ''; return String(s).replace(/[&<>'"`]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;","`":"&#96;"}[c] || c; }); }
+  if(search && results){
+    function showResults(items){ results.innerHTML = ''; if(!items || items.length === 0){ hideResults(); return; }
+      items.forEach(function(it){ var display = (it && it.codigo) ? it.codigo : String(it || ''); var li = document.createElement('li'); li.className='px-2 py-1 hover:bg-gray-100 cursor-pointer'; li.textContent = display; li.dataset.meta = JSON.stringify(it||{}); li.addEventListener('click', function(){ var meta={}; try{ meta=JSON.parse(li.dataset.meta||'{}'); }catch(e){} var f = search.closest('form') || document.querySelector('form'); if(f){ var cotaField = f.querySelector('[name="cota"]'); if(cotaField) cotaField.value = display; var infoBox = document.getElementById('cota-info-box-edit'); if(infoBox){ var clas = meta.clasificacion || ''; var desc = meta.descripcion || meta.descripcion_en || ''; infoBox.innerHTML = ''; if(clas) infoBox.innerHTML += '<div class="text-sm text-indigo-700 font-medium">Clasificación: ' + escHtml(clas) + '</div>'; if(desc) infoBox.innerHTML += '<div class="text-sm text-gray-600 mt-1">' + escHtml(desc) + '</div>'; infoBox.classList.remove('hidden'); } } hideResults(); }); results.appendChild(li); }); results.classList.remove('hidden'); }
+    var doSearch = (function(){ let t; return function(){ clearTimeout(t); t = setTimeout(function(){ var q = search.value.trim(); if(!q){ hideResults(); return; } fetch('{% url "autocomplete_codes" %}?q=' + encodeURIComponent(q)).then(function(r){ return r.json(); }).then(function(data){ showResults(data.results || []); }).catch(function(){ hideResults(); }); }, 250); }; })();
+    search.addEventListener('input', doSearch);
+    document.addEventListener('click', function(e){ if(!results.contains(e.target) && e.target !== search) hideResults(); });
+  }
+})();
+</script>

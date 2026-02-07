@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="px-8 py-8">
+  <div class="container mx-auto max-w-7xl">
+    <div class="bg-white shadow rounded-lg p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-semibold">Préstamos de {% if receiver_first_name %}{{ receiver_first_name }} {{ receiver_last_name }}{% else %}{{ receiver_cedula }}{% endif %}</h2>
+        <form method="get" class="flex gap-2 items-center">
+          <input type="hidden" name="receiver_cedula" value="{{ receiver_cedula }}" />
+          <input type="date" name="start_date" value="{{ start_date }}" class="border rounded p-2" />
+          <input type="date" name="end_date" value="{{ end_date }}" class="border rounded p-2" />
+          <button type="submit" class="px-3 py-2 bg-[#fff585] text-white rounded">Aplicar</button>
+          <a href="{% url 'reports_users_index' %}" class="px-3 py-2 bg-red-500 text-white rounded">Volver</a>
+        </form>
+      </div>
+
+      {% if loans and loans.object_list %}
+        <ul class="space-y-3">
+          {% for loan in loans.object_list %}
+            <li class="border p-3 rounded">
+              <div class="font-semibold">{{ loan.book.titulo }}</div>
+              <div class="text-sm text-gray-600">Cota: {{ loan.book.cota }} · Cant: {{ loan.cantidad }}</div>
+              <div class="text-sm text-gray-700">Devuelto: {{ loan.returned_at }} · Puntuación libro: {{ loan.return_book_rating|default:'-' }} · Puntuación receptor: {{ loan.return_receiver_rating|default:'-' }}</div>
+              {% if loan.return_report %}
+                <div class="mt-2 text-sm bg-gray-50 p-2 rounded">Reporte: {{ loan.return_report }}</div>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+
+        <div class="mt-4 flex justify-center">
+          <nav class="inline-flex items-center">
+            {% if loans.has_previous %}
+              <a href="?page={{ loans.previous_page_number }}&receiver_cedula={{ receiver_cedula }}&start_date={{ start_date }}&end_date={{ end_date }}" class="px-3 py-1 border rounded-l">Anterior</a>
+            {% else %}
+              <span class="px-3 py-1 border rounded-l text-gray-400">Anterior</span>
+            {% endif %}
+            <span class="px-4 py-1 border-t border-b">Página {{ loans.number }} de {{ loans.paginator.num_pages }}</span>
+            {% if loans.has_next %}
+              <a href="?page={{ loans.next_page_number }}&receiver_cedula={{ receiver_cedula }}&start_date={{ start_date }}&end_date={{ end_date }}" class="px-3 py-1 border rounded-r">Siguiente</a>
+            {% else %}
+              <span class="px-3 py-1 border rounded-r text-gray-400">Siguiente</span>
+            {% endif %}
+          </nav>
+        </div>
+      {% else %}
+        <div>No se encontraron préstamos para este receptor.</div>
+      {% endif %}
+
+      <div class="mt-4 text-sm text-gray-700">Promedio calificación receptor (filtrado): {{ avg_receiver|default:'-'|floatformat:1 }}</div>
+    </div>
+  </div>
+</main>
+{% endblock %}

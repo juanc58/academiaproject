@@ -1,0 +1,369 @@
+{% extends "base.html" %}
+{% load static form_tags %}
+
+{% block content %}
+
+<main class="bg-[url(/static/fondoindex.jpg)] bg-repeat bg-top">
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <section class="py-10">
+      <div class="mx-auto container max-w-7xl md:w-3/4 shadow-md bg-[#e8e8e8]">
+        <div class="bg-gray-100 p-4 border-t-2 bg-opacity-5 border-[#8ae4ff] rounded-t">
+          <div class="max-w-sm mx-auto md:w-full md:mx-0">
+            <div class="inline-flex items-center space-x-4">
+              <!-- icon -->
+              <svg class="size-9 object-cover ml-3" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M26,3H9C7.3,3,6,4.3,6,6v0c0,1.7,1.3,3,3,3h17v8" stroke="#8ae4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M19,29H9c-1.7,0-3-1.3-3-3v0V6" stroke="#8ae4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <line x1="26" y1="6" x2="9" y2="6" stroke="#8ae4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <line x1="10" y1="9" x2="10" y2="29" stroke="#8ae4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="24" cy="24" r="7" stroke="#8ae4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <line x1="24" y1="21" x2="24" y2="27" stroke="#8ae4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <line x1="21" y1="24" x2="27" y2="24" stroke="#8ae4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              <h1 class="text-gray-800 text-xl font-bold m-auto">Ingresar Bibliografía</h1>
+              
+            </div>
+          </div>
+        </div>
+
+  <div class="bg-white space-y-8 py-8 px-8 md:px-16 rounded-b-lg">
+
+          <!-- Mostrar errores generales y no-field errors -->
+          {% if form.non_field_errors %}
+            <div class="text-red-600 text-sm mb-4">
+              {% for e in form.non_field_errors %}{{ e }}{% if not forloop.last %}<br/>{% endif %}{% endfor %}
+            </div>
+          {% endif %}
+          <!-- Campos de cota divididos (restaurados) -->
+          <fieldset class="mb-20">
+            <legend class="flex flex-nowrap justify-center font-semibold text-slate-700 mb-4">Datos de la Cota<p class="text-red-600 ml-2">*</p></legend>
+            <div class="mt-2 max-w-4xl mx-auto">
+              <label class="block text-sm text-gray-600">Buscar código de la cota</label>
+              <input id="dict-search" type="text" placeholder="Escribe parte del código (ej. QS 1)" class="w-full p-2 border rounded mt-1" />
+              <ul id="dict-results" class="mt-1 bg-white border rounded max-h-48 overflow-auto hidden"></ul>
+
+              <div class="mt-6 md:flex md:items-start md:justify-center md:gap-6">
+                <!-- Recuadro izquierda: Cota 1 y Cota 2 -->
+                <div class="md:w-1/2 bg-[#8ae4ff] p-6 rounded-lg shadow-sm hover:shadow-md transition">
+                  <h3 class="font-semibold text-sm text-slate-700 mb-4">Clasificación Libro Nacional de Medicina</h3>
+                  <div class="mb-3">
+                    <label class="block text-sm text-gray-700 mb-1">Cota Parte °1</label>
+                    {{ form.cota_part1 }}
+                    {% if form.cota_part1.errors %}
+                      <div class="text-red-600 text-sm mt-1">{{ form.cota_part1.errors.0 }}</div>
+                    {% endif %}
+                  </div>
+                  <div>
+                    <label class="block text-sm text-gray-700 mb-1">Cota Parte °2</label>
+                    {{ form.cota_part2 }}
+                    {% if form.cota_part2.errors %}
+                      <div class="text-red-600 text-sm mt-1">{{ form.cota_part2.errors.0 }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+                <!-- Recuadro derecha: Cota 3 y Cota 4 -->
+                <div class="md:w-1/2 bg-[#8ae4ff] p-6 rounded-lg shadow-sm hover:shadow-md transition">
+                  <h3 class="font-semibold text-sm text-slate-700 mb-4">Clasificación Cutter-Sanborn</h3>
+                  <div class="mb-3">
+                    <label class="block text-sm text-gray-700 mb-1">Cota Parte °3</label>
+                    {{ form.cota_part3 }}
+                    {% if form.cota_part3.errors %}
+                      <div class="text-red-600 text-sm mt-1">{{ form.cota_part3.errors.0 }}</div>
+                    {% endif %}
+                  </div>
+                  <div>
+                    <label class="block text-sm text-gray-700 mb-1">Cota Parte °4</label>
+                    {{ form.cota_part4 }}
+                    {% if form.cota_part4.errors %}
+                      <div class="text-red-600 text-sm mt-1">{{ form.cota_part4.errors.0 }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex justify-center mt-4">
+                <button type="button" class="help-btn" data-help="{{ form.cota_part4.help_text|escapejs }}" aria-label="Ayuda cota parte 4" style="cursor:help;border:none;width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:#f6f6f6;font-size:16px;color:#2563eb;">?</button>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Datos del libro: mantengo todos los campos y help buttons sin modificar -->
+          <fieldset>
+            <legend class="font-semibold text-slate-700 mb-8 text-center">Datos del libro</legend>
+
+            <div class="md:flex md:gap-6 md:justify-center">
+              <!-- Izquierda: campos obligatorios -->
+              <div class="md:w-1/2 bg-white p-6 rounded-lg border">
+                <h3 class="font-medium mb-4">Obligatorios</h3>
+                <div class="space-y-6">
+                    <div>
+                    <div class="flex flex-nowrap">{{ form.titulo.label_tag }}<p class="text-red-600">*</p></div>
+                    {{ form.titulo|add_class:"w-full text-md py-4 px-4" }}
+                    {% if form.titulo.help_text %}<button type="button" class="help-btn" data-help="{{ form.titulo.help_text|escapejs }}" aria-label="Ayuda titulo" style="margin-left:8px;cursor:help;border:none;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:#f6f6f6;font-size:16px;color:#2563eb;">?</button>{% endif %}
+                    {% if form.titulo.errors %}<div class="text-red-600 text-sm">{{ form.titulo.errors }}</div>{% endif %}
+                    </div>
+
+                  <div>
+                    <div class="flex flex-nowrap">{{ form.autor.label_tag }}<p class="text-red-600">*</p></div>
+                    {{ form.autor }}
+                    {% if form.autor.help_text %}<button type="button" class="help-btn" data-help="{{ form.autor.help_text|escapejs }}" aria-label="Ayuda autor" style="margin-left:8px;cursor:help;border:none;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:#f6f6f6;font-size:16px;color:#2563eb;">?</button>{% endif %}
+                    {% if form.autor.errors %}<div class="text-red-600 text-sm">{{ form.autor.errors }}</div>{% endif %}
+                  </div>
+
+                  <div>
+                    <div class="flex flex-nowrap">{{ form.numero_registro.label_tag }}<p class="text-red-600">*</p></div>
+                    {{ form.numero_registro }}
+                    {% if form.numero_registro.help_text %}<button type="button" class="help-btn" data-help="{{ form.numero_registro.help_text|escapejs }}" aria-label="Ayuda número registro" style="margin-left:8px;cursor:help;border:none;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:#f6f6f6;font-size:16px;color:#2563eb;">?</button>{% endif %}
+                    {% if form.numero_registro.errors %}<div class="text-red-600 text-sm">{{ form.numero_registro.errors }}</div>{% endif %}
+                  </div>
+
+                  <div>
+                    <div class="flex flex-nowrap">{{ form.fecha_registro.label_tag }}<p class="text-red-600">*</p></div>
+                    {{ form.fecha_registro }}
+                    {% if form.fecha_registro.help_text %}<button type="button" class="help-btn" data-help="{{ form.fecha_registro.help_text|escapejs }}" aria-label="Ayuda fecha registro" style="margin-left:8px;cursor:help;border:none;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:#f6f6f6;font-size:16px;color:#2563eb;">?</button>{% endif %}
+                    {% if form.fecha_registro.errors %}<div class="text-red-600 text-sm">{{ form.fecha_registro.errors }}</div>{% endif %}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Derecha: campos opcionales -->
+              <div class="md:w-1/2 bg-white p-6 rounded-lg border">
+                <h3 class="font-medium mb-4">Opcionales</h3>
+                <div class="space-y-4">
+                  <div>
+                    {{ form.subtitulo.label_tag }}<br/>
+                    {{ form.subtitulo }}
+                    {% if form.subtitulo.help_text %}<button type="button" class="help-btn" data-help="{{ form.subtitulo.help_text|escapejs }}" aria-label="Ayuda subtitulo" style="margin-left:8px;cursor:help;border:none;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:#f6f6f6;font-size:16px;color:#2563eb;">?</button>{% endif %}
+                    {% if form.subtitulo.errors %}<div class="text-red-600 text-sm">{{ form.subtitulo.errors }}</div>{% endif %}
+                  </div>
+
+                  <div>
+                    {{ form.co_autor.label_tag }}<br/>
+                    {{ form.co_autor }}
+                    {% if form.co_autor.help_text %}<button type="button" class="help-btn" data-help="{{ form.co_autor.help_text|escapejs }}" aria-label="Ayuda coautor" style="margin-left:8px;cursor:help;border:none;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:#f6f6f6;font-size:16px;color:#2563eb;">?</button>{% endif %}
+                    {% if form.co_autor.errors %}<div class="text-red-600 text-sm">{{ form.co_autor.errors }}</div>{% endif %}
+                  </div>
+
+                  <div>
+                    {{ form.descripcion.label_tag }}<br/>
+                    {{ form.descripcion }}
+                    {% if form.descripcion.help_text %}<button type="button" class="help-btn" data-help="{{ form.descripcion.help_text|escapejs }}" aria-label="Ayuda descripcion" style="margin-left:8px;cursor:help;border:none;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:#f6f6f6;font-size:16px;color:#2563eb;">?</button>{% endif %}
+                    {% if form.descripcion.errors %}<div class="text-red-600 text-sm">{{ form.descripcion.errors }}</div>{% endif %}
+                  </div>
+
+                  <div>
+                    <p>Año de Publicacion</p>
+                    {{ form.fecha_publicacion }}
+                    {% if form.fecha_publicacion.help_text %}<button type="button" class="help-btn" data-help="{{ form.fecha_publicacion.help_text|escapejs }}" aria-label="Ayuda fecha de publicación" style="margin-left:8px;cursor:help;border:none;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:#f6f6f6;font-size:16px;color:#2563eb;">?</button>{% endif %}
+                    {% if form.fecha_publicacion.errors %}<div class="text-red-600 text-sm">{{ form.fecha_publicacion.errors }}</div>{% endif %}
+                  </div>
+
+                  <div>
+                    <p>Lugar de Publicacion</p>
+                    {{ form.ubicacion_publicacion }}
+                    {% if form.ubicacion_publicacion.help_text %}<button type="button" class="help-btn" data-help="{{ form.ubicacion_publicacion.help_text|escapejs }}" aria-label="Ayuda ubicación de publicación" style="margin-left:8px;cursor:help;border:none;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:#f6f6f6;font-size:16px;color:#2563eb;">?</button>{% endif %}
+                    {% if form.ubicacion_publicacion.errors %}<div class="text-red-600 text-sm">{{ form.ubicacion_publicacion.errors }}</div>{% endif %}
+                  </div>
+
+                  <div>
+                    {{ form.volumen.label_tag }}<br/>
+                    {{ form.volumen }}
+                    {% if form.volumen.help_text %}<button type="button" class="help-btn" data-help="{{ form.volumen.help_text|escapejs }}" aria-label="Ayuda volumen" style="margin-left:8px;cursor:help;border:none;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:#f6f6f6;font-size:16px;color:#2563eb;">?</button>{% endif %}
+                    {% if form.volumen.errors %}<div class="text-red-600 text-sm">{{ form.volumen.errors }}</div>{% endif %}
+                  </div>
+
+                  <div>
+                    {{ form.edicion.label_tag }}<br/>
+                    {{ form.edicion }}
+                    {% if form.edicion.help_text %}<button type="button" class="help-btn" data-help="{{ form.edicion.help_text|escapejs }}" aria-label="Ayuda edición" style="margin-left:8px;cursor:help;border:none;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:#f6f6f6;font-size:16px;color:#2563eb;">?</button>{% endif %}
+                    {% if form.edicion.errors %}<div class="text-red-600 text-sm">{{ form.edicion.errors }}</div>{% endif %}
+                  </div>
+
+                  <div>
+                    {{ form.serie.label_tag }}<br/>
+                    {{ form.serie }}
+                    {% if form.serie.help_text %}<button type="button" class="help-btn" data-help="{{ form.serie.help_text|escapejs }}" aria-label="Ayuda serie" style="margin-left:8px;cursor:help;border:none;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:#f6f6f6;font-size:16px;color:#2563eb;">?</button>{% endif %}
+                    {% if form.serie.errors %}<div class="text-red-600 text-sm">{{ form.serie.errors }}</div>{% endif %}
+                  </div>
+
+                  <div>
+                    {{ form.numero_serie.label_tag }}<br/>
+                    {{ form.numero_serie }}
+                    {% if form.numero_serie.help_text %}<button type="button" class="help-btn" data-help="{{ form.numero_serie.help_text|escapejs }}" aria-label="Ayuda número de serie" style="margin-left:8px;cursor:help;border:none;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:#f6f6f6;font-size:16px;color:#2563eb;">?</button>{% endif %}
+                    {% if form.numero_serie.errors %}<div class="text-red-600 text-sm">{{ form.numero_serie.errors }}</div>{% endif %}
+                  </div>
+
+                  <div>
+                    {{ form.dimensiones.label_tag }}<br/>
+                    {{ form.dimensiones }}
+                    {% if form.dimensiones.help_text %}<button type="button" class="help-btn" data-help="{{ form.dimensiones.help_text|escapejs }}" aria-label="Ayuda dimensiones" style="margin-left:8px;cursor:help;border:none;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:#f6f6f6;font-size:16px;color:#2563eb;">?</button>{% endif %}
+                    {% if form.dimensiones.errors %}<div class="text-red-600 text-sm">{{ form.dimensiones.errors }}</div>{% endif %}
+                  </div>
+
+                  <div>
+                    {{ form.paginas.label_tag }}<br/>
+                    {{ form.paginas }}
+                    {% if form.paginas.help_text %}<button type="button" class="help-btn" data-help="{{ form.paginas.help_text|escapejs }}" aria-label="Ayuda páginas" style="margin-left:8px;cursor:help;border:none;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:#f6f6f6;font-size:16px;color:#2563eb;">?</button>{% endif %}
+                    {% if form.paginas.errors %}<div class="text-red-600 text-sm">{{ form.paginas.errors }}</div>{% endif %}
+                  </div>
+
+                  <div>
+                    {{ form.editorial.label_tag }}<br/>
+                    {{ form.editorial }}
+                    {% if form.editorial.help_text %}<button type="button" class="help-btn" data-help="{{ form.editorial.help_text|escapejs }}" aria-label="Ayuda editorial" style="margin-left:8px;cursor:help;border:none;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:#f6f6f6;font-size:16px;color:#2563eb;">?</button>{% endif %}
+                    {% if form.editorial.errors %}<div class="text-red-600 text-sm">{{ form.editorial.errors }}</div>{% endif %}
+                  </div>
+
+                  <div>
+                    {{ form.cantidad.label_tag }}<br/>
+                    {{ form.cantidad }}
+                    {% if form.cantidad.help_text %}<button type="button" class="help-btn" data-help="{{ form.cantidad.help_text|escapejs }}" aria-label="Ayuda cantidad" style="margin-left:8px;cursor:help;border:none;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:#f6f6f6;font-size:16px;color:#2563eb;">?</button>{% endif %}
+                    {% if form.cantidad.errors %}<div class="text-red-600 text-sm">{{ form.cantidad.errors }}</div>{% endif %}
+                  </div>
+
+                  <div>
+                    {{ form.contenido.label_tag }}<br/>
+                    {{ form.contenido }}
+                    {% if form.contenido.help_text %}<button type="button" class="help-btn" data-help="{{ form.contenido.help_text|escapejs }}" aria-label="Ayuda contenido" style="margin-left:8px;cursor:help;border:none;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:#f6f6f6;font-size:16px;color:#2563eb;">?</button>{% endif %}
+                    {% if form.contenido.errors %}<div class="text-red-600 text-sm">{{ form.contenido.errors }}</div>{% endif %}
+                  </div>
+
+                  {% if form.portada %}
+                  <div>
+                    {{ form.portada.label_tag }}<br/>
+                    {{ form.portada }}
+                    {% if form.portada.errors %}<div class="text-red-600 text-sm">{{ form.portada.errors }}</div>{% endif %}
+                  </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+            <div class="flex items-center justify-center gap-4 mt-8">
+              
+              <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow hover:bg-indigo-700">Guardar</button>
+
+              <a href="{% url 'create_task' %}" class="inline-flex items-center bg-red-600 text-white hover:bg-red-800 mr-4 rounded-md px-4 py-2">
+                Cancelar
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </form>
+
+  <!-- Help modal -->
+  <div id="help-modal" role="dialog" aria-modal="true" class="fixed inset-0 bg-black/40 hidden z-50">
+    <div class="max-w-2xl mx-auto mt-20 bg-white p-6 rounded-lg shadow-lg relative">
+      <button id="help-close" aria-label="Cerrar ayuda" class="absolute right-3 top-3 text-slate-600">✕</button>
+      <h3 class="text-lg font-semibold mb-2">Recomendaciones</h3>
+      <div id="help-modal-text" class="text-sm text-slate-700 leading-relaxed"></div>
+    </div>
+  </div>
+
+  <!-- Floating help toggle -->
+  <div class="fixed bottom-6 right-6 z-50">
+    <button id="toggle-help-btn" type="button" class="w-12 h-12 rounded-full transition-all shadow hover:shadow-lg transform hover:scale-105 bg-[#F9CE69] flex items-center justify-center" aria-label="Mostrar/ocultar ayudas" style="border:none;outline:none;cursor:pointer;">
+      <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 20H12.01" stroke="#ffffff" stroke-width="2" stroke-linecap="round"></path><path d="M7 9C7 7.87439 7 6.83566 7.99963 6C8.91184 4.78555 10.3642 4 12 4C14.7614 4 17 6.23858 17 9C17 11.4212 15.279 13.4405 12.9936 13.9013C12.4522 14.0104 12 14.4477 12 15V15V16" stroke="#ffffff" stroke-width="2" stroke-linecap="round"></path></svg>
+    </button>
+  </div>
+
+</main>
+
+<script>
+(function(){
+  // Autocompletado de códigos del diccionario
+  function debounce(fn, wait){ let t; return function(){ clearTimeout(t); t = setTimeout(()=>fn.apply(this, arguments), wait); }; }
+  var search = document.getElementById('dict-search');
+  var results = document.getElementById('dict-results');
+  function hideResults(){ results.classList.add('hidden'); results.innerHTML = ''; }
+  function showResults(items){ results.innerHTML = '';
+    if(!items || items.length === 0){ hideResults(); return; }
+    items.forEach(function(code){
+      var li = document.createElement('li');
+      li.className = 'px-2 py-1 hover:bg-gray-100 cursor-pointer';
+      li.textContent = code;
+      li.addEventListener('click', function(){
+        // rellenar cota_part1 y cota_part2 a partir del código (primer token y resto)
+        var parts = code.split(/\s+/, 2);
+        var p1 = parts[0] || '';
+        var p2 = code.substring(p1.length).trim() || '';
+        // buscar los campos en el formulario
+        var f = search.closest('form') || document.querySelector('form');
+        if(f){
+          var p1field = f.querySelector('[name="cota_part1"]');
+          var p2field = f.querySelector('[name="cota_part2"]');
+          if(p1field) p1field.value = p1;
+          if(p2field) p2field.value = p2;
+        }
+        hideResults();
+      });
+      results.appendChild(li);
+    });
+    results.classList.remove('hidden');
+  }
+  var doSearch = debounce(function(){
+    var q = search.value.trim();
+    if(!q){ hideResults(); return; }
+    fetch('{% url "autocomplete_codes" %}?q=' + encodeURIComponent(q))
+      .then(function(r){ return r.json(); })
+      .then(function(data){ showResults(data.results || []); })
+      .catch(function(){ hideResults(); });
+  }, 250);
+  if(search){ search.addEventListener('input', doSearch); document.addEventListener('click', function(e){ if(!results.contains(e.target) && e.target !== search) hideResults(); }); }
+  function openHelp(text){
+    const modal = document.getElementById('help-modal');
+    const content = document.getElementById('help-modal-text');
+    if(!modal || !content) return;
+    content.textContent = text;
+    modal.classList.remove('hidden');
+  }
+  function closeHelp(){ const modal = document.getElementById('help-modal'); if(modal) modal.classList.add('hidden'); }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    // enlazar botones help-btn
+    document.querySelectorAll('button.help-btn').forEach(function(btn){
+      btn.addEventListener('click', function(e){
+        e.preventDefault();
+        const text = btn.getAttribute('data-help') || '';
+        openHelp(text);
+      });
+      btn.addEventListener('keydown', function(ev){
+        if(ev.key === 'Enter' || ev.key === ' ') {
+          ev.preventDefault();
+          const text = btn.getAttribute('data-help') || '';
+          openHelp(text);
+        }
+      });
+    });
+
+    document.getElementById('help-close') && document.getElementById('help-close').addEventListener('click', closeHelp);
+    document.getElementById('help-modal') && document.getElementById('help-modal').addEventListener('click', function(e){
+      if(e.target === this) closeHelp();
+    });
+
+    // toggle help buttons visibility
+    function setHelpBtnsVisible(visible) {
+      document.querySelectorAll('button.help-btn').forEach(function(btn){
+        btn.style.display = visible ? '' : 'none';
+      });
+    }
+    setHelpBtnsVisible(false);
+    var toggleBtn = document.getElementById('toggle-help-btn');
+    var helpVisible = false;
+    if(toggleBtn){
+      toggleBtn.addEventListener('click', function(){
+        helpVisible = !helpVisible;
+        setHelpBtnsVisible(helpVisible);
+      });
+    }
+
+    // (materias manuales deshabilitadas - clasificación asignada automáticamente)
+  });
+})();
+</script>
+
+{% endblock %}

@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="px-8 py-8">
+  <div class="max-w-8xl mx-auto bg-white p-6 rounded shadow">
+    <div class="inline-flex items-center space-x-4 mb-6">
+
+              <svg class="size-9 object-cover" fill="#ec1818" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 459.319 459.319" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M141.288,189.821h-23.685V145.28h23.528v-23.69h21.016v23.374h23.681v44.707h-23.681v0.151H141.288z M60.801,398.87 c0.012,1.1,0.03,1.921,0.042,2.459c0.006,0.331-0.053,0.638-0.071,0.963c0.739,18.224,15.755,32.817,34.146,32.817h303.76v-33.461 c0-6.68,5.421-12.105,12.105-12.105c6.679,0,12.105,5.426,12.105,12.105v45.565c0,6.686-5.427,12.105-12.105,12.105H93.091 c-0.629,0-1.235-0.089-1.847-0.183c-30.505-1.91-54.757-27.261-54.757-58.245c0-0.71,0.085-1.396,0.109-2.099 c-0.375-35.943,0-309.36,0.042-339.109c-0.047-0.423-0.127-0.827-0.127-1.259C36.511,26.205,62.719,0,94.938,0h19.343h293.535 h2.955c6.685,0,12.105,5.423,12.105,12.105v342.139c0,6.679-5.421,12.104-12.105,12.104c-0.071,0-0.13-0.023-0.201-0.023 c-0.887,0.213-1.82,0.354-2.772,0.354H94.918C76.736,366.674,61.859,380.948,60.801,398.87z M278.347,121.59h94.425v20.862h-23.685 v23.69h-23.525v23.685h-23.69v23.533h-23.536v49.882h120.792v-26.209h-94.584v-20.859h23.69V192.49h23.525v-23.69h23.689V145.28 h23.679V95.237h-120.78V121.59z M224.949,192.49h56.265v-26.353h-56.265V192.49z M91.41,263.229h26.2v-47.056h23.679v-0.15h44.54 v47.219h26.354v-120.79h-23.688v-23.841H164.81V95.237h-26.202v23.684h-23.685v23.69H91.389v120.618H91.41z"></path> </g> </g></svg>
+              <h1 class="text-2xl font-bold">Diccionario</h1>
+            </div>
+
+    <form method="get" class="mb-4">
+      <input type="text" name="q" value="{{ q|default:'' }}" placeholder="Buscar código o descripción" class="w-full p-2 border rounded" />
+    </form>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <aside class="lg:col-span-1 bg-gray-50 p-4 rounded">
+        <h3 class="font-semibold mb-2">Clasificaciones</h3>
+        <ul class="text-sm space-y-2">
+          {% comment %} Lista fija en el orden solicitado {% endcomment %}
+          {% for item in classification_list %}
+            <li>
+              <a href="?clas={{ item }}{% if q %}&q={{ q }}{% endif %}" class="block px-2 py-1 rounded hover:bg-gray-100 {% if selected_clas == item %}bg-blue-50 font-semibold{% endif %}">{{ item }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </aside>
+
+      <div class="lg:col-span-3 overflow-x-auto">
+        <table class="w-full table-auto border-collapse">
+        <thead>
+          <tr class="bg-red-500">
+            <th class="px-4 py-2 text-left">Código</th>
+            <th class="px-4 py-2 text-left">Clasificación</th>
+            <th class="px-4 py-2 text-left">Descripción</th>
+            <th class="px-4 py-2 text-left">Descripción (EN)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for e in entries %}
+          <tr class="border-t">
+            <td class="px-4 py-2 align-top font-semibold">{{ e.codigo }}</td>
+            <td class="px-4 py-2 align-top font-mono text-sm text-gray-700">{{ e.clasificacion }}</td>
+            <td class="px-4 py-2 align-top">{{ e.descripcion|linebreaksbr }}</td>
+            <td class="px-4 py-2 align-top">{{ e.descripcion_en|linebreaksbr }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4" class="px-4 py-6 text-center text-gray-600">No hay entradas en el diccionario.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+</div>
+
+<!--paginacion -->
+
+    <div class="mt-4">
+      {% with params="q="|add:q %}
+      <div class="flex items-center justify-between border-t border-white/10 px-4 py-3 sm:px-6">
+        <div class="flex flex-1 justify-between sm:hidden">
+          {% if entries.has_previous %}
+            <a href="?{{ params }}&page={{ entries.previous_page_number }}" class="relative inline-flex items-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-gray-200 hover:bg-white/10">Anterior</a>
+          {% else %}
+            <span class="relative inline-flex items-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-gray-500">Anterior</span>
+          {% endif %}
+          {% if entries.has_next %}
+            <a href="?{{ params }}&page={{ entries.next_page_number }}" class="relative ml-3 inline-flex items-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-gray-200 hover:bg-white/10">Siguiente</a>
+          {% else %}
+            <span class="relative ml-3 inline-flex items-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-gray-500">Siguiente</span>
+          {% endif %}
+        </div>
+        <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+          <div>
+            <p class="text-lg text-black">
+              Mostrando
+              <span class="font-medium">{{ entries.start_index|default:1 }}</span>
+              a
+              <span class="font-medium">{{ entries.end_index|default:entries.paginator.per_page }}</span>
+              de
+              <span class="font-medium">{{ entries.paginator.count }}</span>
+              resultados
+            </p>
+          </div>
+          <div>
+            <nav aria-label="Paginación" class="isolate inline-flex -space-x-px rounded-md">
+              {% if entries.has_previous %}
+              <a href="?{{ params }}&page={{ entries.previous_page_number }}" class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 hover:bg-white/5 focus:z-20">
+                <span class="sr-only">Anterior</span>
+                <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="w-5 h-5">
+                  <path d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" fill-rule="evenodd" />
+                </svg>
+              </a>
+              {% else %}
+              <span class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-600">
+                <span class="sr-only">Anterior</span>
+                <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="w-5 h-5">
+                  <path d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" fill-rule="evenodd" />
+                </svg>
+              </span>
+              {% endif %}
+
+              {# Mostrar algunos números de página: actual -2 .. actual +2 #}
+              {% for i in entries.paginator.page_range %}
+                {% if i >= entries.number|add:'-2' and i <= entries.number|add:'2' %}
+                  {% if i == entries.number %}
+                    <a aria-current="page" class="relative z-10 inline-flex items-center bg-[#ec1818] px-6 py-4 text-lg font-semibold text-white">{{ i }}</a>
+                  {% else %}
+                    <a href="?{{ params }}&page={{ i }}" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-black hover:bg-white/5">{{ i }}</a>
+                  {% endif %}
+                {% elif i == 1 or i == entries.paginator.num_pages %}
+                  <a href="?{{ params }}&page={{ i }}" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-200 hover:bg-white/5">{{ i }}</a>
+                {% elif forloop.first and entries.number > 4 %}
+                  <span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-400">...</span>
+                {% elif forloop.last and entries.number < entries.paginator.num_pages|add:'-3' %}
+                  <span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-400">...</span>
+                {% endif %}
+              {% endfor %}
+
+              {% if entries.has_next %}
+              <a href="?{{ params }}&page={{ entries.next_page_number }}" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 hover:bg-white/5 focus:z-20">
+                <span class="sr-only">Siguiente</span>
+                <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="w-5 h-5">
+                  <path d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+                </svg>
+              </a>
+              {% else %}
+              <span class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-600">
+                <span class="sr-only">Siguiente</span>
+                <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="w-5 h-5">
+                  <path d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+                </svg>
+              </span>
+              {% endif %}
+            </nav>
+          </div>
+        </div>
+      </div>
+      {% endwith %}
+    </div>
+  </div>
+</main>
+{% endblock %}

@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="px-8 py-8">
+  <div class="max-w-8xl mx-auto bg-white p-6 rounded shadow">
+    <div class="flex items-center mb-6">
+      <h1 class="text-2xl font-bold">Gestionar Libros</h1>
+      <svg class="size-10 ml-6" version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve" fill="#4741A6"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:none;stroke:#4741A6;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} </style> <path class="st0" d="M28,9H14c-1.7,0-3,1.3-3,3v0c0,1.7,1.3,3,3,3h14v15"></path> <path class="st0" d="M28,30H14c-1.7,0-3-1.3-3-3v0V12"></path> <line class="st0" x1="28" y1="12" x2="14" y2="12"></line> <path class="st0" d="M21,3H7C5.3,3,4,4.3,4,6v0c0,1.7,1.3,3,3,3h8"></path> <path class="st0" d="M11,24H7c-1.7,0-3-1.3-3-3v0V6"></path> <line class="st0" x1="21" y1="6" x2="7" y2="6"></line> </g></svg>
+        <div class="flex justify-end flex-1 gap-2">
+          <a href="{% url 'admin_book_add' %}" class="inline-flex items-center gap-2 bg-[#4741A6] text-white px-4 py-2 rounded">Agregar libro</a>
+          <a href="{% url 'admin_panel' %}" class="inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded">Volver</a>
+        </div>
+    </div>
+
+    <form method="get" class="mb-4">
+      <input type="text" name="q" value="{{ q|default:'' }}" placeholder="Buscar cota, título, autor o coautor" class="w-full p-2 border rounded" />
+    </form>
+    <div class="overflow-x-auto">
+      <table class="w-full table-auto border-collapse">
+        <thead>
+          <tr class="bg-[#4741A6] text-white">
+            <th class="px-4 py-2 text-left">Cota</th>
+            <th class="px-4 py-2 text-left">Título</th>
+            <th class="px-4 py-2 text-left">Autor</th>
+            <th class="px-4 py-2 text-left">Creado por</th>
+            <th class="px-4 py-2 text-left">Fecha creación</th>
+            <th class="px-4 py-2 text-left">Hora creación</th>
+            <th class="px-4 py-2 text-left">Activo</th>
+            <th class="px-4 py-2 text-left">Stock</th>
+            <th class="px-4 py-2 text-left">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for b in books %}
+          <tr class="border-t">
+            <td class="px-4 py-2 font-mono">{{ b.cota }}</td>
+            <td class="px-4 py-2">{{ b.titulo }}</td>
+            <td class="px-4 py-2">{{ b.autor }}</td>
+            <td class="px-4 py-2">
+              {% if b.user %}
+                {{ b.user.get_full_name|default:b.user.username }}
+              {% else %}
+                -
+              {% endif %}
+            </td>
+            <td class="px-4 py-2">{{ b.fecha_creacion|date:"Y-m-d"|default:'-' }}</td>
+            <td class="px-4 py-2">{{ b.hora_creacion|date:"H:i"|default:'-' }}</td>
+            <td class="px-4 py-2">
+              <input type="checkbox" disabled {% if b.is_active %}checked{% endif %} />
+            </td>
+            
+            <td class="px-4 py-2">{{ b.cantidad|default:'-' }}</td>
+            <td class="px-4 py-2">
+              <a href="{% url 'admin_book_edit' b.pk %}" class="text-blue-600 hover:underline mr-3">Editar</a>
+              <a href="{% url 'admin_book_delete' b.pk %}" class="text-red-600 hover:underline">Eliminar</a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="5" class="px-4 py-6 text-center text-gray-600">No hay libros</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <!-- paginación -->
+    <div class="mt-4">
+      {% with params="q="|add:q %}
+      <div class="flex items-center justify-between border-t border-white/10 px-4 py-3 sm:px-6">
+        <div class="flex flex-1 justify-between sm:hidden">
+          {% if books.has_previous %}
+            <a href="?{{ params }}&page={{ books.previous_page_number }}" class="relative inline-flex items-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-gray-200 hover:bg-white/10">Anterior</a>
+          {% else %}
+            <span class="relative inline-flex items-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-gray-500">Anterior</span>
+          {% endif %}
+          {% if books.has_next %}
+            <a href="?{{ params }}&page={{ books.next_page_number }}" class="relative ml-3 inline-flex items-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-gray-200 hover:bg-white/10">Siguiente</a>
+          {% else %}
+            <span class="relative ml-3 inline-flex items-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-gray-500">Siguiente</span>
+          {% endif %}
+        </div>
+        <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+          <div>
+            <p class="text-lg text-black">
+              Mostrando
+              <span class="font-medium">{{ books.start_index|default:1 }}</span>
+              a
+              <span class="font-medium">{{ books.end_index|default:books.paginator.per_page }}</span>
+              de
+              <span class="font-medium">{{ books.paginator.count }}</span>
+              resultados
+            </p>
+          </div>
+          <div>
+            <nav aria-label="Paginación" class="isolate inline-flex -space-x-px rounded-md">
+              {% if books.has_previous %}
+              <a href="?{{ params }}&page={{ books.previous_page_number }}" class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 hover:bg-white/5 focus:z-20">
+                <span class="sr-only">Anterior</span>
+                <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="w-5 h-5">
+                  <path d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" fill-rule="evenodd" />
+                </svg>
+              </a>
+              {% else %}
+              <span class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-600">
+                <span class="sr-only">Anterior</span>
+                <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="w-5 h-5">
+                  <path d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" fill-rule="evenodd" />
+                </svg>
+              </span>
+              {% endif %}
+
+              {# Mostrar algunos números de página: actual -2 .. actual +2 #}
+              {% for i in books.paginator.page_range %}
+                {% if i >= books.number|add:'-2' and i <= books.number|add:'2' %}
+                  {% if i == books.number %}
+                    <a aria-current="page" class="relative z-10 inline-flex items-center bg-[#4741A6] px-6 py-4 text-lg font-semibold text-white">{{ i }}</a>
+                  {% else %}
+                    <a href="?{{ params }}&page={{ i }}" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-black hover:bg-white/5">{{ i }}</a>
+                  {% endif %}
+                {% elif i == 1 or i == books.paginator.num_pages %}
+                  <a href="?{{ params }}&page={{ i }}" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-200 hover:bg-white/5">{{ i }}</a>
+                {% elif forloop.first and books.number > 4 %}
+                  <span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-400">...</span>
+                {% elif forloop.last and books.number < books.paginator.num_pages|add:'-3' %}
+                  <span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-400">...</span>
+                {% endif %}
+              {% endfor %}
+
+              {% if books.has_next %}
+              <a href="?{{ params }}&page={{ books.next_page_number }}" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 hover:bg-white/5 focus:z-20">
+                <span class="sr-only">Siguiente</span>
+                <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="w-5 h-5">
+                  <path d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+                </svg>
+              </a>
+              {% else %}
+              <span class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-600">
+                <span class="sr-only">Siguiente</span>
+                <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="w-5 h-5">
+                  <path d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+                </svg>
+              </span>
+              {% endif %}
+            </nav>
+          </div>
+        </div>
+      </div>
+      {% endwith %}
+    </div>
+  </div>
+</main>
+{% endblock %}

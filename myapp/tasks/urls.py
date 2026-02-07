@@ -1,0 +1,52 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.index, name='index'),
+    path('create_task/', views.create_task, name='create_task'),
+    path('book/<int:pk>/', views.task_detail, name='task_detail'),
+    path('book/<int:pk>/edit/', views.task_edit, name='task_edit'),
+    path('signup/', views.signup, name='signup'),
+    path('tasks/', views.tasks, name='tasks'),
+    path('dictionary/', views.dictionary_view, name='dictionary'),
+    path('autocomplete/codes/', views.autocomplete_codes, name='autocomplete_codes'),
+    path('logout/', views.signout, name='logout'),
+    path('signin/', views.signin, name='signin'),
+    path('edit_user/', views.edit_user, name='edit_user'),
+    path('signin/recovery/', views.recovery, name='recovery'),
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('task_list/', views.task_list, name='task_list'),
+    path('cart/add/<int:pk>/', views.cart_add, name='cart_add'),
+    path('cart/remove/<int:pk>/', views.cart_remove, name='cart_remove'),
+    path('cart/', views.task_list, name='cart_view'),
+    path('cart/checkout/', views.cart_checkout, name='cart_checkout'),
+    path('cart/json/', views.cart_json, name='cart_json'),
+    path('my_loans/', views.my_loans, name='my_loans'),
+    path('my_loans/history/', views.returns_history, name='loan_history'),
+    path('reports/', views.reports_index, name='reports_index'),
+    path('user-guide/', views.user_guide, name='user_guide'),
+    path('reports/users/', views.reports_users_index, name='reports_users_index'),
+    path('reports/users/detail/', views.reports_user_detail, name='reports_user_detail'),
+    path('reports/<int:pk>/', views.report_detail, name='report_detail'),
+    path('loan/return/<int:pk>/', views.loan_return, name='loan_return'),
+    path('book/<int:pk>/', views.task_detail, name='task_detail'),
+    path('book/<int:pk>/edit/', views.task_edit, name='task_edit'),
+    path('book/<int:pk>/pdf/', views.task_pdf_card, name='task_pdf'),
+    path('book/<int:pk>/card/', views.task_pdf_card, name='task_pdf_card'),  # ← nueva ruta para ficha
+    # Panel administrativo personalizado (solo superusers)
+    path('adminpanel/', views.admin_panel, name='admin_panel'),
+    path('adminpanel/users/', views.admin_users, name='admin_users'),
+    path('adminpanel/users/add/', views.admin_user_add, name='admin_user_add'),
+    path('adminpanel/users/<int:pk>/edit/', views.admin_user_edit, name='admin_user_edit'),
+    path('adminpanel/users/<int:pk>/delete/', views.admin_user_delete, name='admin_user_delete'),
+
+    path('adminpanel/books/', views.admin_books, name='admin_books'),
+    path('adminpanel/books/add/', views.admin_book_add, name='admin_book_add'),
+    path('adminpanel/books/<int:pk>/edit/', views.admin_book_edit, name='admin_book_edit'),
+    path('adminpanel/books/<int:pk>/delete/', views.admin_book_delete, name='admin_book_delete'),
+
+    path('adminpanel/dictionary/', views.admin_dictionary, name='admin_dictionary'),
+    path('adminpanel/dictionary/add/', views.admin_dictionary_add, name='admin_dictionary_add'),
+    path('adminpanel/dictionary/<int:pk>/edit/', views.admin_dictionary_edit, name='admin_dictionary_edit'),
+    path('adminpanel/dictionary/<int:pk>/delete/', views.admin_dictionary_delete, name='admin_dictionary_delete'),
+]

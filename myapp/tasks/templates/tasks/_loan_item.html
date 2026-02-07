@@ -1,0 +1,39 @@
+{% comment %} Partial para un item de la lista de préstamos (li) {% endcomment %}
+<li id="loan-{{ loan.id }}" class="flex items-center justify-between border p-3 rounded">
+  <div>
+    <div class="font-semibold">{{ loan.book.titulo }}</div>
+    {% if loan.user %}
+      <div class="text-sm text-gray-600">Trabajador: {{ loan.user.get_full_name|default:loan.user.username }}</div>
+    {% endif %}
+    <div class="text-sm text-gray-600">Cota: {{ loan.book.cota }}</div>
+    <div class="text-sm text-gray-600">Cantidad: {{ loan.cantidad }}</div>
+    <div class="text-sm text-gray-600">Estado: {{ loan.get_status_display }}</div>
+    {% if loan.approved_at %}
+      <div class="text-sm text-gray-600" data-approved-at="{{ loan.approved_at|date:'c' }}">Aprobado a las: <span class="approved-placeholder">Cargando...</span></div>
+    {% else %}
+      <div class="text-sm text-yellow-600">Aprobado: Pendiente</div>
+    {% endif %}
+    {% if loan.returned_at %}
+      <div class="text-sm text-gray-600" data-returned-at="{{ loan.returned_at|date:'c' }}">Devuelto: <span class="returned-placeholder">Cargando...</span></div>
+    {% endif %}
+    {% if loan.receiver_cedula or loan.receiver_first_name or loan.receiver_last_name %}
+      <div class="text-sm text-gray-600">Recibido por: {{ loan.receiver_first_name }} {{ loan.receiver_last_name }} {% if loan.receiver_cedula %} <br>Cédula: {{ loan.receiver_cedula }}{% endif %}</div>
+    {% endif %}
+    {% if loan.return_report %}
+      <div class="text-sm text-gray-700 mt-2">Reporte: {{ loan.return_report }}</div>
+    {% endif %}
+    {% if loan.return_book_rating %}
+      <div class="text-sm text-gray-700">Estado libro: {{ loan.return_book_rating }}/5</div>
+    {% endif %}
+    {% if loan.return_receiver_rating %}
+      <div class="text-sm text-gray-700">Receptor: {{ loan.return_receiver_rating }}/5</div>
+    {% endif %}
+  </div>
+  <div>
+    {% if loan.status == loan.STATUS_ACTIVE %}
+      <button class="px-3 py-2 bg-green-600 text-white rounded ajax-return-btn" data-loan-id="{{ loan.id }}" data-book-id="{{ loan.book.id }}">Devolver</button>
+    {% else %}
+      <span class="text-sm text-gray-500">Devuelto</span>
+    {% endif %}
+  </div>
+</li>

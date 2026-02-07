@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+{% load form_tags %}
+
+{% block content %}
+<main class="px-8 py-8">
+  <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow">
+    <div class="flex flex-no-wrap">
+    <h1 class="text-2xl font-bold mb-4">{% if create %}Agregar Libro{% else %}Editar Libro{% endif %}</h1>
+    <svg class="size-8 ml-6" version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve" fill="#4741A6"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:none;stroke:#4741A6;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} </style> <path class="st0" d="M28,9H14c-1.7,0-3,1.3-3,3v0c0,1.7,1.3,3,3,3h14v15"></path> <path class="st0" d="M28,30H14c-1.7,0-3-1.3-3-3v0V12"></path> <line class="st0" x1="28" y1="12" x2="14" y2="12"></line> <path class="st0" d="M21,3H7C5.3,3,4,4.3,4,6v0c0,1.7,1.3,3,3,3h8"></path> <path class="st0" d="M11,24H7c-1.7,0-3-1.3-3-3v0V6"></path> <line class="st0" x1="21" y1="6" x2="7" y2="6"></line> </g></svg>
+    </div>
+    <form method="post" enctype="multipart/form-data">{% csrf_token %}
+      <div class="grid grid-cols-1 gap-4">
+        {# Cota (partes) #}
+        {% if form.cota_part1 %}
+        <div>
+          <label class="flex flex-nowrap block text-sm font-medium text-gray-700">Cota parte 1<p class="text-red-600">*</p></label>
+          {{ form.cota_part1|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.cota_part1.help_text %}<p class="text-xs text-gray-500">{{ form.cota_part1.help_text }}</p>{% endif %}
+          {% if form.cota_part1.errors %}<p class="text-sm text-red-600">{{ form.cota_part1.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.cota_part2 %}
+        <div>
+          <label class="flex flex-nowrap block text-sm font-medium text-gray-700">Cota parte 2<p class="text-red-600">*</p></label>
+          {{ form.cota_part2|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.cota_part2.help_text %}<p class="text-xs text-gray-500">{{ form.cota_part2.help_text }}</p>{% endif %}
+          {% if form.cota_part2.errors %}<p class="text-sm text-red-600">{{ form.cota_part2.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.cota_part3 %}
+        <div>
+          <label class="flex flex-nowrap block text-sm font-medium text-gray-700">Cota parte 3<p class="text-red-600">*</p></label>
+          {{ form.cota_part3|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.cota_part3.help_text %}<p class="text-xs text-gray-500">{{ form.cota_part3.help_text }}</p>{% endif %}
+          {% if form.cota_part3.errors %}<p class="text-sm text-red-600">{{ form.cota_part3.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.cota_part4 %}
+        <div>
+          <label class="flex flex-nowrap block text-sm font-medium text-gray-700">Cota parte 4<p class="text-red-600">*</p></label>
+          {{ form.cota_part4|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.cota_part4.help_text %}<p class="text-xs text-gray-500">{{ form.cota_part4.help_text }}</p>{% endif %}
+          {% if form.cota_part4.errors %}<p class="text-sm text-red-600">{{ form.cota_part4.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {# Datos bibliográficos principales #}
+        {% if form.titulo %}
+        <div>
+          <label class="flex flex-nowrap block text-sm font-medium text-gray-700">Título<p class="text-red-600">*</p></label>
+          {{ form.titulo|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.titulo.help_text %}<p class="text-xs text-gray-500">{{ form.titulo.help_text }}</p>{% endif %}
+          {% if form.titulo.errors %}<p class="text-sm text-red-600">{{ form.titulo.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.subtitulo %}
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Subtítulo</label>
+          {{ form.subtitulo|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.subtitulo.help_text %}<p class="text-xs text-gray-500">{{ form.subtitulo.help_text }}</p>{% endif %}
+          {% if form.subtitulo.errors %}<p class="text-sm text-red-600">{{ form.subtitulo.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.autor %}
+        <div>
+          <label class="flex flex-nowrap block text-sm font-medium text-gray-700">Autor<p class="text-red-600">*</p></label>
+          {{ form.autor|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.autor.help_text %}<p class="text-xs text-gray-500">{{ form.autor.help_text }}</p>{% endif %}
+          {% if form.autor.errors %}<p class="text-sm text-red-600">{{ form.autor.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.co_autor %}
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Coautor</label>
+          {{ form.co_autor|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.co_autor.help_text %}<p class="text-xs text-gray-500">{{ form.co_autor.help_text }}</p>{% endif %}
+          {% if form.co_autor.errors %}<p class="text-sm text-red-600">{{ form.co_autor.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.fecha_publicacion %}
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Año de publicación</label>
+          {{ form.fecha_publicacion|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.fecha_publicacion.help_text %}<p class="text-xs text-gray-500">{{ form.fecha_publicacion.help_text }}</p>{% endif %}
+          {% if form.fecha_publicacion.errors %}<p class="text-sm text-red-600">{{ form.fecha_publicacion.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.editorial %}
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Editorial</label>
+          {{ form.editorial|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.editorial.help_text %}<p class="text-xs text-gray-500">{{ form.editorial.help_text }}</p>{% endif %}
+          {% if form.editorial.errors %}<p class="text-sm text-red-600">{{ form.editorial.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.edicion %}
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Edición</label>
+          {{ form.edicion|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.edicion.help_text %}<p class="text-xs text-gray-500">{{ form.edicion.help_text }}</p>{% endif %}
+          {% if form.edicion.errors %}<p class="text-sm text-red-600">{{ form.edicion.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.ubicacion_publicacion %}
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Ciudad de publicación</label>
+          {{ form.ubicacion_publicacion|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.ubicacion_publicacion.help_text %}<p class="text-xs text-gray-500">{{ form.ubicacion_publicacion.help_text }}</p>{% endif %}
+          {% if form.ubicacion_publicacion.errors %}<p class="text-sm text-red-600">{{ form.ubicacion_publicacion.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.volumen %}
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Volumen</label>
+          {{ form.volumen|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.volumen.help_text %}<p class="text-xs text-gray-500">{{ form.volumen.help_text }}</p>{% endif %}
+          {% if form.volumen.errors %}<p class="text-sm text-red-600">{{ form.volumen.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.paginas %}
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Páginas</label>
+          {{ form.paginas|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.paginas.help_text %}<p class="text-xs text-gray-500">{{ form.paginas.help_text }}</p>{% endif %}
+          {% if form.paginas.errors %}<p class="text-sm text-red-600">{{ form.paginas.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.cantidad %}
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Cantidad disponible</label>
+          {{ form.cantidad|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.cantidad.help_text %}<p class="text-xs text-gray-500">{{ form.cantidad.help_text }}</p>{% endif %}
+          {% if form.cantidad.errors %}<p class="text-sm text-red-600">{{ form.cantidad.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.serie %}
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Serie</label>
+          {{ form.serie|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.serie.help_text %}<p class="text-xs text-gray-500">{{ form.serie.help_text }}</p>{% endif %}
+          {% if form.serie.errors %}<p class="text-sm text-red-600">{{ form.serie.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.numero_serie %}
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Número en la serie</label>
+          {{ form.numero_serie|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.numero_serie.help_text %}<p class="text-xs text-gray-500">{{ form.numero_serie.help_text }}</p>{% endif %}
+          {% if form.numero_serie.errors %}<p class="text-sm text-red-600">{{ form.numero_serie.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.numero_registro %}
+        <div>
+          <label class="flex flex-nowrap block text-sm font-medium text-gray-700">Número de registro<p class="text-red-600">*</p></label>
+          {{ form.numero_registro|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.numero_registro.help_text %}<p class="text-xs text-gray-500">{{ form.numero_registro.help_text }}</p>{% endif %}
+          {% if form.numero_registro.errors %}<p class="text-sm text-red-600">{{ form.numero_registro.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.fecha_registro %}
+        <div>
+          <label class="flex flex-nowrap block text-sm font-medium text-gray-700">Fecha de registro<p class="text-red-600">*</p></label>
+          {{ form.fecha_registro|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.fecha_registro.help_text %}<p class="text-xs text-gray-500">{{ form.fecha_registro.help_text }}</p>{% endif %}
+          {% if form.fecha_registro.errors %}<p class="text-sm text-red-600">{{ form.fecha_registro.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.fecha_creacion %}
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Fecha creación (automático)</label>
+          {{ form.fecha_creacion|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+        </div>
+        {% endif %}
+
+        {% if form.hora_creacion %}
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Hora creación (automático)</label>
+          {{ form.hora_creacion|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+        </div>
+        {% endif %}
+
+        {% if form.dimensiones %}
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Dimensiones</label>
+          {{ form.dimensiones|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.dimensiones.help_text %}<p class="text-xs text-gray-500">{{ form.dimensiones.help_text }}</p>{% endif %}
+          {% if form.dimensiones.errors %}<p class="text-sm text-red-600">{{ form.dimensiones.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.portada %}
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Portada (imagen)</label>
+          {{ form.portada|add_class:"mt-1 block w-full rounded-md border-gray-300 shadow-sm" }}
+          {% if form.portada.help_text %}<p class="text-xs text-gray-500">{{ form.portada.help_text }}</p>{% endif %}
+          {% if form.portada.errors %}<p class="text-sm text-red-600">{{ form.portada.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.contenido %}
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Contenido del libro</label>
+          {{ form.contenido }}
+          {% if form.contenido.help_text %}<p class="text-xs text-gray-500">{{ form.contenido.help_text }}</p>{% endif %}
+          {% if form.contenido.errors %}<p class="text-sm text-red-600">{{ form.contenido.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+
+        {% if form.is_active %}
+        <div>
+          <label class="inline-flex items-center gap-2">
+            {{ form.is_active }}
+            <span class="text-sm font-medium text-gray-700">Activo</span>
+          </label>
+          {% if form.is_active.help_text %}<p class="text-xs text-gray-500">{{ form.is_active.help_text }}</p>{% endif %}
+          {% if form.is_active.errors %}<p class="text-sm text-red-600">{{ form.is_active.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
+
+      </div>
+      <div class="mt-6 flex gap-3">
+        <button type="submit" class="bg-[#4741A6] text-white px-4 py-2 rounded">Guardar</button>
+        <a href="{% url 'admin_books' %}" class="px-4 py-2 rounded border">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</main>
+{% endblock %}

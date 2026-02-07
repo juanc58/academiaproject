@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="px-8 py-8">
+  <div class="max-w-2xl mx-auto bg-white p-6 rounded shadow">
+    <h1 class="text-xl font-semibold mb-4">Confirmar eliminación</h1>
+    <p class="mb-6">¿Eliminar libro <strong>{{ book.titulo }}</strong> (<code class="font-mono">{{ book.cota }}</code>)?</p>
+    <form method="post">{% csrf_token %}
+      <div class="flex gap-3">
+        <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded">Sí, eliminar</button>
+        <a href="{% url 'admin_books' %}" class="px-4 py-2 rounded border">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</main>
+{% endblock %}

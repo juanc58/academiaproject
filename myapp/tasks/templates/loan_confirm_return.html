@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="px-8 py-8">
+  <div class="container mx-auto max-w-2xl">
+    <div class="bg-white shadow rounded-lg p-6">
+      <h2 class="text-xl font-semibold mb-4">Confirmar devolución</h2>
+      <p>¿Desea marcar como devuelto el préstamo de <strong>{{ loan.book.titulo }}</strong> (cantidad: {{ loan.cantidad }})?</p>
+      <form method="POST">
+        {% csrf_token %}
+        
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+{% endblock %}

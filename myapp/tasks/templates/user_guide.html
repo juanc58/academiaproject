@@ -1,0 +1,221 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Guía de Usuario - Academia</title>
+	<link rel="icon" type="image/x-icon" href="/static/logo.png" />
+	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet" />
+	<style>
+		.accordion-content { transition: max-height 0.3s ease-out, padding 0.3s ease; }
+	</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+	<div class="container mx-auto p-8">
+		<div class="max-w-4xl mx-auto bg-white p-8 rounded shadow">
+			<h1 class="text-2xl font-bold mb-4">Guía de Usuario</h1>
+			<p class="text-sm text-gray-600 mb-6">Esta guía describe las principales funcionalidades del sistema y cómo usarlas. Expande cada sección para ver detalles y ejemplos.</p>
+
+			<!-- Acordeón -->
+			<div class="space-y-3">
+
+				<!-- Introducción -->
+				<div class="transition hover:bg-indigo-50 rounded">
+					<div class="accordion-header cursor-pointer transition flex space-x-5 px-5 items-center h-14">
+						<i class="fas fa-info-circle"></i>
+						<h3 class="font-semibold">Introducción</h3>
+					</div>
+					<div class="accordion-content px-5 pt-0 overflow-hidden max-h-0">
+						<p class="leading-6 font-light pl-9 text-justify">Bienvenido al sistema de gestión de préstamos. Aquí puedes buscar libros, solicitar préstamos, aprobarlos (si eres personal autorizado), registrar devoluciones con reportes y calificaciones, y consultar reportes agregados.</p>
+					</div>
+				</div>
+
+				<!-- Autenticación y usuarios -->
+				<div class="transition hover:bg-indigo-50 rounded">
+					<div class="accordion-header cursor-pointer transition flex space-x-5 px-5 items-center h-14">
+						<i class="fas fa-user"></i>
+						<h3 class="font-semibold">Autenticación y gestión de usuarios</h3>
+					</div>
+					<div class="accordion-content px-5 pt-0 overflow-hidden max-h-0">
+						<ul class="pl-9 list-disc space-y-2 text-sm text-gray-700">
+							<li>Crear cuenta: registra usuario con datos personales (cédula, nombre, apellido, email, teléfono).</li>
+							<li>Iniciar sesión: accede para solicitar préstamos y ver tu historial.</li>
+							<li>Editar perfil: modifica datos personales desde la sección de usuario.</li>
+							<li>Administradores: tienen panel especial para gestionar usuarios y libros.</li>
+						</ul>
+					</div>
+				</div>
+
+				<!-- Búsqueda y filtros -->
+				<div class="transition hover:bg-indigo-50 rounded">
+					<div class="accordion-header cursor-pointer transition flex space-x-5 px-5 items-center h-14">
+						<i class="fas fa-search"></i>
+						<h3 class="font-semibold">Búsqueda y filtros de libros</h3>
+					</div>
+					<div class="accordion-content px-5 pt-0 overflow-hidden max-h-0">
+						<p class="pl-9 text-sm text-gray-700">Puedes buscar por título, autor, cota o otros campos. Usa filtros para ordenar, limitar por año, clasificación o texto específico. La lista tiene paginación para navegar resultados.</p>
+					</div>
+				</div>
+
+				<!-- Carrito y solicitud -->
+				<div class="transition hover:bg-indigo-50 rounded">
+					<div class="accordion-header cursor-pointer transition flex space-x-5 px-5 items-center h-14">
+						<i class="fas fa-shopping-cart"></i>
+						<h3 class="font-semibold">Carrito de solicitudes y checkout</h3>
+					</div>
+					<div class="accordion-content px-5 pt-0 overflow-hidden max-h-0">
+						<div class="pl-9 text-sm text-gray-700 space-y-2">
+							<p>Selecciona hasta 10 libros y ábrelos en el carrito (botón "Lista préstamos").</p>
+							<ul class="list-disc ml-6">
+								<li>Formulario único de receptor: introduce la cédula, nombre y apellido del receptor (aparece una sola vez).</li>
+								<li>Validación inline: el modal muestra errores por campo si faltan datos o la cédula no es numérica.</li>
+								<li>Confirmación: al confirmar el sistema intenta crear los préstamos; recibirás feedback sobre éxitos y fallos.</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<!-- Aprobación de prestamos -->
+				<div class="transition hover:bg-indigo-50 rounded">
+					<div class="accordion-header cursor-pointer transition flex space-x-5 px-5 items-center h-14">
+						<i class="fas fa-check-circle"></i>
+						<h3 class="font-semibold">Aprobación de préstamos (personal)</h3>
+					</div>
+					<div class="accordion-content px-5 pt-0 overflow-hidden max-h-0">
+						<p class="pl-9 text-sm text-gray-700">Cuando un préstamo se confirma (checkout), el sistema registra la fecha y hora de aprobación (timezone-aware). El personal puede ver préstamos activos de todos los usuarios y aprobar o gestionar devoluciones desde el panel correspondiente.</p>
+					</div>
+				</div>
+
+				<!-- Devolución, reporte y calificaciones -->
+				<div class="transition hover:bg-indigo-50 rounded">
+					<div class="accordion-header cursor-pointer transition flex space-x-5 px-5 items-center h-14">
+						<i class="fas fa-undo"></i>
+						<h3 class="font-semibold">Devolución: reportes y calificaciones</h3>
+					</div>
+					<div class="accordion-content px-5 pt-0 overflow-hidden max-h-0">
+						<ul class="pl-9 list-disc text-sm text-gray-700 space-y-2">
+							<li>Al devolver un libro se registra la fecha y hora exacta de devolución (timezone-aware).</li>
+							<li>Se puede enviar un reporte textual sobre el estado del libro.</li>
+							<li>Se registran dos puntuaciones (1–5): estado del libro y calificación del receptor.</li>
+							<li>Estos datos se almacenan y se usan en los módulos de reportes y estadísticas.</li>
+						</ul>
+					</div>
+				</div>
+
+				<!-- Reportes y métricas -->
+				<div class="transition hover:bg-indigo-50 rounded">
+					<div class="accordion-header cursor-pointer transition flex space-x-5 px-5 items-center h-14">
+						<i class="fas fa-flag"></i>
+						<h3 class="font-semibold">Reportes y métricas</h3>
+					</div>
+					<div class="accordion-content px-5 pt-0 overflow-hidden max-h-0">
+						<p class="pl-9 text-sm text-gray-700">El módulo de reportes permite ver:</p>
+						<ul class="pl-9 list-disc text-sm text-gray-700 space-y-1">
+							<li>Libros con reportes o calificaciones (promedio, conteos).</li>
+							<li>Reportes por usuario (promedio de calificación por receptor y listado de préstamos asociados).</li>
+							<li>Filtrado por rango de fechas y por puntaje mínimo, con paginación.</li>
+						</ul>
+					</div>
+				</div>
+
+				<!-- Administración y paneles -->
+				<div class="transition hover:bg-indigo-50 rounded">
+					<div class="accordion-header cursor-pointer transition flex space-x-5 px-5 items-center h-14">
+						<i class="fas fa-cogs"></i>
+						<h3 class="font-semibold">Administración y paneles</h3>
+					</div>
+					<div class="accordion-content px-5 pt-0 overflow-hidden max-h-0">
+						<p class="pl-9 text-sm text-gray-700">Los administradores pueden:</p>
+						<ul class="pl-9 list-disc text-sm text-gray-700 space-y-1">
+							<li>Gestionar usuarios (crear, editar, borrar).</li>
+							<li>Gestionar libros (crear, editar, desactivar).</li>
+							<li>Acceder a reportes globales y exportar información.</li>
+						</ul>
+					</div>
+				</div>
+
+				<!-- Gestión de libros -->
+				<div class="transition hover:bg-indigo-50 rounded">
+					<div class="accordion-header cursor-pointer transition flex space-x-5 px-5 items-center h-14">
+						<i class="fas fa-book"></i>
+						<h3 class="font-semibold">Crear y editar libros</h3>
+					</div>
+					<div class="accordion-content px-5 pt-0 overflow-hidden max-h-0">
+						<p class="pl-9 text-sm text-gray-700">El formulario de libro incluye campos como: cota (partes), título, autor, edición, editorial, año, cantidad, portada, clasificación y descripciones. Algunas partes de la cota son requeridas según las reglas del sistema.</p>
+					</div>
+				</div>
+
+				<!-- Exportar PDF y ficha -->
+				<div class="transition hover:bg-indigo-50 rounded">
+					<div class="accordion-header cursor-pointer transition flex space-x-5 px-5 items-center h-14">
+						<i class="fas fa-file-pdf"></i>
+						<h3 class="font-semibold">Ficha PDF</h3>
+					</div>
+					<div class="accordion-content px-5 pt-0 overflow-hidden max-h-0">
+						<p class="pl-9 text-sm text-gray-700">Para cada libro puedes generar una ficha PDF con los metadatos principales. Esto abre un visor PDF en el navegador para imprimir o descargar.</p>
+					</div>
+				</div>
+
+				<!-- UX y validaciones -->
+				<div class="transition hover:bg-indigo-50 rounded">
+					<div class="accordion-header cursor-pointer transition flex space-x-5 px-5 items-center h-14">
+						<i class="fas fa-exclamation-triangle"></i>
+						<h3 class="font-semibold">Validaciones y mensajes</h3>
+					</div>
+					<div class="accordion-content px-5 pt-0 overflow-hidden max-h-0">
+						<ul class="pl-9 list-disc text-sm text-gray-700 space-y-1">
+							<li>Validación server-side y client-side en formularios críticos (checkout, cota, ratings).</li>
+							<li>Errores por campo mostrados inline en los modales para mejorar la experiencia.</li>
+							<li>Mensajes globales (success/warning/error) visibles en la interfaz.</li>
+						</ul>
+					</div>
+				</div>
+
+				<!-- Notas sobre zona horaria -->
+				<div class="transition hover:bg-indigo-50 rounded">
+					<div class="accordion-header cursor-pointer transition flex space-x-5 px-5 items-center h-14">
+						<i class="fas fa-clock"></i>
+						<h3 class="font-semibold">Fechas y zona horaria</h3>
+					</div>
+					<div class="accordion-content px-5 pt-0 overflow-hidden max-h-0">
+						<p class="pl-9 text-sm text-gray-700">Las fechas de aprobación y devolución se guardan con información de zona horaria. En la interfaz se muestran formateadas (cliente o servidor) para reflejar la hora exacta del evento.</p>
+					</div>
+				</div>
+
+				<!-- Contacto y ayuda -->
+				<div class="transition hover:bg-indigo-50 rounded">
+					<div class="accordion-header cursor-pointer transition flex space-x-5 px-5 items-center h-14">
+						<i class="fas fa-life-ring"></i>
+						<h3 class="font-semibold">Ayuda y contacto</h3>
+					</div>
+					<div class="accordion-content px-5 pt-0 overflow-hidden max-h-0">
+						<p class="pl-9 text-sm text-gray-700">Si detectas errores o quieres mejoras, contacta al equipo de soporte con detalles del problema (pasos para reproducir, capturas si es posible), y te ayudaremos a resolverlo.</p>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<script>
+		const accordionHeader = document.querySelectorAll('.accordion-header');
+		accordionHeader.forEach((header) => {
+			header.addEventListener('click', function () {
+				const accordionContent = header.parentElement.querySelector('.accordion-content');
+				let accordionMaxHeight = accordionContent.style.maxHeight;
+				if (accordionMaxHeight == '0px' || accordionMaxHeight.length == 0) {
+					accordionContent.style.maxHeight = `${accordionContent.scrollHeight + 32}px`;
+					header.querySelector('i').classList.remove('fa-plus');
+					header.querySelector('i').classList.add('fa-minus');
+					header.parentElement.classList.add('bg-indigo-50');
+				} else {
+					accordionContent.style.maxHeight = `0px`;
+					header.querySelector('i').classList.add('fa-plus');
+					header.querySelector('i').classList.remove('fa-minus');
+					header.parentElement.classList.remove('bg-indigo-50');
+				}
+			});
+		});
+	</script>
+</body>
+</html>

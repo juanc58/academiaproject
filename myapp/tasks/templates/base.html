@@ -1,0 +1,359 @@
+{% load static %}
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Public+Sans%3Awght%40400%3B500%3B700%3B900"
+    />
+
+    <title>S.A.N.M</title>
+    <link rel="icon" type="image/x-icon" href="/static/logo.png" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body>
+    <div class="relative flex size-full min-h-screen flex-col bg-white group/design-root overflow-x-hidden" style='font-family: "Public Sans", "Noto Sans", sans-serif;'>
+      <div class="layout-container flex h-full grow flex-col">
+        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#dfe1e1] px-10 py-3">
+          <div class="flex items-center gap-10">
+            <div class="flex items-center gap-2 text-[#111518]">
+              <div class="size-12">
+                <a href="/">
+                  <img src="{% static 'logocompleto.jpeg' %}"/>
+                </a>
+              </div>
+              <h2 class="text-[#111518] text-lg font-bold leading-tight tracking-[-0.015em]">Biblioteca A.N.M</h2>
+            </div>
+            <div class="flex items-center gap-1">
+
+              <a href="/"><svg alt="" class="size-8 object-cover" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0L0 6V8H1V15H4V10H7V15H15V8H16V6L14 4.5V1H11V2.25L8 0ZM9 10H12V13H9V10Z" fill="#9bbbfc"></path> </g></svg></a>
+
+              
+            </div>
+            
+              {% if user.is_authenticated %}
+
+                <div class="flex items-center gap-1">
+                <a href="/tasks">
+              <svg class="size-8 object-cover" version="1.1" id="Icons-tasks" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve" fill="#4741A6" stroke="#4741A6">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                  <path fill="none" stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26,3H9C7.3,3,6,4.3,6,6v0c0,1.7,1.3,3,3,3h17v10"></path>
+                  <path fill="none" stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M18,29H9c-1.7,0-3-1.3-3-3v0V6"></path>
+                  <line stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="26" y1="6" x2="9" y2="6"></line>
+                  <line stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="9" x2="10" y2="29"></line>
+                  <path fill="none" stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M25.5,18.5c1.9,1.9,1.9,5.1,0,7c-0.5,0.5-1,0.8-1.6,1.1c-1.8,0.7-3.9,0.4-5.4-1.1c-1.9-1.9-1.9-5.1,0-7 S23.6,16.6,25.5,18.5z"></path>
+                  <path fill="none" stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.5,24l3.9,3.6c0.8,0.8,0.8,2,0,2.8l0,0c-0.8,0.8-2,0.8-2.8,0l-3.5-3.5"></path>
+                </g>
+              </svg>
+              </a>
+                </div>
+
+                <div class="flex items-center gap-1">
+                <a href="{% url 'create_task' %}">
+                <svg class="size-8 object-cover" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M26,3H9C7.3,3,6,4.3,6,6v0c0,1.7,1.3,3,3,3h17v8" stroke="#8ae4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M19,29H9c-1.7,0-3-1.3-3-3v0V6" stroke="#8ae4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <line x1="26" y1="6" x2="9" y2="6" stroke="#8ae4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <line x1="10" y1="9" x2="10" y2="29" stroke="#8ae4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="24" cy="24" r="7" stroke="#8ae4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <line x1="24" y1="21" x2="24" y2="27" stroke="#8ae4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <line x1="21" y1="24" x2="27" y2="24" stroke="#8ae4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                </a>
+                
+                </div>
+
+              <div class="flex items-center gap-1">
+              <a href="/dashboard">
+              <svg class="size-8 object-cover" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 9H6" stroke="#F9CE69" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M15.5 11C14.1193 11 13 9.88071 13 8.5C13 7.11929 14.1193 6 15.5 6C16.8807 6 18 7.11929 18 8.5C18 9.88071 16.8807 11 15.5 11Z" stroke="#F9CE69" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 6H9" stroke="#F9CE69" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M18 18L13.5 15L11 17L6 13" stroke="#F9CE69" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 20.4V3.6C3 3.26863 3.26863 3 3.6 3H20.4C20.7314 3 21 3.26863 21 3.6V20.4C21 20.7314 20.7314 21 20.4 21H3.6C3.26863 21 3 20.7314 3 20.4Z" stroke="#F9CE69" stroke-width="1.5"></path> </g></svg>
+              </a>
+
+              </div>
+
+              <div class="flex items-center gap-1">
+                
+              <a href="{% url 'task_list' %}"><svg class="size-10 object-cover" fill="#66e8ea" viewBox="0 0 50 50" version="1.2" baseProfile="tiny" xmlns="http://www.w3.org/2000/svg" overflow="inherit"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M25.154 17.347c3.953 0 7.144-3.217 7.144-7.183 0-3.958-3.19-7.164-7.144-7.164-3.948 0-7.153 3.207-7.153 7.164 0 3.965 3.206 7.183 7.153 7.183zm6.951 1.653c3.271 0 4.644 2.794 4.644 2.794l10.557 14.545c.437.649.694 1.443.694 2.3 0 2.26-1.828 4.097-4.081 4.097-.539 0-1.061-.117-1.519-.295l-6.4-1.774v6.333h-22v-6.333l-6.402 1.777c-.45.176-.968.296-1.509.296-2.251 0-4.088-1.83-4.088-4.09 0-.856.253-1.637.706-2.288l10.55-14.568s1.372-2.794 4.629-2.794h14.219zm-7.099 23.588l8.246-2.74-.179-.05c-5.705-1.672-3.518-9.228 2.173-7.537l.754.268v-8.521l-10.989 3.623-11.011-3.623v8.521l.754-.269c5.688-1.69 7.898 5.865 2.197 7.537l-.2.05 8.255 2.741z"></path></g></svg></a>
+
+              </div>
+              
+              <div class="flex items-center gap-1">
+                
+                <a href="{% url 'my_loans' %}"><svg class="size-12 object-cover" fill="#77df83" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 256 190" enable-background="new 0 0 256 190" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M48.12,27.903C48.12,13.564,59.592,2,74.023,2c14.339,0,25.903,11.564,25.903,25.903 C99.834,42.335,88.27,53.806,74.023,53.806C59.684,53.806,48.12,42.242,48.12,27.903z M191,139h-47V97c0-20.461-17.881-37-38-37H43 C20.912,60,1.99,79.14,2,98v77c-0.026,8.533,6.001,12.989,12,13c6.014,0.011,12-4.445,12-13v-75h8v88h78v-88h8l0.081,50.37 c-0.053,8.729,5.342,12.446,10.919,12.63h60C207.363,163,207.363,139,191,139z M243.604,88.319c0.011-0.371,0.042-0.625,0.042-0.999 c0-21.939-17.861-39.752-39.801-39.752c-11.266,0-21.444,4.669-28.678,12.218l9.127,9.09c4.914-5.203,11.864-8.451,19.563-8.451 c14.829,0,26.9,12.065,26.9,26.894c0,0.375-0.005,0.627-0.021,0.999h-10.432l16.875,16.877L254,88.319H243.604z M187.389,88.319 l-16.875-16.637l-16.822,16.637h10.42c0.596,21.423,18.17,38.791,39.734,38.791c10.683,0,20.408-4.233,27.56-11.112l-9.132-9.096 c-4.816,4.537-11.297,7.317-18.418,7.317c-14.454,0-26.311-11.584-26.9-25.901H187.389z"></path> </g></svg></a>
+              </div>
+
+              <div class="flex items-center gap-1">
+                <a href="{% url 'dictionary' %}">
+                <svg class="size-8 object-cover" fill="#ec1818" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 459.319 459.319" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M141.288,189.821h-23.685V145.28h23.528v-23.69h21.016v23.374h23.681v44.707h-23.681v0.151H141.288z M60.801,398.87 c0.012,1.1,0.03,1.921,0.042,2.459c0.006,0.331-0.053,0.638-0.071,0.963c0.739,18.224,15.755,32.817,34.146,32.817h303.76v-33.461 c0-6.68,5.421-12.105,12.105-12.105c6.679,0,12.105,5.426,12.105,12.105v45.565c0,6.686-5.427,12.105-12.105,12.105H93.091 c-0.629,0-1.235-0.089-1.847-0.183c-30.505-1.91-54.757-27.261-54.757-58.245c0-0.71,0.085-1.396,0.109-2.099 c-0.375-35.943,0-309.36,0.042-339.109c-0.047-0.423-0.127-0.827-0.127-1.259C36.511,26.205,62.719,0,94.938,0h19.343h293.535 h2.955c6.685,0,12.105,5.423,12.105,12.105v342.139c0,6.679-5.421,12.104-12.105,12.104c-0.071,0-0.13-0.023-0.201-0.023 c-0.887,0.213-1.82,0.354-2.772,0.354H94.918C76.736,366.674,61.859,380.948,60.801,398.87z M278.347,121.59h94.425v20.862h-23.685 v23.69h-23.525v23.685h-23.69v23.533h-23.536v49.882h120.792v-26.209h-94.584v-20.859h23.69V192.49h23.525v-23.69h23.689V145.28 h23.679V95.237h-120.78V121.59z M224.949,192.49h56.265v-26.353h-56.265V192.49z M91.41,263.229h26.2v-47.056h23.679v-0.15h44.54 v47.219h26.354v-120.79h-23.688v-23.841H164.81V95.237h-26.202v23.684h-23.685v23.69H91.389v120.618H91.41z"></path> </g> </g></svg>
+                </a>
+
+                </div>
+
+                <div class="flex items-center gap-1">
+                <a href="{% url 'reports_index' %}">
+                <svg class="size-9 object-cover" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M149.6 123.2c0 49.6 40 89.6 89.6 89.6h590.4c-6.4-11.2-12.8-25.6-17.6-43.2H492v-32h315.2c0-11.2 0-20.8 1.6-32H372v-32h444.8c3.2-12.8 9.6-27.2 16-41.6H239.2c-49.6 0-89.6 41.6-89.6 91.2z" fill="#ffffff"></path><path d="M239.2 244.8c-8 0-17.6-1.6-25.6-3.2-25.6-4.8-48-19.2-64-36.8v657.6c0 48 11.2 83.2 35.2 105.6 27.2 25.6 64 24 64 24h624V244.8H239.2z" fill="#ffffff"></path><path d="M906.4 32V0H239.2C172 0 117.6 54.4 117.6 121.6v740.8c0 57.6 16 100.8 46.4 129.6 32 30.4 70.4 32 83.2 32H906.4V212.8h-36.8c-8-8-62.4-68.8 0-180.8h36.8z m-89.6 41.6H372v32h436.8c-1.6 11.2-1.6 20.8-1.6 32H492v32h320c4.8 17.6 11.2 32 17.6 43.2H239.2c-49.6 0-89.6-40-89.6-89.6S189.6 32 239.2 32h593.6c-6.4 14.4-12.8 28.8-16 41.6z m56 918.4h-624s-36.8 1.6-64-24c-24-22.4-35.2-57.6-35.2-105.6V204.8c16 17.6 38.4 32 64 36.8 8 1.6 17.6 3.2 25.6 3.2h633.6V992z" fill=""></path><path d="M808.8 928V244.8H239.2c-9.6 0-17.6-1.6-25.6-3.2V928h595.2z" fill="#ee9211"></path><path d="M450.4 488a68.8 68.8 0 1 0 137.6 0 68.8 68.8 0 1 0-137.6 0Z" fill="#ffffff"></path><path d="M519.2 387.2c-56 0-100.8 44.8-100.8 100.8s44.8 100.8 100.8 100.8S620 544 620 488s-44.8-100.8-100.8-100.8z m0 169.6c-38.4 0-68.8-30.4-68.8-68.8s30.4-68.8 68.8-68.8S588 449.6 588 488s-30.4 68.8-68.8 68.8z" fill=""></path><path d="M642.4 752c-14.4-62.4-64-108.8-123.2-108.8S410.4 689.6 396 752h246.4z" fill="#ffffff"></path><path d="M519.2 611.2c-86.4 0-156.8 76.8-160 172.8h318.4c-1.6-96-72-172.8-158.4-172.8z m0 32c59.2 0 108.8 46.4 123.2 108.8H396c14.4-62.4 64-108.8 123.2-108.8z" fill=""></path></g></svg>
+                </a>
+              <div class="flex items-center gap-1" >
+              <a href="{% url 'user_guide' %}">
+              <svg class="size-8 object-cover ml-6" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#000000" fill-rule="evenodd" d="M10 3a7 7 0 100 14 7 7 0 000-14zm-9 7a9 9 0 1118 0 9 9 0 01-18 0zm8.423-3a.923.923 0 00-.923.923v.385a1 1 0 11-2 0v-.385A2.923 2.923 0 019.423 5H10c1.941 0 3.5 1.591 3.5 3.516 0 .927-.48 1.8-1.276 2.29l-1.7 1.046a1 1 0 01-1.048-1.704l1.7-1.046a.691.691 0 00.324-.586C11.5 7.679 10.82 7 10 7h-.577zm.587 8a1 1 0 100-2H10a1 1 0 100 2h.01z"></path> </g></svg>
+              </a>
+                </div>
+</div>
+                
+              {% if user.is_authenticated and user.is_superuser %}
+              <div class="flex items-center gap-1">
+                <a href="{% url 'admin_panel' %}" title="Panel administrador">
+                  
+                  <svg class="size-8 object-cover" version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve" fill="#002c85" stroke="#002c85"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:none;stroke:#002c85;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} </style> <path class="st0" d="M26,3H9C7.3,3,6,4.3,6,6v0c0,1.7,1.3,3,3,3h17v8"></path> <path class="st0" d="M19,29H9c-1.7,0-3-1.3-3-3v0V6"></path> <line class="st0" x1="26" y1="6" x2="9" y2="6"></line> <line class="st0" x1="10" y1="9" x2="10" y2="29"></line> <path class="st0" d="M30.8,22.2c-1.1,0.2-2,0-2.4-0.7c-0.4-0.7-0.1-1.7,0.6-2.5c-0.9-0.9-1.9-1.5-3.1-1.8c-0.3,1-1,1.8-1.8,1.8 s-1.5-0.7-1.8-1.8c-1.2,0.3-2.3,0.9-3.1,1.8c0.7,0.8,1,1.8,0.6,2.5c-0.4,0.7-1.4,0.9-2.4,0.7C17.1,22.8,17,23.4,17,24 s0.1,1.2,0.2,1.8c1.1-0.2,2,0,2.4,0.7c0.4,0.7,0.1,1.7-0.6,2.5c0.9,0.9,1.9,1.5,3.1,1.8c0.3-1,1-1.8,1.8-1.8s1.5,0.7,1.8,1.8 c1.2-0.3,2.3-0.9,3.1-1.8c-0.7-0.8-1-1.8-0.6-2.5c0.4-0.7,1.4-0.9,2.4-0.7c0.2-0.6,0.2-1.2,0.2-1.8S30.9,22.8,30.8,22.2z"></path> <g> <path d="M24,25c-0.1,0-0.3,0-0.4-0.1c-0.1-0.1-0.2-0.1-0.3-0.2c-0.1-0.1-0.2-0.2-0.2-0.3c0-0.1-0.1-0.3-0.1-0.4 c0-0.1,0-0.3,0.1-0.4c0.1-0.1,0.1-0.2,0.2-0.3c0.4-0.4,1-0.4,1.4,0c0.1,0.1,0.2,0.2,0.2,0.3c0,0.1,0.1,0.3,0.1,0.4 c0,0.1,0,0.3-0.1,0.4c-0.1,0.1-0.1,0.2-0.2,0.3C24.5,24.9,24.3,25,24,25z"></path> </g> </g></svg>
+                </a>
+              </div>
+              {% endif %}
+              
+
+              {% else %}
+
+              
+
+              <div class="flex items-center gap-1" >
+              <a href="{% url 'tasks' %}">
+              <svg class="size-8 object-cover" version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve" fill="#4741A6" stroke="#4741A6"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:none;stroke:#4741A6;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} </style> <path class="st0" d="M26,3H9C7.3,3,6,4.3,6,6v0c0,1.7,1.3,3,3,3h17v10"></path> <path class="st0" d="M18,29H9c-1.7,0-3-1.3-3-3v0V6"></path> <line class="st0" x1="26" y1="6" x2="9" y2="6"></line> <line class="st0" x1="10" y1="9" x2="10" y2="29"></line> <path class="st0" d="M25.5,18.5c1.9,1.9,1.9,5.1,0,7c-0.5,0.5-1,0.8-1.6,1.1c-1.8,0.7-3.9,0.4-5.4-1.1c-1.9-1.9-1.9-5.1,0-7 S23.6,16.6,25.5,18.5z"></path> <path class="st0" d="M26.5,24l3.9,3.6c0.8,0.8,0.8,2,0,2.8l0,0c-0.8,0.8-2,0.8-2.8,0l-3.5-3.5"></path> </g></svg>
+              </a>
+              
+              
+              </div>
+
+              <div class="flex items-center gap-1" >
+              <a href="{% url 'user_guide' %}">
+              <svg class="size-8 object-cover" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#000000" fill-rule="evenodd" d="M10 3a7 7 0 100 14 7 7 0 000-14zm-9 7a9 9 0 1118 0 9 9 0 01-18 0zm8.423-3a.923.923 0 00-.923.923v.385a1 1 0 11-2 0v-.385A2.923 2.923 0 019.423 5H10c1.941 0 3.5 1.591 3.5 3.516 0 .927-.48 1.8-1.276 2.29l-1.7 1.046a1 1 0 01-1.048-1.704l1.7-1.046a.691.691 0 00.324-.586C11.5 7.679 10.82 7 10 7h-.577zm.587 8a1 1 0 100-2H10a1 1 0 100 2h.01z"></path> </g></svg>
+              </a>
+              
+              
+              </div>
+              {% endif %}
+            </div>
+
+            <!--Busqueda-->
+          <div class="flex flex-1 justify-end gap-8 mt-4 mr-10">     
+            <form method="GET" action="{% url 'tasks' %}">
+            <label class="flex flex-col min-w-40 !h-10 max-w-64">
+              <div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+                <div
+                  class="text-[#000000] flex border-none bg-[#f0f3f4] items-center justify-center pl-4 rounded-l-lg border-r-0"
+                  data-icon="MagnifyingGlass"
+                  data-size="24px"
+                  data-weight="regular"
+                >
+                <button type="submit">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                    <path
+                      d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"
+                    ></path>
+                  </svg>
+                  </button>
+                </div>
+                <input
+                  name="q"
+                  placeholder="Buscar (título, autor, cota, coautor, nro registro, año o fecha)..."
+                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#111518] focus:outline-0 focus:ring-0 border-none bg-[#f0f3f4] focus:border-none h-full placeholder:text-[#000000] px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal"
+                  value="{{ request.GET.q|default:'' }}"
+                />
+              </div>
+            </label>
+            </form>
+          </div>
+          
+
+            {% if user.is_authenticated %}
+<div class="flex items-center gap-1 mr-6">
+            <button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 bg-[#f9ce69] text-[#111518] gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2">
+              <div>
+                <a href="/edit_user">
+                    <svg class="w-6 text-white mx-auto" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M19.2101 15.74L15.67 19.2801C15.53 19.4201 15.4 19.68 15.37 19.87L15.18 21.22C15.11 21.71 15.45 22.05 15.94 21.98L17.29 21.79C17.48 21.76 17.75 21.63 17.88 21.49L21.42 17.95C22.03 17.34 22.32 16.63 21.42 15.73C20.53 14.84 19.8201 15.13 19.2101 15.74Z" stroke="#ffffff" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M18.7001 16.25C19.0001 17.33 19.84 18.17 20.92 18.47" stroke="#ffffff" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3.40991 22C3.40991 18.13 7.25994 15 11.9999 15C13.0399 15 14.0399 15.15 14.9699 15.43" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                  </a>
+                  </div>
+            </button>
+
+            <p class="text-[#111518] text-sm font-medium leading-normal ">{{ user.username }}</p>
+          </div>
+
+          <div class="-mr-8">
+           <button
+              class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 text-[#111518]  text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5">
+                
+              <a href="/logout">
+
+                  <svg  alt="" class="size-8 object-cover" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15 16.5V19C15 20.1046 14.1046 21 13 21H6C4.89543 21 4 20.1046 4 19V5C4 3.89543 4.89543 3 6 3H13C14.1046 3 15 3.89543 15 5V8.0625M11 12H21M21 12L18.5 9.5M21 12L18.5 14.5" stroke="#ff2424" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+
+                </a>
+            </button>
+          </div>
+
+          <!-- Modal de aviso de inactividad / cierre de sesión -->
+    <div id="idle-warning-modal" class="fixed inset-0 hidden items-center justify-center z-50">
+      <div class="bg-black bg-opacity-50 absolute inset-0">
+      <div class="bg-white rounded-lg shadow-lg p-6 z-60 max-w-lg mx-auto" style="z-index:1001;">
+        <h3 class="text-lg font-semibold mb-2">Se cerrará la sesión por inactividad</h3>
+        <p id="idle-warning-text" class="text-sm text-gray-700 mb-4">Tu sesión expirará en <span id="idle-countdown">05:00</span>. ¿Deseas mantener la sesión activa?</p>
+        <div class="flex gap-3 justify-end">
+          <button id="idle-extend-btn" class="px-4 py-2 bg-green-600 text-white rounded">Extender sesión</button>
+          <button id="idle-logout-btn" class="px-4 py-2 bg-red-500 text-white rounded">Cerrar sesión ahora</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function(){
+        // Configuración (en segundos)
+        var INACTIVITY_LIMIT = 3600; // 1 hora (debe mantenerse sincronizado con AUTO_LOGOUT_DELAY en settings.py)
+        var WARNING_TIME = 300; // mostrar aviso 5 minutos antes
+
+        var warnAfter = Math.max(0, INACTIVITY_LIMIT - WARNING_TIME) * 1000;
+        var logoutAfter = INACTIVITY_LIMIT * 1000;
+
+        var warningTimer = null;
+        var logoutTimer = null;
+        var countdownInterval = null;
+
+        var modal = document.getElementById('idle-warning-modal');
+        var countdownEl = document.getElementById('idle-countdown');
+        var extendBtn = document.getElementById('idle-extend-btn');
+        var logoutBtn = document.getElementById('idle-logout-btn');
+
+        function formatSeconds(s){
+          s = Math.max(0, Math.round(s));
+          var m = Math.floor(s/60); var sec = s % 60;
+          return (m<10?('0'+m):m) + ':' + (sec<10?('0'+sec):sec);
+        }
+
+        function showWarning(remainingMs){
+          if(!modal) return;
+          modal.classList.remove('hidden');
+          var remaining = Math.ceil(remainingMs/1000);
+          if(countdownInterval) clearInterval(countdownInterval);
+          countdownEl.textContent = formatSeconds(remaining);
+          countdownInterval = setInterval(function(){
+            remaining -= 1;
+            if(remaining <= 0){
+              countdownEl.textContent = '00:00';
+              clearInterval(countdownInterval);
+            } else {
+              countdownEl.textContent = formatSeconds(remaining);
+            }
+          }, 1000);
+        }
+
+        function hideWarning(){
+          if(!modal) return;
+          modal.classList.add('hidden');
+          if(countdownInterval) clearInterval(countdownInterval);
+        }
+
+        function scheduleTimers(){
+          // limpiar
+          if(warningTimer) clearTimeout(warningTimer);
+          if(logoutTimer) clearTimeout(logoutTimer);
+          // programar
+          warningTimer = setTimeout(function(){
+            var untilLogout = logoutAfter - (Date.now() - (window.__lastActivityTs||Date.now()));
+            showWarning(untilLogout > 0 ? untilLogout : 0);
+          }, warnAfter);
+          logoutTimer = setTimeout(function(){
+            // forzar redirección a logout (el middleware ya puede haber cerrado sesión en servidor)
+            window.location = '/logout';
+          }, logoutAfter);
+        }
+
+        function resetTimers(){
+          // actualizar timestamp local
+          window.__lastActivityTs = Date.now();
+          hideWarning();
+          scheduleTimers();
+        }
+
+        // keep-alive: hace GET a la raíz para refrescar la sesión (SESSION_SAVE_EVERY_REQUEST = True)
+        function keepAlive(){
+          return fetch('/', { method: 'GET', credentials: 'same-origin' }).then(function(){
+            resetTimers();
+          }).catch(function(){
+            // ignorar errores
+            resetTimers();
+          });
+        }
+
+        // eventos de actividad del usuario
+        ['mousemove','keydown','click','touchstart','scroll'].forEach(function(name){
+          window.addEventListener(name, function(){
+            // actualizar sólo si ha pasado algo de tiempo para evitar llamadas muy frecuentes
+            var now = Date.now();
+            if(!window.__lastActivityTs || (now - window.__lastActivityTs) > 1000){
+              window.__lastActivityTs = now;
+              // reprogramar timers
+              if(warningTimer) clearTimeout(warningTimer);
+              if(logoutTimer) clearTimeout(logoutTimer);
+              scheduleTimers();
+            }
+          }, {passive:true});
+        });
+
+        // handlers de botones
+        if(extendBtn) extendBtn.addEventListener('click', function(e){
+          e.preventDefault();
+          // llamar keepAlive y ocultar modal
+          keepAlive();
+        });
+        if(logoutBtn) logoutBtn.addEventListener('click', function(e){
+          e.preventDefault();
+          window.location = '/logout';
+        });
+
+        // iniciar timers en carga
+        window.addEventListener('load', function(){
+          window.__lastActivityTs = Date.now();
+          scheduleTimers();
+        });
+
+        // Exponer una función para tests/debug
+        window.__idleManager = { reset: resetTimers, keepAlive: keepAlive };
+      })();
+    </script>
+            {% else %}
+            
+            <button
+              class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 bg-[#f9ce69] text-[#111518] gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5 mr-4"
+            >
+              <div class="text-[#111518]" data-icon="Globe" data-size="20px" data-weight="regular">
+                <a href="/signup">
+
+                  <svg  alt="" class="size-8 object-cover" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path clip-rule="evenodd" d="m6.75001 7c0-1.79493 1.45508-3.25 3.24999-3.25 1.7949 0 3.25 1.45507 3.25 3.25s-1.4551 3.25-3.25 3.25c-1.79491 0-3.24999-1.45507-3.24999-3.25zm3.24999-4.75c-2.62334 0-4.74999 2.12665-4.74999 4.75s2.12665 4.75 4.74999 4.75c2.6234 0 4.75-2.12665 4.75-4.75s-2.1266-4.75-4.75-4.75zm-5.6865 16.1524c.98693-2.1566 3.16283-3.6524 5.6865-3.6524 2.5237 0 4.6996 1.4958 5.6865 3.6524.2078.4542.1134.8704-.1871 1.2142-.3195.3656-.873.6334-1.4994.6334h-7.99999c-.6264 0-1.17984-.2678-1.49941-.6334-.30047-.3438-.39492-.76-.1871-1.2142zm5.6865-5.1524c-3.13193 0-5.82838 1.8578-7.05046 4.5282-.48164 1.0525-.22026 2.0911.42167 2.8255.62282.7126 1.59835 1.1463 2.6288 1.1463h7.99999c1.0305 0 2.006-.4337 2.6288-1.1463.642-.7344.9033-1.773.4217-2.8255-1.2221-2.6704-3.9185-4.5282-7.0505-4.5282zm8-5c.4142 0 .75.33579.75.75v2.25h2.25c.4142 0 .75.3358.75.75s-.3358.75-.75.75h-2.25v2.25c0 .4142-.3358.75-.75.75s-.75-.3358-.75-.75v-2.25h-2.25c-.4142 0-.75-.3358-.75-.75s.3358-.75.75-.75h2.25v-2.25c0-.41421.3358-.75.75-.75z" fill="#ffffff" fill-rule="evenodd"></path></g></svg>
+
+                </a>
+              </div>
+            </button>
+
+
+            <button
+              class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 bg-[#4741a6] text-[#111518] gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5"
+            >
+              <div class="text-[#111518]" data-icon="Globe" data-size="20px" data-weight="regular">
+                <a href="/signin">
+
+                  <svg alt="" class="size-8 object-cover" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 502.664 502.664" xml:space="preserve" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <g> <path style="fill:#ffffff;" d="M132.099,230.872c55.394,0,100.088-44.759,100.088-99.937c0-55.243-44.673-99.981-100.088-99.981 c-55.135,0-99.808,44.738-99.808,99.981C32.291,186.091,76.965,230.872,132.099,230.872z"></path> <path style="fill:#ffffff;" d="M212.3,247.136H52.072C23.469,247.136,0,273.431,0,305.636v160.896 c0,1.769,0.841,3.387,1.014,5.177h262.387c0.108-1.79,0.949-3.408,0.949-5.177V305.636 C264.35,273.431,240.967,247.136,212.3,247.136z"></path> <path style="fill:#ffffff;" d="M502.664,137.751c-0.108-58.673-53.711-105.934-119.33-105.783 c-65.92,0.108-119.092,47.758-119.006,106.279c0.108,46.226,33.478,85.334,79.812,99.722l0.626,202.55l38.676,27.826 l40.208-28.064l-0.065-26.877h-18.572l-0.086-26.338h18.616l-0.173-29.121h-18.486l-0.086-26.295h18.572l-0.086-26.316h-18.551 l-0.065-26.316l18.637-0.022l-0.302-41.157C469.402,223.279,502.664,184.02,502.664,137.751z M383.399,77.612 c14.776,0,26.899,12.101,26.899,26.856c0.108,14.949-12.015,27.007-26.834,27.007c-14.905,0-26.942-11.886-26.942-26.877 C356.436,89.778,368.494,77.655,383.399,77.612z"></path> </g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> </g> </g></svg>
+
+                </a>
+              </div>
+            </button>
+
+            {% endif %}
+        </header>
+    {% block content %} 
+    {% endblock %}
+    
+  </body>
+</html>
+
+
+

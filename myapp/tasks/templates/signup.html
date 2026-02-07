@@ -1,0 +1,338 @@
+<!--registrar usuario-->
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<main class="bg-[url(/static/fondoregistro.jpg)] bg-origin-border bg-cover bg-no-repeat bg-center">
+
+<form method="POST">
+
+  {% csrf_token %} 
+
+<section class="py-10">
+  
+    
+ 
+      <div class="mx-auto container max-w-2xl md:w-3/4 shadow-md bg-gray-200">
+        <div class="bg-gray-100 p-4 border-t-2 bg-opacity-5 border-indigo-400 rounded-t">
+          <div class="max-w-sm mx-auto md:w-full md:mx-0">
+            <div class="inline-flex items-center space-x-4">
+
+              <svg  alt="" class="size-9 object-cover" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path clip-rule="evenodd" d="m6.75001 7c0-1.79493 1.45508-3.25 3.24999-3.25 1.7949 0 3.25 1.45507 3.25 3.25s-1.4551 3.25-3.25 3.25c-1.79491 0-3.24999-1.45507-3.24999-3.25zm3.24999-4.75c-2.62334 0-4.74999 2.12665-4.74999 4.75s2.12665 4.75 4.74999 4.75c2.6234 0 4.75-2.12665 4.75-4.75s-2.1266-4.75-4.75-4.75zm-5.6865 16.1524c.98693-2.1566 3.16283-3.6524 5.6865-3.6524 2.5237 0 4.6996 1.4958 5.6865 3.6524.2078.4542.1134.8704-.1871 1.2142-.3195.3656-.873.6334-1.4994.6334h-7.99999c-.6264 0-1.17984-.2678-1.49941-.6334-.30047-.3438-.39492-.76-.1871-1.2142zm5.6865-5.1524c-3.13193 0-5.82838 1.8578-7.05046 4.5282-.48164 1.0525-.22026 2.0911.42167 2.8255.62282.7126 1.59835 1.1463 2.6288 1.1463h7.99999c1.0305 0 2.006-.4337 2.6288-1.1463.642-.7344.9033-1.773.4217-2.8255-1.2221-2.6704-3.9185-4.5282-7.0505-4.5282zm8-5c.4142 0 .75.33579.75.75v2.25h2.25c.4142 0 .75.3358.75.75s-.3358.75-.75.75h-2.25v2.25c0 .4142-.3358.75-.75.75s-.75-.3358-.75-.75v-2.25h-2.25c-.4142 0-.75-.3358-.75-.75s.3358-.75.75-.75h2.25v-2.25c0-.41421.3358-.75.75-.75z" fill="#f9ce69" fill-rule="evenodd"></path></g></svg>
+              <h1 class="text-gray-800 text-xl font-bold">Regístrate</h1>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white space-y-6">
+          <div class="md:inline-flex  space-y-4 md:space-y-0  w-full p-4 text-gray-500 items-center">
+            <h2 class="md:w-1/3 mx-auto max-w-sm">Información de la Cuenta</h2>
+            <div class="md:w-2/3 mx-auto max-w-sm">
+
+              <div>
+
+                <p class="text-xl font-bold flex justify-center items-center py-5 text-red-600">{{error}}</p>
+
+                <label for="username" class="flex flex-no-wrap text-sm text-black">Nombre de Usuario<p class="text-red-600">*</p></label>
+                
+                <label for="username" class="text-sm text-gray-400">Min. 8 caracteres</label>
+
+                <div class="w-full inline-flex border">
+                  <div class="pt-2 w-1/12 bg-[#4741a6]">
+                    <svg
+                      fill="none"
+                      class="w-6 text-white mx-auto"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                      />
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    class="w-11/12 focus:outline-none focus:text-gray-600 p-2"
+                    placeholder="Usuario_123"
+                  />
+                </div>
+              </div>
+<br>
+              <label for="email" class="flex flex-no-wrap text-sm text-black">Email<p class="text-red-600">*</p></label>
+              <div class="w-full inline-flex border">
+                <div class="pt-2 w-1/12 bg-[#4741a6]">
+                  <svg
+                    fill="none"
+                    class="w-6 text-white mx-auto"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    />
+                  </svg>
+                </div>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  class="w-11/12 focus:outline-none focus:text-gray-600 p-2"
+                  placeholder="email@ejemplo.com"/>
+              </div>
+            </div>
+          </div>
+
+          <hr/>
+
+
+          <div class="md:inline-flex  space-y-4 md:space-y-0  w-full p-4 text-gray-500 items-center">
+            <h2 class="md:w-1/3 mx-auto max-w-sm">Información Personal</h2>
+            <div class="md:w-2/3 mx-auto max-w-sm space-y-5">
+
+               <div>
+                <label for="cedula" class=" flex flex-no-wrap text-sm text-black">Cédula de Identidad<p class="text-red-600">*</p></label>
+                
+                <label for="cedula" class="text-sm text-gray-400">(sin puntos ni letras)</label>
+                <div class="w-full inline-flex border">
+                  <div class="w-1/12 pt-2 bg-[#4741a6]">
+                    <svg class="w-6 text-white mx-auto" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="9" cy="9" r="2" stroke="#ffffff" stroke-width="1.5"></circle> <path d="M13 15C13 16.1046 13 17 9 17C5 17 5 16.1046 5 15C5 13.8954 6.79086 13 9 13C11.2091 13 13 13.8954 13 15Z" stroke="#ffffff" stroke-width="1.5"></path> <path d="M2 12C2 8.22876 2 6.34315 3.17157 5.17157C4.34315 4 6.22876 4 10 4H14C17.7712 4 19.6569 4 20.8284 5.17157C22 6.34315 22 8.22876 22 12C22 15.7712 22 17.6569 20.8284 18.8284C19.6569 20 17.7712 20 14 20H10C6.22876 20 4.34315 20 3.17157 18.8284C2 17.6569 2 15.7712 2 12Z" stroke="#ffffff" stroke-width="1.5"></path> <path d="M19 12H15" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path> <path d="M19 9H14" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path> <path d="M19 15H16" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
+                  </div>
+                  <input
+                    type="text"
+                    name="cedula"
+                    id="cedula"
+                    class="w-11/12 focus:outline-none focus:text-gray-600 p-2"
+                    placeholder="Ingrese su Cédula"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label for="first_name" class=" flex flex-no-wrap text-sm text-black">Primer Nombre<p class="text-red-600">*</p></label>
+                <div class="w-full inline-flex border">
+                  <div class="w-1/12 pt-2 bg-[#4741a6]">
+                    <svg class="w-6 text-gray-400 mx-auto" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="#ffffff" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:#ffffff;} </style> <g> <path class="st0" d="M194.651,414.476c16.23,0,61.349,0,61.349,0s45.111,0,61.35,0c16.222,0,23.587-23.603,14.198-40.285 c-7.072-12.572-18.659-26.826-37.516-34.921c-10.793,7.556-23.905,12-38.032,12c-14.143,0-27.238-4.444-38.032-12 c-18.864,8.095-30.444,22.349-37.523,34.921C171.064,390.873,178.421,414.476,194.651,414.476z"></path> <path class="st0" d="M256,335.476c27.714,0,50.167-22.444,50.167-50.159v-12.016c0-27.714-22.452-50.174-50.167-50.174 c-27.714,0-50.174,22.46-50.174,50.174v12.016C205.826,313.032,228.286,335.476,256,335.476z"></path> <path class="st0" d="M404.977,56.889h-75.834v16.254c0,31.365-25.524,56.889-56.889,56.889h-32.508 c-31.365,0-56.889-25.524-56.889-56.889V56.889h-75.833c-25.445,0-46.072,20.627-46.072,46.071v362.969 c0,25.444,20.627,46.071,46.072,46.071h297.952c25.444,0,46.071-20.627,46.071-46.071V102.96 C451.048,77.516,430.421,56.889,404.977,56.889z M402.286,463.238H109.714V150.349h292.572V463.238z"></path> <path class="st0" d="M239.746,113.778h32.508c22.406,0,40.635-18.23,40.635-40.635V40.635C312.889,18.23,294.659,0,272.254,0 h-32.508c-22.405,0-40.635,18.23-40.635,40.635v32.508C199.111,95.547,217.341,113.778,239.746,113.778z M231.619,40.635 c0-4.492,3.635-8.127,8.127-8.127h32.508c4.493,0,8.127,3.635,8.127,8.127v16.254c0,4.492-3.634,8.127-8.127,8.127h-32.508 c-4.492,0-8.127-3.635-8.127-8.127V40.635z"></path> </g> </g></svg>
+                  </div>
+                  <input
+                    type="text"
+                    name="first_name"
+                    id="first_name"
+                    class="w-11/12 focus:outline-none focus:text-gray-600 p-2"
+                    placeholder="Ingrese su primer nombre"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label for="segundo_nombre" class="text-sm text-black">Segundo Nombre</label>
+                <div class="w-full inline-flex border">
+                  <div class="w-1/12 pt-2 bg-[#4741a6]">
+                    <svg class="w-6 text-gray-400 mx-auto" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="#ffffff" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:#ffffff;} </style> <g> <path class="st0" d="M194.651,414.476c16.23,0,61.349,0,61.349,0s45.111,0,61.35,0c16.222,0,23.587-23.603,14.198-40.285 c-7.072-12.572-18.659-26.826-37.516-34.921c-10.793,7.556-23.905,12-38.032,12c-14.143,0-27.238-4.444-38.032-12 c-18.864,8.095-30.444,22.349-37.523,34.921C171.064,390.873,178.421,414.476,194.651,414.476z"></path> <path class="st0" d="M256,335.476c27.714,0,50.167-22.444,50.167-50.159v-12.016c0-27.714-22.452-50.174-50.167-50.174 c-27.714,0-50.174,22.46-50.174,50.174v12.016C205.826,313.032,228.286,335.476,256,335.476z"></path> <path class="st0" d="M404.977,56.889h-75.834v16.254c0,31.365-25.524,56.889-56.889,56.889h-32.508 c-31.365,0-56.889-25.524-56.889-56.889V56.889h-75.833c-25.445,0-46.072,20.627-46.072,46.071v362.969 c0,25.444,20.627,46.071,46.072,46.071h297.952c25.444,0,46.071-20.627,46.071-46.071V102.96 C451.048,77.516,430.421,56.889,404.977,56.889z M402.286,463.238H109.714V150.349h292.572V463.238z"></path> <path class="st0" d="M239.746,113.778h32.508c22.406,0,40.635-18.23,40.635-40.635V40.635C312.889,18.23,294.659,0,272.254,0 h-32.508c-22.405,0-40.635,18.23-40.635,40.635v32.508C199.111,95.547,217.341,113.778,239.746,113.778z M231.619,40.635 c0-4.492,3.635-8.127,8.127-8.127h32.508c4.493,0,8.127,3.635,8.127,8.127v16.254c0,4.492-3.634,8.127-8.127,8.127h-32.508 c-4.492,0-8.127-3.635-8.127-8.127V40.635z"></path> </g> </g></svg>
+                  </div>
+                  <input
+                    type="text"
+                    name="segundo_nombre"
+                    id="segundo_nombre"
+                    class="w-11/12 focus:outline-none focus:text-gray-600 p-2"
+                    placeholder="Ingrese su segundo nombre"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label for="last_name"  class="flex flex-no-wrap text-sm text-black">Primer Apellido<p class="text-red-600">*</p></label>
+                <div class="w-full inline-flex border">
+                  <div class="w-1/12 pt-2 bg-[#4741a6]">
+                    <svg class="w-6 text-gray-400 mx-auto" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="#ffffff" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:#ffffff;} </style> <g> <path class="st0" d="M194.651,414.476c16.23,0,61.349,0,61.349,0s45.111,0,61.35,0c16.222,0,23.587-23.603,14.198-40.285 c-7.072-12.572-18.659-26.826-37.516-34.921c-10.793,7.556-23.905,12-38.032,12c-14.143,0-27.238-4.444-38.032-12 c-18.864,8.095-30.444,22.349-37.523,34.921C171.064,390.873,178.421,414.476,194.651,414.476z"></path> <path class="st0" d="M256,335.476c27.714,0,50.167-22.444,50.167-50.159v-12.016c0-27.714-22.452-50.174-50.167-50.174 c-27.714,0-50.174,22.46-50.174,50.174v12.016C205.826,313.032,228.286,335.476,256,335.476z"></path> <path class="st0" d="M404.977,56.889h-75.834v16.254c0,31.365-25.524,56.889-56.889,56.889h-32.508 c-31.365,0-56.889-25.524-56.889-56.889V56.889h-75.833c-25.445,0-46.072,20.627-46.072,46.071v362.969 c0,25.444,20.627,46.071,46.072,46.071h297.952c25.444,0,46.071-20.627,46.071-46.071V102.96 C451.048,77.516,430.421,56.889,404.977,56.889z M402.286,463.238H109.714V150.349h292.572V463.238z"></path> <path class="st0" d="M239.746,113.778h32.508c22.406,0,40.635-18.23,40.635-40.635V40.635C312.889,18.23,294.659,0,272.254,0 h-32.508c-22.405,0-40.635,18.23-40.635,40.635v32.508C199.111,95.547,217.341,113.778,239.746,113.778z M231.619,40.635 c0-4.492,3.635-8.127,8.127-8.127h32.508c4.493,0,8.127,3.635,8.127,8.127v16.254c0,4.492-3.634,8.127-8.127,8.127h-32.508 c-4.492,0-8.127-3.635-8.127-8.127V40.635z"></path> </g> </g></svg>
+                  </div>
+                  <input
+                    type="text"
+                    name="last_name"
+                    id="last_name"
+                    class="w-11/12 focus:outline-none focus:text-gray-600 p-2"
+                    placeholder="Ingrese su primer apellido"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label for="segundo_apellido" class="text-sm text-black">Segundo Apellido</label>
+                <div class="w-full inline-flex border">
+                  <div class="w-1/12 pt-2 bg-[#4741a6]">
+                    <svg class="w-6 text-gray-400 mx-auto" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="#ffffff" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:#ffffff;} </style> <g> <path class="st0" d="M194.651,414.476c16.23,0,61.349,0,61.349,0s45.111,0,61.35,0c16.222,0,23.587-23.603,14.198-40.285 c-7.072-12.572-18.659-26.826-37.516-34.921c-10.793,7.556-23.905,12-38.032,12c-14.143,0-27.238-4.444-38.032-12 c-18.864,8.095-30.444,22.349-37.523,34.921C171.064,390.873,178.421,414.476,194.651,414.476z"></path> <path class="st0" d="M256,335.476c27.714,0,50.167-22.444,50.167-50.159v-12.016c0-27.714-22.452-50.174-50.167-50.174 c-27.714,0-50.174,22.46-50.174,50.174v12.016C205.826,313.032,228.286,335.476,256,335.476z"></path> <path class="st0" d="M404.977,56.889h-75.834v16.254c0,31.365-25.524,56.889-56.889,56.889h-32.508 c-31.365,0-56.889-25.524-56.889-56.889V56.889h-75.833c-25.445,0-46.072,20.627-46.072,46.071v362.969 c0,25.444,20.627,46.071,46.072,46.071h297.952c25.444,0,46.071-20.627,46.071-46.071V102.96 C451.048,77.516,430.421,56.889,404.977,56.889z M402.286,463.238H109.714V150.349h292.572V463.238z"></path> <path class="st0" d="M239.746,113.778h32.508c22.406,0,40.635-18.23,40.635-40.635V40.635C312.889,18.23,294.659,0,272.254,0 h-32.508c-22.405,0-40.635,18.23-40.635,40.635v32.508C199.111,95.547,217.341,113.778,239.746,113.778z M231.619,40.635 c0-4.492,3.635-8.127,8.127-8.127h32.508c4.493,0,8.127,3.635,8.127,8.127v16.254c0,4.492-3.634,8.127-8.127,8.127h-32.508 c-4.492,0-8.127-3.635-8.127-8.127V40.635z"></path> </g> </g></svg>
+                  </div>
+                  <input
+                    type="text"
+                    name="segundo_apellido"
+                    id="segundo_apellido"
+                    class="w-11/12 focus:outline-none focus:text-gray-600 p-2"
+                    placeholder="Ingrese su segundo apellido"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label for="telefono" class=" flex flex-no-wrap text-sm text-black">Número Telefónico<p class="text-red-600">*</p></label>
+                
+                <label for="telefono" class="text-sm text-gray-400">(sin guiones)</label>
+                <div class="w-full inline-flex border">
+                  <div class="pt-2 w-1/12 bg-[#4741a6]">
+                    <svg class="w-6 text-gray-400 mx-auto" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M13.5 2C13.5 2 15.8335 2.21213 18.8033 5.18198C21.7731 8.15183 21.9853 10.4853 21.9853 10.4853" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path> <path d="M14.207 5.53564C14.207 5.53564 15.197 5.81849 16.6819 7.30341C18.1668 8.78834 18.4497 9.77829 18.4497 9.77829" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path> <path d="M15.1007 15.0272L14.5569 14.5107L15.1007 15.0272ZM15.5562 14.5477L16.1 15.0642H16.1L15.5562 14.5477ZM17.9728 14.2123L17.5987 14.8623H17.5987L17.9728 14.2123ZM19.8833 15.312L19.5092 15.962L19.8833 15.312ZM20.4217 18.7584L20.9655 19.2749L20.4217 18.7584ZM19.0011 20.254L18.4573 19.7375L19.0011 20.254ZM17.6763 20.9631L17.7499 21.7095L17.6763 20.9631ZM7.81536 16.4752L8.35915 15.9587L7.81536 16.4752ZM3.00289 6.96594L2.25397 7.00613L2.25397 7.00613L3.00289 6.96594ZM9.47752 8.50311L10.0213 9.01963H10.0213L9.47752 8.50311ZM9.63424 5.6931L10.2466 5.26012L9.63424 5.6931ZM8.37326 3.90961L7.76086 4.3426V4.3426L8.37326 3.90961ZM5.26145 3.60864L5.80524 4.12516L5.26145 3.60864ZM3.69185 5.26114L3.14806 4.74462L3.14806 4.74462L3.69185 5.26114ZM11.0631 13.0559L11.6069 12.5394L11.0631 13.0559ZM15.6445 15.5437L16.1 15.0642L15.0124 14.0312L14.5569 14.5107L15.6445 15.5437ZM17.5987 14.8623L19.5092 15.962L20.2575 14.662L18.347 13.5623L17.5987 14.8623ZM19.8779 18.2419L18.4573 19.7375L19.5449 20.7705L20.9655 19.2749L19.8779 18.2419ZM17.6026 20.2167C16.1676 20.3584 12.4233 20.2375 8.35915 15.9587L7.27157 16.9917C11.7009 21.655 15.9261 21.8895 17.7499 21.7095L17.6026 20.2167ZM8.35915 15.9587C4.48303 11.8778 3.83285 8.43556 3.75181 6.92574L2.25397 7.00613C2.35322 8.85536 3.1384 12.6403 7.27157 16.9917L8.35915 15.9587ZM9.7345 9.32159L10.0213 9.01963L8.93372 7.9866L8.64691 8.28856L9.7345 9.32159ZM10.2466 5.26012L8.98565 3.47663L7.76086 4.3426L9.02185 6.12608L10.2466 5.26012ZM4.71766 3.09213L3.14806 4.74462L4.23564 5.77765L5.80524 4.12516L4.71766 3.09213ZM9.1907 8.80507C8.64691 8.28856 8.64622 8.28929 8.64552 8.29002C8.64528 8.29028 8.64458 8.29102 8.64411 8.29152C8.64316 8.29254 8.64219 8.29357 8.64121 8.29463C8.63924 8.29675 8.6372 8.29896 8.6351 8.30127C8.63091 8.30588 8.62646 8.31087 8.62178 8.31625C8.61243 8.32701 8.60215 8.33931 8.59116 8.3532C8.56918 8.38098 8.54431 8.41512 8.51822 8.45588C8.46591 8.53764 8.40917 8.64531 8.36112 8.78033C8.26342 9.0549 8.21018 9.4185 8.27671 9.87257C8.40742 10.7647 8.99198 11.9644 10.5193 13.5724L11.6069 12.5394C10.1793 11.0363 9.82761 10.1106 9.76086 9.65511C9.72866 9.43536 9.76138 9.31957 9.77432 9.28321C9.78159 9.26277 9.78635 9.25709 9.78169 9.26437C9.77944 9.26789 9.77494 9.27451 9.76738 9.28407C9.76359 9.28885 9.75904 9.29437 9.7536 9.30063C9.75088 9.30375 9.74793 9.30706 9.74476 9.31056C9.74317 9.31231 9.74152 9.3141 9.73981 9.31594C9.73896 9.31686 9.73809 9.31779 9.7372 9.31873C9.73676 9.3192 9.73608 9.31992 9.73586 9.32015C9.73518 9.32087 9.7345 9.32159 9.1907 8.80507ZM10.5193 13.5724C12.0422 15.1757 13.1923 15.806 14.0698 15.9485C14.5201 16.0216 14.8846 15.9632 15.1606 15.8544C15.2955 15.8012 15.4022 15.7387 15.4823 15.6819C15.5223 15.6535 15.5556 15.6266 15.5824 15.6031C15.5959 15.5913 15.6077 15.5803 15.618 15.5703C15.6232 15.5654 15.628 15.5606 15.6324 15.5562C15.6346 15.554 15.6367 15.5518 15.6387 15.5497C15.6397 15.5487 15.6407 15.5477 15.6417 15.5467C15.6422 15.5462 15.6429 15.5454 15.6431 15.5452C15.6438 15.5444 15.6445 15.5437 15.1007 15.0272C14.5569 14.5107 14.5576 14.51 14.5583 14.5093C14.5585 14.509 14.5592 14.5083 14.5596 14.5078C14.5605 14.5069 14.5614 14.506 14.5623 14.5051C14.5641 14.5033 14.5658 14.5015 14.5674 14.4998C14.5708 14.4965 14.574 14.4933 14.577 14.4904C14.583 14.4846 14.5885 14.4796 14.5933 14.4754C14.6028 14.467 14.6099 14.4616 14.6145 14.4584C14.6239 14.4517 14.6229 14.454 14.6102 14.459C14.5909 14.4666 14.5 14.4987 14.3103 14.4679C13.9077 14.4025 13.0391 14.0472 11.6069 12.5394L10.5193 13.5724ZM8.98565 3.47663C7.97206 2.04305 5.94384 1.80119 4.71766 3.09213L5.80524 4.12516C6.32808 3.57471 7.24851 3.61795 7.76086 4.3426L8.98565 3.47663ZM3.75181 6.92574C3.73038 6.52644 3.90425 6.12654 4.23564 5.77765L3.14806 4.74462C2.61221 5.30877 2.20493 6.09246 2.25397 7.00613L3.75181 6.92574ZM18.4573 19.7375C18.1783 20.0313 17.8864 20.1887 17.6026 20.2167L17.7499 21.7095C18.497 21.6357 19.1016 21.2373 19.5449 20.7705L18.4573 19.7375ZM10.0213 9.01963C10.9889 8.00095 11.0574 6.40678 10.2466 5.26012L9.02185 6.12608C9.44399 6.72315 9.37926 7.51753 8.93372 7.9866L10.0213 9.01963ZM19.5092 15.962C20.33 16.4345 20.4907 17.5968 19.8779 18.2419L20.9655 19.2749C22.2704 17.901 21.8904 15.6019 20.2575 14.662L19.5092 15.962ZM16.1 15.0642C16.4854 14.6584 17.086 14.5672 17.5987 14.8623L18.347 13.5623C17.2485 12.93 15.8861 13.1113 15.0124 14.0312L16.1 15.0642Z" fill="#ffffff"></path> </g></svg>
+                  </div>
+                  <input
+                    type="text"
+                    name="telefono"
+                    id="telefono"
+                    class="w-11/12 focus:outline-none focus:text-gray-600 p-2"
+                    placeholder="04141234567"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <hr />
+
+            <div class="md:inline-flex  space-y-4 md:space-y-0  w-full p-4 text-gray-500 items-center">
+            <h2 class="md:w-1/3 mx-auto max-w-sm">Seguridad</h2>
+            <div class="md:w-2/3 mx-auto max-w-sm space-y-5">
+
+               <div>
+              <label for="password1" class="flex flex-no-wrap text-sm text-black">Ingresar Contraseña<p class="text-red-600">*</p></label>
+              
+              <label for="password1" class="text-sm text-gray-400">Debe tener min. 8 caracteres y al menos un número.</label>
+              <div class="w-full inline-flex border">
+                <div class="w-1/12 pt-2 bg-[#4741a6]">
+                <svg class="w-6 mx-auto" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12.5 8.5V7.5C12.5 6.94772 12.0523 6.5 11.5 6.5H1.5C0.947715 6.5 0.5 6.94772 0.5 7.5V13.5C0.5 14.0523 0.947715 14.5 1.5 14.5H11.5C12.0523 14.5 12.5 14.0523 12.5 13.5V12.5M12.5 8.5H8.5C7.39543 8.5 6.5 9.39543 6.5 10.5C6.5 11.6046 7.39543 12.5 8.5 12.5H12.5M12.5 8.5C13.6046 8.5 14.5 9.39543 14.5 10.5C14.5 11.6046 13.6046 12.5 12.5 12.5M3.5 6.5V3.5C3.5 1.84315 4.84315 0.5 6.5 0.5C8.15685 0.5 9.5 1.84315 9.5 3.5V6.5M12 10.5H13M10 10.5H11M8 10.5H9" stroke="#ffffff"></path> </g></svg>
+                </div>
+                <input
+                type="password"
+                name="password1" 
+                id="password1"
+                class="w-11/12 focus:outline-none focus:text-gray-600 p-2"
+                placeholder="*******"
+                />
+                <button type="button" onclick="togglePassword('password1', this)" class="px-2 focus:outline-none">
+
+                <svg id"eye-password1" class="w-6 mx-auto" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9.75 12C9.75 10.7574 10.7574 9.75 12 9.75C13.2426 9.75 14.25 10.7574 14.25 12C14.25 13.2426 13.2426 14.25 12 14.25C10.7574 14.25 9.75 13.2426 9.75 12Z" fill="#999999"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 13.6394 2.42496 14.1915 3.27489 15.2957C4.97196 17.5004 7.81811 20 12 20C16.1819 20 19.028 17.5004 20.7251 15.2957C21.575 14.1915 22 13.6394 22 12C22 10.3606 21.575 9.80853 20.7251 8.70433C19.028 6.49956 16.1819 4 12 4C7.81811 4 4.97196 6.49956 3.27489 8.70433C2.42496 9.80853 2 10.3606 2 12ZM12 8.25C9.92893 8.25 8.25 9.92893 8.25 12C8.25 14.0711 9.92893 15.75 12 15.75C14.0711 15.75 15.75 14.0711 15.75 12C15.75 9.92893 14.0711 8.25 12 8.25Z" fill="#999999"></path> </g></svg>
+                </button>
+              </div>
+              </div>
+
+              <div>
+              <label for="password2" class=" flex flex-no-wrap text-sm text-black">Repetir Contraseña<p class="text-red-600">*</p></label>
+              <div class="w-full inline-flex border">
+                <div class="w-1/12 pt-2 bg-[#4741a6]">
+                <svg class="w-6 text-gray-400 mx-auto" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14 7H15.9992C19.3129 7 21.9992 9.68629 21.9992 13C21.9992 16.3137 19.3129 19 15.9992 19H8C4.68629 19 2 16.3137 2 13C2 9.68629 4.68629 7 8 7H10M7 4L10 7M10 7L7 10" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                </div>
+                <input
+                type="password" name="password2" id="password2"
+                class="w-11/12 focus:outline-none focus:text-gray-600 p-2"
+                placeholder="*******"
+                />
+                <button type="button" onclick="togglePassword('password2', this)" class="px-2 focus:outline-none">
+                <svg id"eye-password2" class="w-6 mx-auto" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9.75 12C9.75 10.7574 10.7574 9.75 12 9.75C13.2426 9.75 14.25 10.7574 14.25 12C14.25 13.2426 13.2426 14.25 12 14.25C10.7574 14.25 9.75 13.2426 9.75 12Z" fill="#999999"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 13.6394 2.42496 14.1915 3.27489 15.2957C4.97196 17.5004 7.81811 20 12 20C16.1819 20 19.028 17.5004 20.7251 15.2957C21.575 14.1915 22 13.6394 22 12C22 10.3606 21.575 9.80853 20.7251 8.70433C19.028 6.49956 16.1819 4 12 4C7.81811 4 4.97196 6.49956 3.27489 8.70433C2.42496 9.80853 2 10.3606 2 12ZM12 8.25C9.92893 8.25 8.25 9.92893 8.25 12C8.25 14.0711 9.92893 15.75 12 15.75C14.0711 15.75 15.75 14.0711 15.75 12C15.75 9.92893 14.0711 8.25 12 8.25Z" fill="#999999"></path> </g></svg>
+                </svg>
+                </button>
+              </div>
+              </div>
+
+              <!-- js para ojo de password-->
+      <script>
+      function togglePassword(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const svg = btn.querySelector('svg');
+        if (input.type === "password") {
+        input.type = "text";
+        svg.classList.add('text-blue-600');
+        } else {
+        input.type = "password";
+        svg.classList.remove('text-blue-600');
+        }
+      }
+      </script>
+
+             <!-- fin js para ojo de password-->
+              <div>
+                <label for="security_question" class="flex flex-no-wrap text-sm text-black">Pregunta de seguridad<p class="text-red-600">*</p></label>
+                <div class="w-full inline-flex border">
+                  <div class="w-1/12 pt-2 bg-[#4741a6]">
+                    <svg class="w-6 mx-auto" fill="#ffffff" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 555.335 555.335" xml:space="preserve" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M330.835,440.053H227.792c-3.378,0-6.12,2.741-6.12,6.119v103.043c0,3.378,2.742,6.12,6.12,6.12h103.049 c3.378,0,6.12-2.742,6.12-6.12V446.172C336.955,442.788,334.219,440.053,330.835,440.053z"></path> <path d="M422.17,47.926C386.221,16.126,337.353,0,276.929,0c-57.503,0-104.701,15.937-140.283,47.375 c-35.692,31.53-55.202,70.453-57.981,115.692c-0.196,3.225,2.148,6.053,5.355,6.45l94.609,11.732 c0.257,0.03,0.508,0.049,0.759,0.049c2.846,0,5.361-1.983,5.979-4.829c6.279-29.07,17.81-50.882,34.278-64.83 c16.383-13.88,37.136-20.918,61.684-20.918c25.459,0,45.863,6.695,60.649,19.896c14.785,13.207,21.977,28.568,21.977,46.959 c0,13.176-4.033,24.927-12.332,35.918c-3.775,4.871-16.059,17.038-52.883,46.977c-30.594,24.872-51.359,47.742-61.727,67.962 c-10.422,20.337-15.71,46.444-15.71,77.602c0,2.969,0.122,11.041,0.367,24.682c0.061,3.336,2.785,6.01,6.12,6.01h93.514 c1.641,0,3.213-0.66,4.363-1.829c1.151-1.169,1.781-2.754,1.757-4.395c-0.471-27.271,1.738-46.212,6.555-56.298 c4.847-10.146,17.938-24.131,38.911-41.573c42.943-35.704,70.282-63.281,83.587-84.309c13.402-21.193,20.202-44.009,20.202-67.81 C476.674,117.798,458.333,79.921,422.17,47.926z"></path> </g> </g> </g></svg>
+                      
+                      
+                  </div>
+                  <input
+                    type="text"
+                    name="security_question"
+                    id="security_question"
+                    class="w-11/12 focus:outline-none focus:text-gray-600 p-2"
+                    placeholder="Ingrese su pregunta de seguridad"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label for="security_answer" class="flex flex-no-wrap text-sm text-black">Respuesta<p class="text-red-600">*</p></label>
+                <div class="w-full inline-flex border">
+                  <div class="pt-2 w-1/12 bg-[#4741a6]">
+                    <svg class="w-6 mx-auto" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52" enable-background="new 0 0 52 52" xml:space="preserve" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M26,4C12.7,4,2,13.8,2,26c0,3.9,1.1,7.5,3,10.8c0.2,0.4,0.3,0.9,0.2,1.3L3,45c-0.4,1.3,0.8,2.4,2.1,2l7-2.4 c0.5-0.2,1-0.1,1.4,0.2c3.7,2.1,8,3.3,12.6,3.3c13.3,0,24-9.8,24-22C49.9,13.8,39.2,4,26,4L26,4L26,4z M37.5,21.1l-12.2,12 c-0.5,0.5-1,0.7-1.7,0.7c-0.6,0-1.2-0.2-1.7-0.7L16,27.3c-0.5-0.5-0.5-1.2,0-1.6l1.7-1.6c0.5-0.5,1.2-0.5,1.7,0l4.2,4.2l10.5-10.4 c0.5-0.5,1.2-0.5,1.7,0l1.7,1.6C37.9,19.9,37.9,20.7,37.5,21.1L37.5,21.1L37.5,21.1z"></path> </g></svg>
+                      
+                      
+                  </div>
+                  <input
+                    type="text"
+                    name="security_answer"
+                    id="security_answer"
+                    class="w-11/12 focus:outline-none focus:text-gray-600 p-2"
+                    placeholder="Ingrese su respuesta"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>   
+
+            <hr />
+
+            
+            <div class="md:w-3/12 text-center md:pr-6 mt-6">
+              <button class="text-white w-full ml-10 mt-3 max-w-sm rounded-md text-center bg-[#4741a6] py-2 px-6 inline-flex items-center focus:outline-none md:float-left space">
+              <svg class="w-4 mr-2" viewBox="0 -3 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="#ffffff" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>checkmark</title> <desc>Created with Sketch Beta.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <g id="Icon-Set-Filled" sketch:type="MSLayerGroup" transform="translate(-518.000000, -1039.000000)" fill="#ffffff"> <path d="M548.783,1040.2 C547.188,1038.57 544.603,1038.57 543.008,1040.2 L528.569,1054.92 L524.96,1051.24 C523.365,1049.62 520.779,1049.62 519.185,1051.24 C517.59,1052.87 517.59,1055.51 519.185,1057.13 L525.682,1063.76 C527.277,1065.39 529.862,1065.39 531.457,1063.76 L548.783,1046.09 C550.378,1044.46 550.378,1041.82 548.783,1040.2" id="checkmark" sketch:type="MSShapeGroup"> </path> </g> </g> </g></svg>
+              Registrar
+              </button>
+            </div>
+          </div>
+
+          
+          <div class="w-full p-4 text-right text-red-500">
+            <a href={% url 'signup' %} class="inline-flex items-center focus:outline-none mr-6 mb-8 mt-1">
+              <svg
+                fill="none"
+                class="w-4 mr-2"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
+              </svg>
+              Cancelar
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </form>
+</main>
+
+{% endblock %}
