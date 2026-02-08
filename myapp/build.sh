@@ -6,5 +6,6 @@ pip install -r requirements.txt
 
 python manage.py collectstatic --no-input
 python manage.py migrate
-# Opcional: Cargar datos iniciales
-# python manage.py import_dictionary diccionario.csv
+
+# Cargar datos del diccionario automáticamente en cada despliegue
+python manage.py import_dictionary diccionario.csv
