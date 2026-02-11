@@ -2,12 +2,12 @@
 
 {% block content %}
 
-<main class="px-8 py-8 bg-[url(/static/fondoindex.jpg)] bg-repeat bg-top">
+<main class="px-4 md:px-8 py-4 md:py-8 min-h-screen">
   
-<div class=" container max-w-md shadow-xl md:w-3/4  bg-[#ffffff] mb-4 rounded-xl">
-    <div class="bg-gray-100 p-4 border-t-2 bg-opacity-5 border-[#4741A6] rounded-lg">
+<div class="max-w-md shadow-2xl glass-card mb-6 rounded-2xl overflow-hidden border border-white/30 backdrop-blur-xl">
+    <div class="p-4 border-t-4 border-[#4741A6] backdrop-blur-md">
           <div class="max-w-sm mx-auto md:w-full md:mx-0">
-            <div class="inline-flex items-center space-x-14">
+            <div class="flex items-center gap-4">
 
               <svg class="size-9 object-cover" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M26,3H9C7.3,3,6,4.3,6,6v0c0,1.7,1.3,3,3,3h17v10" stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -17,22 +17,25 @@
                   <path d="M25.5,18.5c1.9,1.9,1.9,5.1,0,7c-0.5,0.5-1,0.8-1.6,1.1c-1.8,0.7-3.9,0.4-5.4-1.1c-1.9-1.9-1.9-5.1,0-7 S23.6,16.6,25.5,18.5z" stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   <path d="M26.5,24l3.9,3.6c0.8,0.8,0.8,2,0,2.8l0,0c-0.8,0.8-2,0.8-2.8,0l-3.5-3.5" stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-              <h1 class="text-black text-xl font-bold ">Busqueda de Bibliografía</h1>
+              <h1 class="text-indigo-950 text-lg md:text-xl font-extrabold uppercase tracking-tight">Biblioteca</h1>
             </div>
           </div>
         </div>
         
 </div>
 <!-- Botón para abrir modal de carrito (lista de préstamos) -->
-              <div class="flex inline-flex mb-4">
-                <button id="open-cart-top" class="ml-4 inline-flex items-center px-3 py-2 bg-yellow-400 text-black rounded">Lista préstamos</button>
+              <div class="flex mb-6">
+                <button id="open-cart-top" class="inline-flex items-center px-6 py-2.5 bg-[#F9CE69] text-indigo-950 font-bold rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 active:scale-95">
+                  <svg class="size-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                  Lista préstamos
+                </button>
               </div>
 
 
 <!-- Formulario de búsqueda y filtros (ocupando 2 columnas en pantallas grandes) -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 ">
       
-      <div class="lg:col-span-2 bg-white rounded-lg shadow-sm p-5 border-[#8ae4ff] border-solid border-4">
+      <div class="lg:col-span-2 glass-card rounded-3xl shadow-2xl p-6 border-t-4 border-[#8ae4ff] backdrop-blur-2xl">
         <form method="GET" class="space-y-4">
           <div class="flex flex-col md:flex-row md:items-center md:gap-4">
             <input name="q" value="{{ q|default:'' }}" placeholder="Buscar por título, autor, cota..." 
@@ -90,7 +93,7 @@
       </div>
 
       <!-- Aside: últimos consultados -->
-      <aside id="recent-books-container" class="bg-white rounded-lg shadow-sm p-4 border-[#F9CE69] border-solid border-4">
+      <aside id="recent-books-container" class="glass-card rounded-3xl shadow-2xl p-6 border-t-4 border-[#F9CE69] backdrop-blur-2xl">
         <div class="flex items-center justify-between mb-3">
           <h4 class="text-xl text-[#4741A6] font-semibold text-slate-800">Últimos consultados</h4>
           <button id="clear-recent-books" class="text-md text-red-500 hover:underline">Limpiar</button>
@@ -171,7 +174,7 @@
 
                     <button type="button" class="open-detail-btn" data-id="{{ task.id }}" data-title="{{ task.titulo|escape }}" data-author="{{ task.autor|default:''|escape }}" data-cota="{{ task.cota|default:''|escape }}" data-portada="{% if task.portada %}{{ task.portada.url }}{% else %}{% endif %}" data-detail-url="{% url 'task_detail' task.id %}"
                       style="font-size:12px;color:#fff;background-color:#314158;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;text-decoration:underline;">
-                                      {% if task.is_active or user.is_superuser %}Detalle/Editar{% else %}Detalle{% endif %}
+                                      {% if task.is_active or user.is_staff or user.is_superuser %}Detalle/Editar{% else %}Detalle{% endif %}
                     </button>
                     
                     <!-- Botón añadir a carrito -->
@@ -402,20 +405,7 @@
       <p class="text-sm text-gray-600">Cargando...</p>
     </div>
     <div id="cart-error-global" class="text-sm text-red-600 mb-2 hidden"></div>
-    <div class="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-2" id="receiver-inputs-global">
-      <div>
-        <input id="receiver_cedula_global" name="receiver_cedula" placeholder="Cédula receptor" class="border rounded px-2 py-1 w-full" />
-        <div id="err_receiver_cedula" class="text-sm text-red-600 mt-1 hidden"></div>
-      </div>
-      <div>
-        <input id="receiver_first_name_global" name="receiver_first_name" placeholder="Nombre receptor" class="border rounded px-2 py-1 w-full" />
-        <div id="err_receiver_first_name" class="text-sm text-red-600 mt-1 hidden"></div>
-      </div>
-      <div>
-        <input id="receiver_last_name_global" name="receiver_last_name" placeholder="Apellido receptor" class="border rounded px-2 py-1 w-full" />
-        <div id="err_receiver_last_name" class="text-sm text-red-600 mt-1 hidden"></div>
-      </div>
-    </div>
+    <div id="cart-error-global" class="text-sm text-red-600 mb-2 hidden"></div>
     <div class="mt-4 flex gap-2 justify-end">
       <button id="checkout-btn-global" class="px-4 py-2 bg-indigo-600 text-white rounded">Confirmar solicitud</button>
     </div>
@@ -483,61 +473,26 @@
     }
 
     function doCheckout(){
-      // leer inputs del receptor del modal global
-      var ced = (document.getElementById('receiver_cedula_global') || {}).value || '';
-      var fn = (document.getElementById('receiver_first_name_global') || {}).value || '';
-      var ln = (document.getElementById('receiver_last_name_global') || {}).value || '';
-      // Validación mínima en cliente y mostrar errores inline
-  var errEl = document.getElementById('cart-error-global');
-  function showError(msg){ if(errEl){ errEl.textContent = msg; errEl.classList.remove('hidden'); } else alert(msg); }
-  function clearError(){ if(errEl){ errEl.textContent = ''; errEl.classList.add('hidden'); } }
-  function clearFieldErrors(){ ['receiver_cedula','receiver_first_name','receiver_last_name'].forEach(function(f){ var e = document.getElementById('err_' + f); if(e){ e.textContent=''; e.classList.add('hidden'); } }); }
-  function setFieldError(field, msg){ var e = document.getElementById('err_' + field); if(e){ e.textContent = msg; e.classList.remove('hidden'); } else showError(msg); }
-  clearError(); clearFieldErrors();
-      if(!ced || !fn || !ln){
-        // mostrar errores por campo
-        if(!ced) setFieldError('receiver_cedula', 'La cédula es obligatoria.');
-        if(!fn) setFieldError('receiver_first_name', 'El nombre es obligatorio.');
-        if(!ln) setFieldError('receiver_last_name', 'El apellido es obligatorio.');
-        showError('Complete los campos requeridos.');
-        return;
-      }
-      // cédula solo dígitos
-      if(!/^[0-9]+$/.test(ced)){
-        setFieldError('receiver_cedula', 'La cédula debe contener solo dígitos.');
-        showError('Corrija los errores del formulario.');
-        return;
-      }
-
-      var params = new URLSearchParams();
-      params.append('receiver_cedula', ced);
-      params.append('receiver_first_name', fn);
-      params.append('receiver_last_name', ln);
+      var errEl = document.getElementById('cart-error-global');
+      function showError(msg){ if(errEl){ errEl.textContent = msg; errEl.classList.remove('hidden'); } else alert(msg); }
+      function clearError(){ if(errEl){ errEl.textContent = ''; errEl.classList.add('hidden'); } }
+      clearError();
 
       fetch('{% url "cart_checkout" %}', {
         method: 'POST',
         headers: {
           'X-CSRFToken': getCSRF(),
-          'Content-Type': 'application/x-www-form-urlencoded',
           'X-Requested-With': 'XMLHttpRequest'
         },
-        body: params.toString(),
         credentials: 'same-origin'
       }).then(r=>{
         if(!r.ok) return r.json().then(j=>{ throw j; });
         return r.json();
       }).then(data=>{
-        if(data && data.ok){ fetchCart(); clearError(); clearFieldErrors(); modal.classList.add('hidden'); }
+        if(data && data.ok){ fetchCart(); clearError(); modal.classList.add('hidden'); }
         else { showError('No se pudo procesar la solicitud'); }
       }).catch(err=>{
-        try{
-          if(err && err.errors){
-            // asignar errores por campo
-            Object.keys(err.errors).forEach(function(k){ setFieldError(k, err.errors[k]); });
-            showError('Corrija los errores indicados.');
-          } else if(err && err.error) showError(err.error);
-          else showError('Error al confirmar solicitud');
-        }catch(e){ showError('Error al confirmar solicitud'); }
+        showError(err && err.error ? err.error : 'Error al confirmar solicitud');
       });
     }
 

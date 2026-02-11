@@ -20,13 +20,13 @@ class CustomUserCreationForm(UserCreationForm):
     
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ("username", "cedula" , "first_name", "segundo_nombre", "last_name", "segundo_apellido", "telefono", "email", "security_question", "security_answer")
+        fields = ("username", "cedula" , "first_name", "segundo_nombre", "last_name", "segundo_apellido", "telefono", "email", "security_question", "security_answer", "is_staff")
 
 
 class UserEditForm(djforms.ModelForm):
     class Meta:
         model = User
-        fields = ['username','first_name','segundo_nombre','last_name','segundo_apellido','cedula','telefono','email','is_active','is_superuser']
+        fields = ['username','first_name','segundo_nombre','last_name','segundo_apellido','cedula','telefono','email','is_active','is_staff','is_superuser']
 
 
 class DictionaryEntryForm(djforms.ModelForm):

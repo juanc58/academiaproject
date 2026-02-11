@@ -1,17 +1,22 @@
 {% extends "base.html" %}
 {% load tz %}
 {% block content %}
-<main class="px-8 py-8">
+<main class="px-4 md:px-8 py-8 min-h-screen">
   <div class="container mx-auto max-w-6xl">
-    <div class="bg-white shadow rounded-lg p-6">
-      <div class="inline-flex items-center space-x-4">
-        <h1 class="text-2xl font-bold">Devoluciones</h1>
-        <svg class="size-12 ml-6" fill="#77df83" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 256 190" enable-background="new 0 0 256 190" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M48.12,27.903C48.12,13.564,59.592,2,74.023,2c14.339,0,25.903,11.564,25.903,25.903 C99.834,42.335,88.27,53.806,74.023,53.806C59.684,53.806,48.12,42.242,48.12,27.903z M191,139h-47V97c0-20.461-17.881-37-38-37H43 C20.912,60,1.99,79.14,2,98v77c-0.026,8.533,6.001,12.989,12,13c6.014,0.011,12-4.445,12-13v-75h8v88h78v-88h8l0.081,50.37 c-0.053,8.729,5.342,12.446,10.919,12.63h60C207.363,163,207.363,139,191,139z M243.604,88.319c0.011-0.371,0.042-0.625,0.042-0.999 c0-21.939-17.861-39.752-39.801-39.752c-11.266,0-21.444,4.669-28.678,12.218l9.127,9.09c4.914-5.203,11.864-8.451,19.563-8.451 c14.829,0,26.9,12.065,26.9,26.894c0,0.375-0.005,0.627-0.021,0.999h-10.432l16.875,16.877L254,88.319H243.604z M187.389,88.319 l-16.875-16.637l-16.822,16.637h10.42c0.596,21.423,18.17,38.791,39.734,38.791c10.683,0,20.408-4.233,27.56-11.112l-9.132-9.096 c-4.816,4.537-11.297,7.317-18.418,7.317c-14.454,0-26.311-11.584-26.9-25.901H187.389z"></path> </g></svg>
+    <div class="glass-card shadow-2xl rounded-3xl p-6 mb-8 border border-white/30 backdrop-blur-2xl">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="flex items-center gap-4">
+          <svg class="size-10" fill="#77df83" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 190">
+            <path d="M48.12,27.903C48.12,13.564,59.592,2,74.023,2c14.339,0,25.903,11.564,25.903,25.903 C99.834,42.335,88.27,53.806,74.023,53.806C59.684,53.806,48.12,42.242,48.12,27.903z M191,139h-47V97c0-20.461-17.881-37-38-37H43 C20.912,60,1.99,79.14,2,98v77c-0.026,8.533,6.001,12.989,12,13c6.014,0.011,12-4.445,12-13v-75h8v88h78v-88h8l0.081,50.37 c-0.053,8.729,5.342,12.446,10.919,12.63h60C207.363,163,207.363,139,191,139z M243.604,88.319c0.011-0.371,0.042-0.625,0.042-0.999 c0-21.939-17.861-39.752-39.801-39.752c-11.266,0-21.444,4.669-28.678,12.218l9.127,9.09c4.914-5.203,11.864-8.451,19.563-8.451 c14.829,0,26.9,12.065,26.9,26.894c0,0.375-0.005,0.627-0.021,0.999h-10.432l16.875,16.877L254,88.319H243.604z M187.389,88.319 l-16.875-16.637l-16.822,16.637h10.42c0.596,21.423,18.17,38.791,39.734,38.791c10.683,0,20.408-4.233,27.56-11.112l-9.132-9.096 c-4.816,4.537-11.297,7.317-18.418,7.317c-14.454,0-26.311-11.584-26.9-25.901H187.389z"></path>
+          </svg>
+          <h1 class="text-indigo-950 text-xl md:text-2xl font-extrabold uppercase tracking-tight">Mis Préstamos</h1>
+        </div>
+        <a href="{% url 'loan_history' %}" class="inline-flex items-center px-6 py-2.5 bg-indigo-600 text-white font-bold rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 active:scale-95 text-sm">
+          <svg class="size-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Ver Historial
+        </a>
       </div>
-      <div class="flex justify-end -mt-10">
-        <a href="{% url 'loan_history' %}" class="px-3 py-2 bg-blue-600 text-white rounded">Ver historial de devoluciones</a>
-      </div>
-      </div>
+    </div>
       {% if loans and loans.object_list %}
         <ul class="space-y-3" id="loans-list">
           {% for loan in loans.object_list %}
@@ -46,41 +51,42 @@
 
     // Modal para devolver con reporte y puntuaciones
     var returnModalHtml = `
-      <div id="return-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-lg w-11/12 max-w-xl p-6 m-auto mt-20">
-          <h3 class="text-lg font-semibold mb-3">Devolver libro</h3>
-          <div id="return-error" class="text-sm text-red-600 hidden mb-2"></div>
-          <div class="mb-3">
-            <label class="block text-sm">Reporte del estado del Libro</label>
-            <textarea id="return_report" class="w-full border rounded p-2" rows="4"></textarea>
+      <div id="return-modal" class="fixed inset-0 bg-indigo-950/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="glass-card rounded-3xl w-full max-w-xl p-8 shadow-2xl border border-white/50 backdrop-blur-3xl overflow-hidden relative">
+          <div class="absolute top-0 left-0 w-full h-2 bg-indigo-600"></div>
+          <h3 class="text-2xl font-extrabold text-indigo-950 mb-6 uppercase tracking-tight">Devolver libro</h3>
+          <div id="return-error" class="bg-red-50 text-red-600 p-3 rounded-xl text-sm font-medium hidden mb-4 border border-red-100"></div>
+          <div class="mb-6">
+            <label class="block text-xs font-bold text-indigo-900/60 uppercase tracking-widest mb-2">Reporte del estado del Libro</label>
+            <textarea id="return_report" class="w-full glass-card rounded-2xl p-4 border-white/50 focus:ring-2 focus:ring-indigo-400 placeholder:text-gray-400 text-gray-800" rows="3" placeholder="Describe el estado físico del libro..."></textarea>
           </div>
-          <div class="grid grid-cols-2 gap-3 mb-3">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div>
-              <label class="block text-sm">Calificación de estado del libro</label>
-              <select id="return_book_rating" class="w-full border rounded p-2">
-                <option value="">--</option>
-                <option value="1">1 - Pésimo</option>
-                <option value="2">2 - Malo</option>
-                <option value="3">3 - Regular</option>
-                <option value="4">4 - Bueno</option>
-                <option value="5">5 - Excelente</option>
+              <label class="block text-xs font-bold text-indigo-900/60 uppercase tracking-widest mb-2">Calificación Libro</label>
+              <select id="return_book_rating" class="w-full glass-card rounded-2xl p-4 border-white/50 focus:ring-2 focus:ring-indigo-400 bg-white/20">
+                <option value="">-- Seleccionar --</option>
+                <option value="1">⭐ Pésimo</option>
+                <option value="2">⭐⭐ Malo</option>
+                <option value="3">⭐⭐⭐ Regular</option>
+                <option value="4">⭐⭐⭐⭐ Bueno</option>
+                <option value="5">⭐⭐⭐⭐⭐ Excelente</option>
               </select>
             </div>
             <div>
-              <label class="block text-sm">Calificación Usuario</label>
-              <select id="return_receiver_rating" class="w-full border rounded p-2">
-                <option value="">--</option>
-                <option value="1">1 - Pésimo</option>
-                <option value="2">2 - Malo</option>
-                <option value="3">3 - Regular</option>
-                <option value="4">4 - Bueno</option>
-                <option value="5">5 - Excelente</option>
+              <label class="block text-xs font-bold text-indigo-900/60 uppercase tracking-widest mb-2">Calificación Usuario</label>
+              <select id="return_receiver_rating" class="w-full glass-card rounded-2xl p-4 border-white/50 focus:ring-2 focus:ring-indigo-400 bg-white/20">
+                <option value="">-- Seleccionar --</option>
+                <option value="1">⭐ Pésimo</option>
+                <option value="2">⭐⭐ Malo</option>
+                <option value="3">⭐⭐⭐ Regular</option>
+                <option value="4">⭐⭐⭐⭐ Bueno</option>
+                <option value="5">⭐⭐⭐⭐⭐ Excelente</option>
               </select>
             </div>
           </div>
-          <div class="flex justify-end gap-2">
-            <button id="return-cancel" class="px-4 py-2 border rounded">Cancelar</button>
-            <button id="return-submit" class="px-4 py-2 bg-green-600 text-white rounded">Enviar devolución</button>
+          <div class="flex flex-col md:flex-row justify-end gap-3">
+            <button id="return-cancel" class="px-6 py-3 border-2 border-indigo-100 rounded-full font-bold text-indigo-900 hover:bg-white/40 transition-colors">Cancelar</button>
+            <button id="return-submit" class="px-8 py-3 bg-indigo-600 text-white font-bold rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 active:scale-95">Enviar devolución</button>
           </div>
         </div>
       </div>`;

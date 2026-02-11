@@ -3,13 +3,13 @@
 {% load static %}
 
 {% block content %}
-<body class="">
+<main class="min-h-screen">
 
-<div class="px-40 flex flex-1 justify-center py-5 bg-[url(/static/fondoindex.jpg)] bg-repeat bg-top">
+<div class="flex flex-1 justify-center py-5 md:py-10 px-4 md:px-0">
   
-          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+          <div class="layout-content-container flex flex-col max-w-[960px] flex-1 w-full">
 
-            <div class="w-full mx-auto rounded-lg bg-gray-100 shadow-lg p-10 text-gray-800 relative overflow-hidden  min-w-80 max-w-4xl" x-data="app()" x-init="generatePassword()">
+            <div class="w-full mx-auto rounded-3xl glass-card shadow-2xl p-6 md:p-10 text-gray-800 relative overflow-hidden" x-data="app()" x-init="generatePassword()">
               <!-- Título de bienvenida según tipo de usuario -->
             <div class="mb-8">
               <h1 class="text-3xl font-bold text-center">
@@ -41,94 +41,64 @@
         </form>
     </div>
 
-
-
-            <div class="flex overflow-y-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
-              <div class="flex items-stretch p-4 gap-3">
-                <div class="flex h-full flex-1 flex-col gap-1 rounded-lg min-w-60">
-                  <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg flex flex-col">
-                    <img src="{% static 'fondobody.jpg' %}" class="size-80 object-cover rounded-lg" alt="">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+                <!-- Book Section -->
+                <div class="flex h-full flex-col gap-4 rounded-3xl glass-card p-0 border border-white/40 shadow-xl transition-transform hover:scale-[1.02] relative overflow-hidden bg-gradient-to-br from-indigo-50/40 to-cyan-50/40">
+                  <div class="w-full h-2 flex">
+                    <div class="h-2 bg-[#8ae4ff] flex-1"></div>
+                    <div class="h-2 bg-[#9BBBFC] flex-1"></div>
+                    <div class="h-2 bg-[#F9CE69] flex-1"></div>
+                  </div>
+                  <div class="p-6 pt-2 space-y-4">
+                    <div class="w-full aspect-video rounded-xl overflow-hidden shadow-inner border border-white/20">
+                      <img src="{% static 'fondobody.jpg' %}" class="w-full h-full object-cover" alt="">
                     </div>
-                  <div class="flex flex-wrap items-center justify-center gap-2 @[480px]:flex-row @[480px]:justify-around bg-[#8ae4ff] rounded-lg p-4">
-                    <p class="text-[#000000] text-base font-medium leading-normal">¡Consigue Libros de Medicina!</p>
-                    <p class="text-[#000000] text-sm font-normal leading-normal">Explora los avances de la medicina en Venezuela. Los libros en una biblioteca son el corazón del conocimiento y la imaginación, ofreciendo un acceso ilimitado a saberes, historias y descubrimientos que enriquecen vidas. Son herramientas esenciales para la educación, el desarrollo cultural y la innovación, conectando a las personas con su pasado y abriendo puertas hacia el futuro.</p>
+                    <div class="flex flex-col gap-3 text-center">
+                      <p class="text-indigo-950 text-xl font-black uppercase tracking-tight">Libros de Medicina</p>
+                      <p class="text-indigo-900/80 text-sm font-medium leading-relaxed">Explora los avances de la medicina en Venezuela. Los libros son el corazón del conocimiento e investigación.</p>
+                    </div>
                   </div>
                 </div>
-                <div class="flex h-full flex-1 flex-col gap-1 rounded-lg min-w-60">
-                  <div
-                    class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg flex flex-col">
-                    <img src="{% static 'imagen2.jpg' %}" class="size-80 object-cover rounded-lg" alt="">
-                </div>
-                  <div class="flex flex-wrap items-center justify-center gap-2 @[480px]:flex-row @[480px]:justify-around bg-[#9bbbfc] rounded-lg p-4">
-                    <p class="text-[#000000] text-base font-medium leading-normal">¡Revistas Actuales!</p>
-                    <p class="text-[#000000] text-sm font-normal leading-normal">Las revistas médicas son fundamentales para el avance de la ciencia y la salud, ya que difunden investigaciones actualizadas, descubrimientos y mejores prácticas que impactan directamente en el bienestar de la sociedad. Son una fuente confiable de información para profesionales de la salud, investigadores y estudiantes, fomentando la innovación médica y la toma de decisiones basadas en evidencia.</p>
+                <!-- Magazine Section -->
+                <div class="flex h-full flex-col gap-4 rounded-3xl glass-card p-0 border border-white/40 shadow-xl transition-transform hover:scale-[1.02] relative overflow-hidden bg-gradient-to-br from-blue-50/40 to-indigo-50/40">
+                  <div class="w-full h-2 flex">
+                    <div class="h-2 bg-[#8ae4ff] flex-1"></div>
+                    <div class="h-2 bg-[#9BBBFC] flex-1"></div>
+                    <div class="h-2 bg-[#F9CE69] flex-1"></div>
+                  </div>
+                  <div class="p-6 pt-2 space-y-4">
+                    <div class="w-full aspect-video rounded-xl overflow-hidden shadow-inner border border-white/20">
+                      <img src="{% static 'imagen2.jpg' %}" class="w-full h-full object-cover" alt="">
+                    </div>
+                    <div class="flex flex-col gap-3 text-center">
+                      <p class="text-blue-950 text-xl font-black uppercase tracking-tight">Revistas Actuales</p>
+                      <p class="text-blue-900/80 text-sm font-medium leading-relaxed">Difusión de investigaciones actualizadas y mejores prácticas académicas internacionales.</p>
+                    </div>
                   </div>
                 </div>
-                <div class="flex h-full flex-1 flex-col gap-1 rounded-lg min-w-60">
-                  <div
-                    class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg flex flex-col">
-                    <img src="{% static 'fondopagina.jpg' %}" class="size-80 object-cover rounded-lg" alt="">
-                </div>
-                  <div class="flex flex-wrap items-center justify-center gap-2 @[480px]:flex-row @[480px]:justify-around bg-[#f9ce69] rounded-lg p-4">
-                    <p class="text-[#000000] text-base font-medium leading-normal">Tesis Medicas</p>
-                    <p class="text-[#000000] text-sm font-normal leading-normal">Las tesis nacionales representan un valioso recurso académico que recoge el esfuerzo, la dedicación y el conocimiento generado por profesionales y estudiantes en salud. Estas investigaciones reflejan la realidad, los desafíos y las particularidades de nuestro país, aportando soluciones y avances científicos específicos para mejorar la atención médica y las políticas de salud en Venezuela.</p>
+                <!-- Thesis Section -->
+                <div class="flex h-full flex-col gap-4 rounded-3xl glass-card p-0 border border-white/40 shadow-xl transition-transform hover:scale-[1.02] relative overflow-hidden bg-gradient-to-br from-amber-50/40 to-orange-50/40">
+                  <div class="w-full h-2 flex">
+                    <div class="h-2 bg-[#8ae4ff] flex-1"></div>
+                    <div class="h-2 bg-[#9BBBFC] flex-1"></div>
+                    <div class="h-2 bg-[#F9CE69] flex-1"></div>
+                  </div>
+                  <div class="p-6 pt-2 space-y-4">
+                    <div class="w-full aspect-video rounded-xl overflow-hidden shadow-inner border border-white/20">
+                      <img src="{% static 'fondopagina.jpg' %}" class="w-full h-full object-cover" alt="">
+                    </div>
+                    <div class="flex flex-col gap-3 text-center">
+                      <p class="text-amber-950 text-xl font-black uppercase tracking-tight">Tesis Médicas</p>
+                      <p class="text-amber-900/80 text-sm font-medium leading-relaxed">Investigaciones originales que reflejan los desafíos de la salud en nuestro país.</p>
+                    </div>
                   </div>
                 </div>
-              </div>
             </div>
-           <!-- <h2 class="text-[#111518] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Acceso Rápido</h2>
-            <div class="flex justify-stretch">
-              <div class="flex flex-1 gap-3 flex-wrap px-4 py-3 justify-between">
-                <button
-                  class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#4741a6] text-white text-sm font-bold leading-normal tracking-[0.015em]"
-                >
-                  <span class="truncate">Sobre Nosotros</span>
-                </button>
-                <button
-                  class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#4741a6] text-white text-sm font-bold leading-normal tracking-[0.015em]"
-                >
-                  <span class="truncate">Visítenos</span>
-                </button>
-              </div>
-            </div>
-            <div class="flex justify-stretch">
-              <div class="flex flex-1 gap-3 flex-wrap px-4 py-3 justify-between">
-                <button
-                  class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#4741a6] text-white text-sm font-bold leading-normal tracking-[0.015em]"
-                >
-                  <span class="truncate">Miembros</span>
-                </button>
-                <button
-                  class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#4741a6] text-white text-sm font-bold leading-normal tracking-[0.015em]"
-                >
-                  <span class="truncate">Colecciones</span>
-                </button>
-              </div>
-            </div>
-            <div class="flex justify-stretch">
-              <div class="flex flex-1 gap-3 flex-wrap px-4 py-3 justify-between">
-                <button
-                  class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#4741a6] text-white text-sm font-bold leading-normal tracking-[0.015em]"
-                >
-                  <span class="truncate">Servicios</span>
-                </button>
-                <button
-                  class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#4741a6] text-white text-sm font-bold leading-normal tracking-[0.015em]"
-                >
-                  <span class="truncate">Contáctenos</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>-->
-        <footer class="flex justify-center">
+
+        <footer class="flex justify-center mt-10">
           <div class="flex max-w-[960px] flex-1 flex-col">
             <footer class="flex flex-col gap-6 px-5 py-3 text-center @container">
-              <div class="flex flex-wrap items-center justify-center gap-6 @[480px]:flex-row @[480px]:justify-around">
-               <!-- <a class="text-[#637c88] text-base font-normal leading-normal min-w-40" href="#">Contáctenos</a>
-                <a class="text-[#637c88] text-base font-normal leading-normal min-w-40" href="#">Política de Privacidad</a>
-                <a class="text-[#637c88] text-base font-normal leading-normal min-w-40" href="#">Términos y condiciones</a>
-                <a class="text-[#637c88] text-base font-normal leading-normal min-w-40" href="#">Mapa</a>-->
+              <div class="flex flex-wrap items-center justify-center gap-6">
               </div>
               <div class="flex flex-wrap justify-center gap-4">
                 <a href="https://x.com/acamedve1?lang=es">
@@ -152,8 +122,8 @@
         </footer>
       </div>
     </div>
-  </body>
-  {% endblock %}
+</main>
+{% endblock %}
 
 
 

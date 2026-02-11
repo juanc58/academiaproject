@@ -1,9 +1,10 @@
 <!-- Iniciar sesion -->
 {% extends "base.html" %}
 
+{% block body_class %}bg-auth{% endblock %}
+
 {% block content %}
-<main class="bg-[url(/static/fondoregistro.jpg)] bg-origin-border bg-cover bg-no-repeat bg-center">
-  <div>
+<main class="min-h-screen py-10 px-4 md:px-0">
     <section>
 <form action="/signin/" method="POST">
 
@@ -12,7 +13,7 @@
   class="min-w-screen min-h-screen flex items-center justify-center px-5 py-5"
 >
   <div
-    class="bg-gray-100 text-gray-500 rounded-3xl shadow-xl w-full overflow-hidden"
+    class="glass-card text-gray-700 rounded-3xl shadow-2xl w-full overflow-hidden backdrop-blur-2xl border border-white/30"
     style="max-width: 1000px"
   >
     <div class="md:flex w-full">

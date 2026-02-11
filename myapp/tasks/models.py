@@ -49,6 +49,7 @@ class CustomUserManager(UserManager):
 #usuario personalizado
 
 class User(AbstractUser):
+
     segundo_nombre = models.CharField("segundo nombre", max_length=150, blank=True)
     segundo_apellido = models.CharField("segundo apellido", max_length=150, blank=True)
     cedula = models.BigIntegerField("cedula", unique=True, null=True, blank=False)
@@ -240,9 +241,13 @@ class UserSecurity(models.Model):
 class Prestamo(models.Model):
     STATUS_ACTIVE = 'active'
     STATUS_RETURNED = 'returned'
+    STATUS_PENDING = 'pending'
+    STATUS_RETURN_PENDING = 'return_pending'
     STATUS_CHOICES = [
         (STATUS_ACTIVE, 'Activo'),
         (STATUS_RETURNED, 'Devuelto'),
+        (STATUS_PENDING, 'Pendiente Aprobación'),
+        (STATUS_RETURN_PENDING, 'Pendiente Devolución'),
     ]
 
     book = models.ForeignKey('Libros', on_delete=models.CASCADE, related_name='prestamos')

@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="px-4 md:px-8 py-8 min-h-screen">
+  <div class="container mx-auto max-w-6xl">
+    <div class="glass-card shadow-2xl rounded-3xl p-6 md:p-10 mb-8 border border-white/30 backdrop-blur-2xl">
+      <h1 class="text-indigo-950 text-xl md:text-3xl font-extrabold uppercase tracking-tight mb-8">Centro de Solicitudes</h1>
+
+      {# SECCIÓN 1: CARRITO (Sólo si NO es staff o si el staff tiene algo en su carrito personal) #}
+      {% if cart_books %}
+      <section class="mb-12">
+        <h2 class="text-lg md:text-xl font-bold mb-6 text-indigo-700 uppercase tracking-widest flex items-center gap-3">
+            <div class="p-2 glass-card rounded-lg bg-indigo-50/50 shadow-sm">
+                <svg class="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+            </div>
+            Nuevas Solicitudes
+        </h2>
+        <div class="space-y-3">
+          {% for book in cart_books %}
+          <div class="flex items-center justify-between glass-card p-4 rounded-2xl bg-white/40 shadow-sm border-white/50 group transition-all hover:bg-white/60">
+            <div class="flex items-center gap-4">
+              {% if book.portada %}
+                <img src="{{ book.portada.url }}" class="w-12 h-16 object-cover rounded shadow-sm">
+              {% endif %}
+              <div>
+                <div class="font-medium text-indigo-900">{{ book.titulo }}</div>
+                <div class="text-xs text-gray-500">Cota: {{ book.cota }} | Disponibles: {{ book.disponible }}</div>
+              </div>
+            </div>
+            <form method="POST" action="{% url 'cart_remove' book.id %}">
+              {% csrf_token %}
+              <button class="text-red-500 hover:text-red-700 text-sm font-bold">Quitar</button>
+            </form>
+          </div>
+          {% endfor %}
+        </div>
+        
+        <div class="mt-8 p-6 glass-card rounded-2xl border-white/50 border shadow-inner">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="text-sm font-medium text-indigo-900/70">
+                    <span class="text-xs uppercase font-bold tracking-widest text-gray-400 block mb-1">Responsable</span>
+                    {{ user.first_name }} {{ user.last_name }} <span class="text-gray-400">({{ user.cedula }})</span>
+                </div>
+                <form method="POST" action="{% url 'cart_checkout' %}" class="w-full md:w-auto">
+                    {% csrf_token %}
+                    <button type="submit" class="w-full md:w-auto bg-indigo-600 text-white px-8 py-3 rounded-full font-extrabold shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 active:scale-95 uppercase tracking-wide text-sm">
+                        Confirmar Peticiones
+                    </button>
+                </form>
+            </div>
+        </div>
+      </section>
+      {% endif %}
+
+      {# SECCIÓN 2: SOLICITUDES PENDIENTES #}
+      <section>
+        <h2 class="text-lg md:text-xl font-bold mb-6 text-green-700 uppercase tracking-widest flex items-center gap-3">
+            <div class="p-2 glass-card rounded-lg bg-green-50/50 shadow-sm">
+                <svg class="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+            {% if is_staff %}Revisiones Pendientes{% else %}Mis Solicitudes Enviadas{% endif %}
+        </h2>
+
+        {% if pending_loans and pending_loans.object_list %}
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 border">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Libro</th>
+                  {% if is_staff %}<th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Solicitante</th>{% endif %}
+                  <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
+                  <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Acciones</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                {% for loan in pending_loans.object_list %}
+                <tr class="hover:bg-gray-50">
+                  <td class="px-4 py-3">
+                    <div class="text-sm font-medium text-gray-900">{{ loan.book.titulo }}</div>
+                    <div class="text-xs text-gray-500">{{ loan.book.cota }}</div>
+                  </td>
+                  {% if is_staff %}
+                  <td class="px-4 py-3">
+                    <div class="text-sm text-gray-900 font-medium">{{ loan.user.get_full_name|default:loan.user.username }}</div>
+                    <div class="text-xs text-gray-500">CI: {{ loan.user.cedula }}</div>
+                  </td>
+                  {% endif %}
+                  <td class="px-4 py-3">
+                    <span class="px-2 py-1 text-xs font-bold leading-5 text-yellow-800 bg-yellow-100 rounded-full">Pendiente</span>
+                  </td>
+                  <td class="px-4 py-3 text-sm">
+                    {% if is_staff %}
+                    <div class="flex gap-3">
+                      <form action="{% url 'loan_approve' loan.id %}" method="POST">
+                        {% csrf_token %}
+                        <button class="text-green-600 hover:text-green-900 font-bold border border-green-600 px-2 rounded">Aprobar</button>
+                      </form>
+                      <form action="{% url 'loan_reject' loan.id %}" method="POST">
+                        {% csrf_token %}
+                        <button class="text-red-600 hover:text-red-900 font-bold border border-red-600 px-2 rounded">Rechazar</button>
+                      </form>
+                    </div>
+                    {% else %}
+                    <span class="text-gray-400">Esperando revisión</span>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          
+          {% if pending_loans.paginator.num_pages > 1 %}
+          <div class="mt-4 flex justify-center text-sm">
+              <nav class="inline-flex items-center -space-x-px">
+                {% if pending_loans.has_previous %}
+                  <a href="?page={{ pending_loans.previous_page_number }}" class="px-3 py-1 border rounded-l hover:bg-gray-50">Anterior</a>
+                {% endif %}
+                <span class="px-3 py-1 border text-gray-500">Pág {{ pending_loans.number }} de {{ pending_loans.paginator.num_pages }}</span>
+                {% if pending_loans.has_next %}
+                  <a href="?page={{ pending_loans.next_page_number }}" class="px-3 py-1 border rounded-r hover:bg-gray-50">Siguiente</a>
+                {% endif %}
+              </nav>
+          </div>
+          {% endif %}
+
+        {% else %}
+          <div class="p-8 text-center text-gray-500 border-2 border-dashed rounded bg-gray-50">
+            {% if is_staff %}No hay solicitudes pendientes de aprobación.{% else %}No tienes solicitudes en curso.{% endif %}
+          </div>
+        {% endif %}
+      </section>
+    </div>
+  </div>
+</main>
+{% endblock %}

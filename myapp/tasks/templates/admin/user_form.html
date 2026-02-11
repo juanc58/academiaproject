@@ -112,6 +112,16 @@
           {% if form.security_answer.errors %}<p class="text-sm text-red-600">{{ form.security_answer.errors|join:", " }}</p>{% endif %}
         </div>
         {% endif %}
+        
+        {% if form.is_staff %}
+        <div>
+          <label class="inline-flex items-center gap-2">
+            {{ form.is_staff }}
+            <span class="text-sm font-medium text-gray-700 font-bold">Trabajador</span>
+          </label>
+          {% if form.is_staff.errors %}<p class="text-sm text-red-600">{{ form.is_staff.errors|join:", " }}</p>{% endif %}
+        </div>
+        {% endif %}
 
         {% if form.is_superuser %}
         <div>

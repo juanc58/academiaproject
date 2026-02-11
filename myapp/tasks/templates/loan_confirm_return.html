@@ -5,10 +5,43 @@
     <div class="bg-white shadow rounded-lg p-6">
       <h2 class="text-xl font-semibold mb-4">Confirmar devolución</h2>
       <p>¿Desea marcar como devuelto el préstamo de <strong>{{ loan.book.titulo }}</strong> (cantidad: {{ loan.cantidad }})?</p>
-      <form method="POST">
+      <form method="POST" class="space-y-4">
         {% csrf_token %}
-        
+        {% if user.is_staff or user.is_superuser %}
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Reporte del estado del Libro</label>
+          <textarea name="return_report" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" rows="3"></textarea>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Calificación Libro</label>
+            <select name="return_book_rating" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+              <option value="">-- Seleccionar --</option>
+              <option value="1">1 - Pésimo</option>
+              <option value="2">2 - Malo</option>
+              <option value="3">3 - Regular</option>
+              <option value="4">4 - Bueno</option>
+              <option value="5">5 - Excelente</option>
+            </select>
           </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Calificación Usuario</label>
+            <select name="return_receiver_rating" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+              <option value="">-- Seleccionar --</option>
+              <option value="1">1 - Pésimo</option>
+              <option value="2">2 - Malo</option>
+              <option value="3">3 - Regular</option>
+              <option value="4">4 - Bueno</option>
+              <option value="5">5 - Excelente</option>
+            </select>
+          </div>
+        </div>
+        {% else %}
+        <p class="text-sm text-gray-600 mb-4">Al confirmar, se enviará una solicitud de devolución para que sea procesada por el personal.</p>
+        {% endif %}
+        <div class="flex justify-end gap-3 mt-6">
+          <a href="{% url 'return_requests' %}" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">Cancelar</a>
+          <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">Confirmar Devolución</button>
         </div>
       </form>
     </div>

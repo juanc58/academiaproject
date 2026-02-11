@@ -12,21 +12,46 @@
     <title>S.A.N.M</title>
     <link rel="icon" type="image/x-icon" href="/static/logo.png" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style>
+      .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+      .bg-global {
+        background-image: url('/static/fondoindex.jpg');
+        background-repeat: repeat;
+        background-position: top center;
+      }
+      .bg-auth {
+        background-image: url('/static/fondoregistro.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+      }
+      @media (max-width: 480px) {
+        .layout-container {
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+      }
+    </style>
   </head>
-  <body>
-    <div class="relative flex size-full min-h-screen flex-col bg-white group/design-root overflow-x-hidden" style='font-family: "Public Sans", "Noto Sans", sans-serif;'>
+  <body class="{% block body_class %}bg-global{% endblock %} min-h-screen">
+    <div class="relative flex size-full min-h-screen flex-col group/design-root overflow-x-hidden" style='font-family: "Public Sans", "Noto Sans", sans-serif;'>
       <div class="layout-container flex h-full grow flex-col">
-        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#dfe1e1] px-10 py-3">
+        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#dfe1e1] px-4 md:px-10 py-3 glass-card sticky top-0 z-50">
           <div class="flex items-center gap-10">
             <div class="flex items-center gap-2 text-[#111518]">
-              <div class="size-12">
+              <div class="size-20">
                 <a href="/">
-                  <img src="{% static 'logocompleto.jpeg' %}"/>
+                  <img src="{% static 'logo.png' %}"/>
                 </a>
               </div>
-              <h2 class="text-[#111518] text-lg font-bold leading-tight tracking-[-0.015em]">Biblioteca A.N.M</h2>
+              <h2 class="text-[#111518] text-base md:text-lg font-bold leading-tight tracking-[-0.015em]">Biblioteca A.N.M</h2>
             </div>
-            <div class="flex items-center gap-1">
+            <div class="flex items-center gap-2 md:gap-4 overflow-x-auto no-scrollbar pb-1 md:pb-0">
 
               <a href="/"><svg alt="" class="size-8 object-cover" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0L0 6V8H1V15H4V10H7V15H15V8H16V6L14 4.5V1H11V2.25L8 0ZM9 10H12V13H9V10Z" fill="#9bbbfc"></path> </g></svg></a>
 
@@ -36,24 +61,14 @@
               {% if user.is_authenticated %}
 
                 <div class="flex items-center gap-1">
-                <a href="/tasks">
-              <svg class="size-8 object-cover" version="1.1" id="Icons-tasks" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve" fill="#4741A6" stroke="#4741A6">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                  <path fill="none" stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26,3H9C7.3,3,6,4.3,6,6v0c0,1.7,1.3,3,3,3h17v10"></path>
-                  <path fill="none" stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M18,29H9c-1.7,0-3-1.3-3-3v0V6"></path>
-                  <line stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="26" y1="6" x2="9" y2="6"></line>
-                  <line stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="9" x2="10" y2="29"></line>
-                  <path fill="none" stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M25.5,18.5c1.9,1.9,1.9,5.1,0,7c-0.5,0.5-1,0.8-1.6,1.1c-1.8,0.7-3.9,0.4-5.4-1.1c-1.9-1.9-1.9-5.1,0-7 S23.6,16.6,25.5,18.5z"></path>
-                  <path fill="none" stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.5,24l3.9,3.6c0.8,0.8,0.8,2,0,2.8l0,0c-0.8,0.8-2,0.8-2.8,0l-3.5-3.5"></path>
-                </g>
-              </svg>
+                <a href="/tasks" title="Libros">
+              <svg class="size-8 object-cover" version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve" fill="#4741A6" stroke="#4741A6"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:none;stroke:#4741A6;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} </style> <path class="st0" d="M26,3H9C7.3,3,6,4.3,6,6v0c0,1.7,1.3,3,3,3h17v10"></path> <path class="st0" d="M18,29H9c-1.7,0-3-1.3-3-3v0V6"></path> <line class="st0" x1="26" y1="6" x2="9" y2="6"></line> <line class="st0" x1="10" y1="9" x2="10" y2="29"></line> <path class="st0" d="M25.5,18.5c1.9,1.9,1.9,5.1,0,7c-0.5,0.5-1,0.8-1.6,1.1c-1.8,0.7-3.9,0.4-5.4-1.1c-1.9-1.9-1.9-5.1,0-7 S23.6,16.6,25.5,18.5z"></path> <path class="st0" d="M26.5,24l3.9,3.6c0.8,0.8,0.8,2,0,2.8l0,0c-0.8,0.8-2,0.8-2.8,0l-3.5-3.5"></path> </g></svg>
               </a>
                 </div>
 
+                {% if user.is_staff or user.is_superuser %}
                 <div class="flex items-center gap-1">
-                <a href="{% url 'create_task' %}">
+                <a href="{% url 'create_task' %}" title="Crear Libro">
                 <svg class="size-8 object-cover" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M26,3H9C7.3,3,6,4.3,6,6v0c0,1.7,1.3,3,3,3h17v8" stroke="#8ae4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   <path d="M19,29H9c-1.7,0-3-1.3-3-3v0V6" stroke="#8ae4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -64,46 +79,56 @@
                   <line x1="21" y1="24" x2="27" y2="24" stroke="#8ae4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 </a>
-                
                 </div>
+                {% endif %}
 
-              <div class="flex items-center gap-1">
-              <a href="/dashboard">
-              <svg class="size-8 object-cover" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 9H6" stroke="#F9CE69" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M15.5 11C14.1193 11 13 9.88071 13 8.5C13 7.11929 14.1193 6 15.5 6C16.8807 6 18 7.11929 18 8.5C18 9.88071 16.8807 11 15.5 11Z" stroke="#F9CE69" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 6H9" stroke="#F9CE69" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M18 18L13.5 15L11 17L6 13" stroke="#F9CE69" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 20.4V3.6C3 3.26863 3.26863 3 3.6 3H20.4C20.7314 3 21 3.26863 21 3.6V20.4C21 20.7314 20.7314 21 20.4 21H3.6C3.26863 21 3 20.7314 3 20.4Z" stroke="#F9CE69" stroke-width="1.5"></path> </g></svg>
-              </a>
-
-              </div>
-
-              <div class="flex items-center gap-1">
-                
-              <a href="{% url 'task_list' %}"><svg class="size-10 object-cover" fill="#66e8ea" viewBox="0 0 50 50" version="1.2" baseProfile="tiny" xmlns="http://www.w3.org/2000/svg" overflow="inherit"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M25.154 17.347c3.953 0 7.144-3.217 7.144-7.183 0-3.958-3.19-7.164-7.144-7.164-3.948 0-7.153 3.207-7.153 7.164 0 3.965 3.206 7.183 7.153 7.183zm6.951 1.653c3.271 0 4.644 2.794 4.644 2.794l10.557 14.545c.437.649.694 1.443.694 2.3 0 2.26-1.828 4.097-4.081 4.097-.539 0-1.061-.117-1.519-.295l-6.4-1.774v6.333h-22v-6.333l-6.402 1.777c-.45.176-.968.296-1.509.296-2.251 0-4.088-1.83-4.088-4.09 0-.856.253-1.637.706-2.288l10.55-14.568s1.372-2.794 4.629-2.794h14.219zm-7.099 23.588l8.246-2.74-.179-.05c-5.705-1.672-3.518-9.228 2.173-7.537l.754.268v-8.521l-10.989 3.623-11.011-3.623v8.521l.754-.269c5.688-1.69 7.898 5.865 2.197 7.537l-.2.05 8.255 2.741z"></path></g></svg></a>
-
-              </div>
-              
-              <div class="flex items-center gap-1">
-                
-                <a href="{% url 'my_loans' %}"><svg class="size-12 object-cover" fill="#77df83" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 256 190" enable-background="new 0 0 256 190" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M48.12,27.903C48.12,13.564,59.592,2,74.023,2c14.339,0,25.903,11.564,25.903,25.903 C99.834,42.335,88.27,53.806,74.023,53.806C59.684,53.806,48.12,42.242,48.12,27.903z M191,139h-47V97c0-20.461-17.881-37-38-37H43 C20.912,60,1.99,79.14,2,98v77c-0.026,8.533,6.001,12.989,12,13c6.014,0.011,12-4.445,12-13v-75h8v88h78v-88h8l0.081,50.37 c-0.053,8.729,5.342,12.446,10.919,12.63h60C207.363,163,207.363,139,191,139z M243.604,88.319c0.011-0.371,0.042-0.625,0.042-0.999 c0-21.939-17.861-39.752-39.801-39.752c-11.266,0-21.444,4.669-28.678,12.218l9.127,9.09c4.914-5.203,11.864-8.451,19.563-8.451 c14.829,0,26.9,12.065,26.9,26.894c0,0.375-0.005,0.627-0.021,0.999h-10.432l16.875,16.877L254,88.319H243.604z M187.389,88.319 l-16.875-16.637l-16.822,16.637h10.42c0.596,21.423,18.17,38.791,39.734,38.791c10.683,0,20.408-4.233,27.56-11.112l-9.132-9.096 c-4.816,4.537-11.297,7.317-18.418,7.317c-14.454,0-26.311-11.584-26.9-25.901H187.389z"></path> </g></svg></a>
-              </div>
-
-              <div class="flex items-center gap-1">
-                <a href="{% url 'dictionary' %}">
-                <svg class="size-8 object-cover" fill="#ec1818" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 459.319 459.319" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M141.288,189.821h-23.685V145.28h23.528v-23.69h21.016v23.374h23.681v44.707h-23.681v0.151H141.288z M60.801,398.87 c0.012,1.1,0.03,1.921,0.042,2.459c0.006,0.331-0.053,0.638-0.071,0.963c0.739,18.224,15.755,32.817,34.146,32.817h303.76v-33.461 c0-6.68,5.421-12.105,12.105-12.105c6.679,0,12.105,5.426,12.105,12.105v45.565c0,6.686-5.427,12.105-12.105,12.105H93.091 c-0.629,0-1.235-0.089-1.847-0.183c-30.505-1.91-54.757-27.261-54.757-58.245c0-0.71,0.085-1.396,0.109-2.099 c-0.375-35.943,0-309.36,0.042-339.109c-0.047-0.423-0.127-0.827-0.127-1.259C36.511,26.205,62.719,0,94.938,0h19.343h293.535 h2.955c6.685,0,12.105,5.423,12.105,12.105v342.139c0,6.679-5.421,12.104-12.105,12.104c-0.071,0-0.13-0.023-0.201-0.023 c-0.887,0.213-1.82,0.354-2.772,0.354H94.918C76.736,366.674,61.859,380.948,60.801,398.87z M278.347,121.59h94.425v20.862h-23.685 v23.69h-23.525v23.685h-23.69v23.533h-23.536v49.882h120.792v-26.209h-94.584v-20.859h23.69V192.49h23.525v-23.69h23.689V145.28 h23.679V95.237h-120.78V121.59z M224.949,192.49h56.265v-26.353h-56.265V192.49z M91.41,263.229h26.2v-47.056h23.679v-0.15h44.54 v47.219h26.354v-120.79h-23.688v-23.841H164.81V95.237h-26.202v23.684h-23.685v23.69H91.389v120.618H91.41z"></path> </g> </g></svg>
+                <div class="flex items-center gap-1">
+                <a href="{% url 'loan_requests' %}" title="Solicitudes (Carrito / Pendientes)">
+                <svg class="size-8 object-cover" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
                 </a>
-
                 </div>
 
                 <div class="flex items-center gap-1">
-                <a href="{% url 'reports_index' %}">
-                <svg class="size-9 object-cover" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M149.6 123.2c0 49.6 40 89.6 89.6 89.6h590.4c-6.4-11.2-12.8-25.6-17.6-43.2H492v-32h315.2c0-11.2 0-20.8 1.6-32H372v-32h444.8c3.2-12.8 9.6-27.2 16-41.6H239.2c-49.6 0-89.6 41.6-89.6 91.2z" fill="#ffffff"></path><path d="M239.2 244.8c-8 0-17.6-1.6-25.6-3.2-25.6-4.8-48-19.2-64-36.8v657.6c0 48 11.2 83.2 35.2 105.6 27.2 25.6 64 24 64 24h624V244.8H239.2z" fill="#ffffff"></path><path d="M906.4 32V0H239.2C172 0 117.6 54.4 117.6 121.6v740.8c0 57.6 16 100.8 46.4 129.6 32 30.4 70.4 32 83.2 32H906.4V212.8h-36.8c-8-8-62.4-68.8 0-180.8h36.8z m-89.6 41.6H372v32h436.8c-1.6 11.2-1.6 20.8-1.6 32H492v32h320c4.8 17.6 11.2 32 17.6 43.2H239.2c-49.6 0-89.6-40-89.6-89.6S189.6 32 239.2 32h593.6c-6.4 14.4-12.8 28.8-16 41.6z m56 918.4h-624s-36.8 1.6-64-24c-24-22.4-35.2-57.6-35.2-105.6V204.8c16 17.6 38.4 32 64 36.8 8 1.6 17.6 3.2 25.6 3.2h633.6V992z" fill=""></path><path d="M808.8 928V244.8H239.2c-9.6 0-17.6-1.6-25.6-3.2V928h595.2z" fill="#ee9211"></path><path d="M450.4 488a68.8 68.8 0 1 0 137.6 0 68.8 68.8 0 1 0-137.6 0Z" fill="#ffffff"></path><path d="M519.2 387.2c-56 0-100.8 44.8-100.8 100.8s44.8 100.8 100.8 100.8S620 544 620 488s-44.8-100.8-100.8-100.8z m0 169.6c-38.4 0-68.8-30.4-68.8-68.8s30.4-68.8 68.8-68.8S588 449.6 588 488s-30.4 68.8-68.8 68.8z" fill=""></path><path d="M642.4 752c-14.4-62.4-64-108.8-123.2-108.8S410.4 689.6 396 752h246.4z" fill="#ffffff"></path><path d="M519.2 611.2c-86.4 0-156.8 76.8-160 172.8h318.4c-1.6-96-72-172.8-158.4-172.8z m0 32c59.2 0 108.8 46.4 123.2 108.8H396c14.4-62.4 64-108.8 123.2-108.8z" fill=""></path></g></svg>
+                <a href="{% url 'return_requests' %}" title="Devoluciones (Activos / Historial)">
+                <svg class="size-8 object-cover" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                   <path d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" stroke="#facc15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
                 </a>
-              <div class="flex items-center gap-1" >
-              <a href="{% url 'user_guide' %}">
-              <svg class="size-8 object-cover ml-6" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#000000" fill-rule="evenodd" d="M10 3a7 7 0 100 14 7 7 0 000-14zm-9 7a9 9 0 1118 0 9 9 0 01-18 0zm8.423-3a.923.923 0 00-.923.923v.385a1 1 0 11-2 0v-.385A2.923 2.923 0 019.423 5H10c1.941 0 3.5 1.591 3.5 3.516 0 .927-.48 1.8-1.276 2.29l-1.7 1.046a1 1 0 01-1.048-1.704l1.7-1.046a.691.691 0 00.324-.586C11.5 7.679 10.82 7 10 7h-.577zm.587 8a1 1 0 100-2H10a1 1 0 100 2h.01z"></path> </g></svg>
-              </a>
                 </div>
-</div>
+
+                <div class="flex items-center gap-1">
+                <a href="{% url 'dictionary' %}" title="Diccionario">
+                <svg class="size-8 object-cover" fill="#ec1818" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 459.319 459.319" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M141.288,189.821h-23.685V145.28h23.528v-23.69h21.016v23.374h23.681v44.707h-23.681v0.151H141.288z M60.801,398.87 c0.012,1.1,0.03,1.921,0.042,2.459c0.006,0.331-0.053,0.638-0.071,0.963c0.739,18.224,15.755,32.817,34.146,32.817h303.76v-33.461 c0-6.68,5.421-12.105,12.105-12.105c6.679,0,12.105,5.426,12.105,12.105v45.565c0,6.686-5.427,12.105-12.105,12.105H93.091 c-0.629,0-1.235-0.089-1.847-0.183c-30.505-1.91-54.757-27.261-54.757-58.245c0-0.71,0.085-1.396,0.109-2.099 c-0.375-35.943,0-309.36,0.042-339.109c-0.047-0.423-0.127-0.827-0.127-1.259C36.511,26.205,62.719,0,94.938,0h19.343h293.535 h2.955c6.685,0,12.105,5.423,12.105,12.105v342.139c0,6.679-5.421,12.104-12.105,12.104c-0.071,0-0.13-0.023-0.201-0.023 c-0.887,0.213-1.82,0.354-2.772,0.354H94.918C76.736,366.674,61.859,380.948,60.801,398.87z M278.347,121.59h94.425v20.862h-23.685 v23.69h-23.525v23.685h-23.69v23.533h-23.536v49.882h120.792v-26.209h-94.584v-20.859h23.69V192.49h23.525v-23.69h23.689V145.28 h23.679V95.237h-120.78V121.59z M224.949,192.49h56.265v-26.353h-56.265V192.49z M91.41,263.229h26.2v-47.056h23.679v-0.15h44.54 v47.219h26.354v-120.79h-23.688v-23.841H164.81V95.237h-26.202v23.684h-23.685v23.69H91.389v120.618H91.41z"></path> </g> </g></svg>
+                </a>
+                </div>
+
+                {% if user.is_staff or user.is_superuser %}
+                <div class="flex items-center gap-1">
+                <a href="/dashboard" title="Estadistica">
+                <svg class="size-8 object-cover" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 9H6" stroke="#F9CE69" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M15.5 11C14.1193 11 13 9.88071 13 8.5C13 7.11929 14.1193 6 15.5 6C16.8807 6 18 7.11929 18 8.5C18 9.88071 16.8807 11 15.5 11Z" stroke="#F9CE69" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 6H9" stroke="#F9CE69" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M18 18L13.5 15L11 17L6 13" stroke="#F9CE69" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 20.4V3.6C3 3.26863 3.26863 3 3.6 3H20.4C20.7314 3 21 3.26863 21 3.6V20.4C21 20.7314 20.7314 21 20.4 21H3.6C3.26863 21 3 20.7314 3 20.4Z" stroke="#F9CE69" stroke-width="1.5"></path> </g></svg>
+                </a>
+                </div>
+
+                <div class="flex items-center gap-1">
+                <a href="{% url 'reports_index' %}" title="Reportes">
+                <svg class="size-8 object-cover" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M149.6 123.2c0 49.6 40 89.6 89.6 89.6h590.4c-6.4-11.2-12.8-25.6-17.6-43.2H492v-32h315.2c0-11.2 0-20.8 1.6-32H372v-32h444.8c3.2-12.8 9.6-27.2 16-41.6H239.2c-49.6 0-89.6 41.6-89.6 91.2z" fill="#ffffff"></path><path d="M239.2 244.8c-8 0-17.6-1.6-25.6-3.2-25.6-4.8-48-19.2-64-36.8v657.6c0 48 11.2 83.2 35.2 105.6 27.2 25.6 64 24 64 24h624V244.8H239.2z" fill="#ffffff"></path><path d="M906.4 32V0H239.2C172 0 117.6 54.4 117.6 121.6v740.8c0 57.6 16 100.8 46.4 129.6 32 30.4 70.4 32 83.2 32H906.4V212.8h-36.8c-8-8-62.4-68.8 0-180.8h36.8z m-89.6 41.6H372v32h436.8c-1.6 11.2-1.6 20.8-1.6 32H492v32h320c4.8 17.6 11.2 32 17.6 43.2H239.2c-49.6 0-89.6-40-89.6-89.6S189.6 32 239.2 32h593.6c-6.4 14.4-12.8 28.8-16 41.6z m56 918.4h-624s-36.8 1.6-64-24c-24-22.4-35.2-57.6-35.2-105.6V204.8c16 17.6 38.4 32 64 36.8 8 1.6 17.6 3.2 25.6 3.2h633.6V992z" fill=""></path><path d="M808.8 928V244.8H239.2c-9.6 0-17.6-1.6-25.6-3.2V928h595.2z" fill="#ee9211"></path><path d="M450.4 488a68.8 68.8 0 1 0 137.6 0 68.8 68.8 0 1 0-137.6 0Z" fill="#ffffff"></path><path d="M519.2 387.2c-56 0-100.8 44.8-100.8 100.8s44.8 100.8 100.8 100.8S620 544 620 488s-44.8-100.8-100.8-100.8z m0 169.6c-38.4 0-68.8-30.4-68.8-68.8s30.4-68.8 68.8-68.8S588 449.6 588 488s-30.4 68.8-68.8 68.8z" fill=""></path><path d="M642.4 752c-14.4-62.4-64-108.8-123.2-108.8S410.4 689.6 396 752h246.4z" fill="#ffffff"></path><path d="M519.2 611.2c-86.4 0-156.8 76.8-160 172.8h318.4c-1.6-96-72-172.8-158.4-172.8z m0 32c59.2 0 108.8 46.4 123.2 108.8H396c14.4-62.4 64-108.8 123.2-108.8z" fill=""></path></g></svg>
+                </a>
+                </div>
+                {% endif %}
+
+                <div class="flex items-center gap-1">
+                <a href="{% url 'user_guide' %}" title="Ayuda">
+                <svg class="size-8 object-cover" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M9.09 9C9.3251 8.33167 9.78915 7.76811 10.4 7.40913C11.0108 7.05016 11.7289 6.91894 12.4272 7.03871C13.1255 7.15849 13.757 7.52152 14.1951 8.06353C14.6331 8.60553 14.8488 9.29152 14.81 9.98C14.81 12 11.81 13 11.81 13" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 17H12.01" stroke="#6366f1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                </a>
+                </div>
                 
-              {% if user.is_authenticated and user.is_superuser %}
+              {% if user.is_superuser %}
               <div class="flex items-center gap-1">
                 <a href="{% url 'admin_panel' %}" title="Panel administrador">
                   
@@ -125,12 +150,14 @@
               
               </div>
 
-              <div class="flex items-center gap-1" >
+              <div class="flex items-center gap-1">
               <a href="{% url 'user_guide' %}">
-              <svg class="size-8 object-cover" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#000000" fill-rule="evenodd" d="M10 3a7 7 0 100 14 7 7 0 000-14zm-9 7a9 9 0 1118 0 9 9 0 01-18 0zm8.423-3a.923.923 0 00-.923.923v.385a1 1 0 11-2 0v-.385A2.923 2.923 0 019.423 5H10c1.941 0 3.5 1.591 3.5 3.516 0 .927-.48 1.8-1.276 2.29l-1.7 1.046a1 1 0 01-1.048-1.704l1.7-1.046a.691.691 0 00.324-.586C11.5 7.679 10.82 7 10 7h-.577zm.587 8a1 1 0 100-2H10a1 1 0 100 2h.01z"></path> </g></svg>
+              <svg class="size-8 object-cover" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9.09 9C9.3251 8.33167 9.78915 7.76811 10.4 7.40913C11.0108 7.05016 11.7289 6.91894 12.4272 7.03871C13.1255 7.15849 13.757 7.52152 14.1951 8.06353C14.6331 8.60553 14.8488 9.29152 14.81 9.98C14.81 12 11.81 13 11.81 13" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 17H12.01" stroke="#6366f1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
               </a>
-              
-              
               </div>
               {% endif %}
             </div>

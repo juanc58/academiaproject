@@ -30,6 +30,27 @@ from reportlab.lib.utils import ImageReader
 
 User = get_user_model()
 
+def trabajador_required(view_func):
+    from functools import wraps
+    @wraps(view_func)
+    def _wrapped(request, *args, **kwargs):
+        if not request.user.is_authenticated or (not request.user.is_staff and not request.user.is_superuser):
+            messages.error(request, 'Acceso denegado: se requiere ser trabajador o administrador.')
+            return redirect('index')
+        return view_func(request, *args, **kwargs)
+    return _wrapped
+
+def superusuario_required(view_func):
+    from functools import wraps
+    @wraps(view_func)
+    def _wrapped(request, *args, **kwargs):
+        if not request.user.is_authenticated or not request.user.is_superuser:
+            messages.error(request, 'Acceso denegado: se requiere ser superusuario.')
+            return redirect('index')
+        return view_func(request, *args, **kwargs)
+    return _wrapped
+
+# Legacy decorator for internal use if needed, or just use the new ones
 def _superuser_required(view_func):
     from functools import wraps
     @wraps(view_func)
@@ -40,7 +61,7 @@ def _superuser_required(view_func):
         return view_func(request, *args, **kwargs)
     return _wrapped
 
-@_superuser_required
+@superusuario_required
 def admin_panel(request):
     return render(request, 'admin/panel.html')
 
@@ -713,11 +734,8 @@ def cart_remove(request, pk):
 
 
 #CREAR LIBRO
-
+@trabajador_required
 def create_task(request):
-    if not request.user.is_authenticated:
-        return redirect('signin')
-
     if request.method == 'GET':
         return render(request, 'create_task.html', {'form': TaskForm()})
     else:
@@ -796,7 +814,7 @@ def task_detail(request, pk):
     prestados = Prestamo.objects.filter(book=book, status=Prestamo.STATUS_ACTIVE).aggregate(total=Sum('cantidad'))['total'] or 0
     return render(request, 'task_detail.html', {'book': book, 'prestados': int(prestados), 'total': int(book.cantidad or 0)})
 
-@login_required(login_url='signin')
+@trabajador_required
 def task_edit(request, pk):
     book = get_object_or_404(Libros, pk=pk)
 
@@ -1087,21 +1105,10 @@ def dashboard(request):
     
 ##########################   TASK LIST - PRESTAMOS   ########################## 
 
+@login_required
 def task_list(request):
-    # Mostrar el carrito (o una lista vacía) con hasta 10 libros guardados en session
-    cart_ids = request.session.get('loan_cart', [])[:10]
-    # obtener objetos y mantener el orden según cart_ids
-    libs_qs = Libros.objects.filter(id__in=cart_ids)
-    libs_map = {str(b.id): b for b in libs_qs}
-    cart_books = [libs_map[i] for i in cart_ids if str(i) in libs_map]
-    loan_user = request.session.get('loan_cart_user')
-    # calcular prestados por libro y adjuntar atributos en cada instancia para la plantilla
-    for b in cart_books:
-        tot = Prestamo.objects.filter(book=b, status=Prestamo.STATUS_ACTIVE).aggregate(total=Sum('cantidad'))['total'] or 0
-        setattr(b, 'prestados', int(tot))
-        setattr(b, 'total', int(b.cantidad or 0))
-
-    return render(request, 'task_list.html', {'cart_books': cart_books, 'loan_cart_user': loan_user})
+    """Redirigir a la nueva vista unificada de Solicitudes."""
+    return redirect('loan_requests')
 
 
 @login_required
@@ -1114,35 +1121,10 @@ def cart_checkout(request):
         messages.info(request, 'El carrito está vacío.')
         return redirect('cart_view')
 
-    # leer datos del receptor si vienen en el POST (se piden en la plantilla)
-    receiver_cedula = None
-    receiver_first_name = None
-    receiver_last_name = None
-    if request.method == 'POST':
-        receiver_cedula = request.POST.get('receiver_cedula', '').strip() or None
-        receiver_first_name = request.POST.get('receiver_first_name', '').strip() or None
-        receiver_last_name = request.POST.get('receiver_last_name', '').strip() or None
-
-        # Validar que se hayan provisto los datos del receptor (cedula, nombre y apellido)
-        is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest'
-        field_errors = {}
-        if not receiver_cedula:
-            field_errors['receiver_cedula'] = 'La cédula es obligatoria.'
-        else:
-            # validar que la cédula sea numérica
-            if not receiver_cedula.isdigit():
-                field_errors['receiver_cedula'] = 'La cédula debe contener solo dígitos.'
-        if not receiver_first_name:
-            field_errors['receiver_first_name'] = 'El nombre del receptor es obligatorio.'
-        if not receiver_last_name:
-            field_errors['receiver_last_name'] = 'El apellido del receptor es obligatorio.'
-
-        if field_errors:
-            if is_ajax:
-                return JsonResponse({'ok': False, 'errors': field_errors}, status=400)
-            # para peticiones normales, concatenar mensajes y mostrar como message
-            messages.error(request, ' '.join(field_errors.values()))
-            return redirect('cart_view')
+    # Los datos del receptor se toman automáticamente del usuario en sesión
+    receiver_cedula = getattr(request.user, 'cedula', None)
+    receiver_first_name = request.user.first_name
+    receiver_last_name = request.user.last_name
 
     # usar transacción para evitar condiciones de carrera
     created = []
@@ -1158,21 +1140,32 @@ def cart_checkout(request):
                 if not book:
                     failed.append((pk, 'Libro no encontrado'))
                     continue
-                prestados_total = Prestamo.objects.filter(book=book, status=Prestamo.STATUS_ACTIVE).aggregate(total=Sum('cantidad'))['total'] or 0
+                # Calcular stock incluyendo préstamos activos y pendientes de aprobación
+                prestados_total = Prestamo.objects.filter(
+                    book=book
+                ).filter(
+                    Q(status=Prestamo.STATUS_ACTIVE) | Q(status=Prestamo.STATUS_PENDING)
+                ).aggregate(total=Sum('cantidad'))['total'] or 0
+                
                 disponible = (book.cantidad or 0) - prestados_total
                 if disponible <= 0:
                     failed.append((pk, 'Sin stock'))
                     continue
+                
+                # Determinar estado inicial: Activo para trabajadores, Pendiente para usuarios
+                initial_status = Prestamo.STATUS_ACTIVE if (request.user.is_staff or request.user.is_superuser) else Prestamo.STATUS_PENDING
+                approved_at_time = timezone.now() if initial_status == Prestamo.STATUS_ACTIVE else None
+                
                 # crear prestamo por 1 ejemplar, incluyendo datos del receptor si se recogieron
                 p = Prestamo.objects.create(
                     book=book,
                     user=request.user,
                     cantidad=1,
-                    status=Prestamo.STATUS_ACTIVE,
+                    status=initial_status,
                     receiver_cedula=receiver_cedula,
                     receiver_first_name=receiver_first_name,
                     receiver_last_name=receiver_last_name,
-                    approved_at=timezone.now(),
+                    approved_at=approved_at_time,
                 )
                 created.append(p)
     except Exception as e:
@@ -1194,7 +1187,10 @@ def cart_checkout(request):
         })
 
     if created:
-        messages.success(request, f'Se confirmaron {len(created)} préstamos.')
+        if request.user.is_staff or request.user.is_superuser:
+            messages.success(request, f'Se confirmaron {len(created)} préstamos.')
+        else:
+            messages.success(request, f'Se solicitaron {len(created)} préstamos. Pendiente de aprobación.')
     if failed:
         messages.warning(request, f'No se pudieron crear {len(failed)} préstamos: {", ".join([f[1] for f in failed])}.')
 
@@ -1203,61 +1199,14 @@ def cart_checkout(request):
 
 @login_required
 def my_loans(request):
-    """Muestra los préstamos activos del usuario."""
-    # ordenar por fecha de aprobación si existe, si no por id descendente (recientes primero)
-    # mostrar sólo préstamos activos
-    if request.user.is_authenticated and (request.user.is_staff or request.user.is_superuser):
-        qs = Prestamo.objects.filter(status=Prestamo.STATUS_ACTIVE).order_by('-approved_at', '-id')
-    else:
-        qs = Prestamo.objects.filter(user=request.user, status=Prestamo.STATUS_ACTIVE).order_by('-approved_at', '-id')
-    # paginación simple: 10 por página
-    paginator = Paginator(qs, 10)
-    page = request.GET.get('page')
-    page_obj = paginator.get_page(page)
-    return render(request, 'my_loans.html', {'loans': page_obj})
+    """Redirigir a la nueva vista unificada de Devoluciones."""
+    return redirect('return_requests')
 
 
 @login_required
 def returns_history(request):
-    """Muestra el historial de devoluciones del usuario (préstamos con status 'returned')."""
-    q = request.GET.get('q', '').strip()
-    start_date = request.GET.get('start_date', '').strip()
-    end_date = request.GET.get('end_date', '').strip()
-
-    # si es staff o superuser, mostrar historial de todos los usuarios
-    if request.user.is_authenticated and (request.user.is_staff or request.user.is_superuser):
-        qs = Prestamo.objects.filter(status=Prestamo.STATUS_RETURNED)
-    else:
-        qs = Prestamo.objects.filter(user=request.user, status=Prestamo.STATUS_RETURNED)
-    # filtro por título del libro
-    if q:
-        qs = qs.filter(book__titulo__icontains=q)
-    # filtro por rango de fecha (returned_at)
-    from datetime import datetime
-    try:
-        if start_date:
-            sd = datetime.fromisoformat(start_date).date()
-            qs = qs.filter(returned_at__date__gte=sd)
-    except Exception:
-        pass
-    try:
-        if end_date:
-            ed = datetime.fromisoformat(end_date).date()
-            qs = qs.filter(returned_at__date__lte=ed)
-    except Exception:
-        pass
-
-    qs = qs.order_by('-returned_at', '-approved_at', '-id')
-    # paginación
-    paginator = Paginator(qs, 10)
-    page = request.GET.get('page')
-    page_obj = paginator.get_page(page)
-    return render(request, 'returns_history.html', {
-        'returned': page_obj,
-        'q': q,
-        'start_date': start_date,
-        'end_date': end_date,
-    })
+    """Redirigir a la nueva vista unificada de Devoluciones."""
+    return redirect('return_requests')
 
 
 @login_required
@@ -1269,32 +1218,47 @@ def loan_return(request, pk):
     else:
         loan = get_object_or_404(Prestamo, pk=pk, user=request.user)
     if request.method == 'POST':
-        loan.status = Prestamo.STATUS_RETURNED
-        # marcar la hora exacta de devolución (timezone-aware)
-        loan.returned_at = timezone.now()
-        # leer reporte y puntuaciones si vienen
-        report = request.POST.get('return_report', '').strip() or None
-        book_rating = request.POST.get('return_book_rating', '').strip() or None
-        receiver_rating = request.POST.get('return_receiver_rating', '').strip() or None
-        # validar puntuaciones
-        try:
-            if book_rating:
-                br = int(book_rating)
-                if 1 <= br <= 5:
-                    loan.return_book_rating = br
-            if receiver_rating:
-                rr = int(receiver_rating)
-                if 1 <= rr <= 5:
-                    loan.return_receiver_rating = rr
-        except Exception:
-            # ignorar valores inválidos (no impedir devolución)
-            pass
-        if report:
-            loan.return_report = report
-        loan.save()
-        # calcular nuevo conteo de prestados para el libro asociado
+        is_staff_action = request.user.is_staff or request.user.is_superuser
+        
+        if is_staff_action:
+            loan.status = Prestamo.STATUS_RETURNED
+            # marcar la hora exacta de devolución (timezone-aware)
+            loan.returned_at = timezone.now()
+            # leer reporte y puntuaciones si vienen
+            report = request.POST.get('return_report', '').strip() or None
+            book_rating = request.POST.get('return_book_rating', '').strip() or None
+            receiver_rating = request.POST.get('return_receiver_rating', '').strip() or None
+            # validar puntuaciones
+            try:
+                if book_rating:
+                    br = int(book_rating)
+                    if 1 <= br <= 5:
+                        loan.return_book_rating = br
+                if receiver_rating:
+                    rr = int(receiver_rating)
+                    if 1 <= rr <= 5:
+                        loan.return_receiver_rating = rr
+            except Exception:
+                # ignorar valores inválidos (no impedir devolución)
+                pass
+            if report:
+                loan.return_report = report
+            loan.save()
+            msg = 'Préstamo marcado como devuelto.'
+        else:
+            # Usuarios normales: solo cambio de estado a pendiente de devolución
+            loan.status = Prestamo.STATUS_RETURN_PENDING
+            loan.save()
+            msg = 'Solicitud de devolución enviada.'
+            
+        # calcular nuevo conteo de prestados para el libro asociado (solo activos cuentan como prestados)
         book = loan.book
-        prestados_total = Prestamo.objects.filter(book=book, status=Prestamo.STATUS_ACTIVE).aggregate(total=Sum('cantidad'))['total'] or 0
+        prestados_total = Prestamo.objects.filter(
+            book=book
+        ).filter(
+            Q(status=Prestamo.STATUS_ACTIVE) | Q(status=Prestamo.STATUS_PENDING)
+        ).aggregate(total=Sum('cantidad'))['total'] or 0
+        
         # si es AJAX devolver JSON con información útil para actualizar UI en tiempo real
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             # renderizar partial del loan actualizado para reemplazar la fila entera en el cliente
@@ -1302,6 +1266,7 @@ def loan_return(request, pk):
                 loan_html = render_to_string('tasks/_loan_item.html', {'loan': loan}, request=request)
             except Exception:
                 loan_html = None
+            
             return JsonResponse({
                 'ok': True,
                 'loan_id': loan.id,
@@ -1313,9 +1278,11 @@ def loan_return(request, pk):
                 'return_book_rating': loan.return_book_rating,
                 'return_receiver_rating': loan.return_receiver_rating,
                 'loan_html': loan_html,
+                'status': loan.get_status_display(),
+                'msg': msg
             })
-        messages.success(request, 'Préstamo marcado como devuelto.')
-        return redirect('my_loans')
+        messages.success(request, msg)
+        return redirect('return_requests')
     return render(request, 'loan_confirm_return.html', {'loan': loan})
 
 
@@ -1582,6 +1549,114 @@ def reports_user_detail(request):
         'avg_receiver': avg_receiver,
         'start_date': start_date,
         'end_date': end_date,
+    })
+
+
+@login_required
+def loan_requests(request):
+    """Centro de Solicitudes: Carrito y Préstamos Pendientes."""
+    is_staff = request.user.is_staff or request.user.is_superuser
+    
+    # Datos para el Carrito (solo usuarios normales o staff si quieren ver su propio carrito)
+    cart_ids = request.session.get('loan_cart', [])[:10]
+    libs_qs = Libros.objects.filter(id__in=cart_ids)
+    libs_map = {str(b.id): b for b in libs_qs}
+    cart_books = [libs_map[i] for i in cart_ids if str(i) in libs_map]
+    for b in cart_books:
+        tot = Prestamo.objects.filter(book=b, status=Prestamo.STATUS_ACTIVE).aggregate(total=Sum('cantidad'))['total'] or 0
+        setattr(b, 'prestados', int(tot))
+        setattr(b, 'total', int(b.cantidad or 0))
+        setattr(b, 'disponible', int(b.cantidad or 0) - int(tot))
+
+    # Datos para Solicitudes Pendientes
+    if is_staff:
+        pending_qs = Prestamo.objects.filter(status=Prestamo.STATUS_PENDING).order_by('id')
+    else:
+        pending_qs = Prestamo.objects.filter(user=request.user, status=Prestamo.STATUS_PENDING).order_by('id')
+    
+    paginator = Paginator(pending_qs, 20)
+    page = request.GET.get('page')
+    pending_page = paginator.get_page(page)
+
+    return render(request, 'loan_requests.html', {
+        'cart_books': cart_books,
+        'pending_loans': pending_page,
+        'is_staff': is_staff
+    })
+
+
+@login_required
+def loan_approve(request, pk):
+    """Aprueba una solicitud de préstamo pendiente."""
+    if not (request.user.is_staff or request.user.is_superuser):
+        messages.error(request, 'Acceso denegado.')
+        return redirect('index')
+        
+    loan = get_object_or_404(Prestamo, pk=pk)
+    if loan.status == Prestamo.STATUS_PENDING:
+        loan.status = Prestamo.STATUS_ACTIVE
+        loan.approved_at = timezone.now()
+        loan.save()
+        messages.success(request, f'Préstamo de "{loan.book.titulo}" aprobado.')
+    
+    return redirect('loan_requests')
+
+
+@login_required
+def loan_reject(request, pk):
+    """Rechaza (elimina) una solicitud de préstamo pendiente."""
+    if not (request.user.is_staff or request.user.is_superuser):
+        messages.error(request, 'Acceso denegado.')
+        return redirect('index')
+
+    loan = get_object_or_404(Prestamo, pk=pk)
+    if loan.status == Prestamo.STATUS_PENDING:
+        loan.delete()
+        messages.success(request, 'Solicitud rechazada y eliminada.')
+    
+    return redirect('loan_requests')
+
+
+@login_required
+def return_requests(request):
+    """Centro de Devoluciones: Préstamos Activos, Solicitudes de Devolución e Historial."""
+    is_staff = request.user.is_staff or request.user.is_superuser
+    
+    # 1. Préstamos Activos (que se pueden devolver)
+    if is_staff:
+        active_qs = Prestamo.objects.filter(status=Prestamo.STATUS_ACTIVE).order_by('-approved_at', '-id')
+    else:
+        active_qs = Prestamo.objects.filter(user=request.user, status=Prestamo.STATUS_ACTIVE).order_by('-approved_at', '-id')
+    
+    # 2. Solicitudes de Devolución (Pendientes de confirmar por staff)
+    if is_staff:
+        pending_returns_qs = Prestamo.objects.filter(status=Prestamo.STATUS_RETURN_PENDING).order_by('id')
+    else:
+        pending_returns_qs = Prestamo.objects.filter(user=request.user, status=Prestamo.STATUS_RETURN_PENDING).order_by('id')
+
+    # 3. Historial de Devoluciones
+    q_history = request.GET.get('q_history', '').strip()
+    if is_staff:
+        history_qs = Prestamo.objects.filter(status=Prestamo.STATUS_RETURNED)
+    else:
+        history_qs = Prestamo.objects.filter(user=request.user, status=Prestamo.STATUS_RETURNED)
+    
+    if q_history:
+        history_qs = history_qs.filter(book__titulo__icontains=q_history)
+    
+    history_qs = history_qs.order_by('-returned_at', '-id')
+
+    # Paginación (usaremos prefijos o simplemente paginaremos el historial que es el más grande)
+    paginator = Paginator(history_qs, 10)
+    page = request.GET.get('page')
+    history_page = paginator.get_page(page)
+
+    return render(request, 'return_requests.html', {
+        'active_loans': active_qs,
+        'pending_returns': pending_returns_qs,
+        'history_loans': history_page,
+        'is_staff': is_staff,
+        'q_history': q_history
     })
 
 

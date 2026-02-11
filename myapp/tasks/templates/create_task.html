@@ -3,31 +3,29 @@
 
 {% block content %}
 
-<main class="bg-[url(/static/fondoindex.jpg)] bg-repeat bg-top">
-  <form method="POST" enctype="multipart/form-data">
+<main class="min-h-screen py-10 px-4 md:px-0">
+  <form method="POST" enctype="multipart/form-data" class="mx-auto max-w-5xl">
     {% csrf_token %}
-    <section class="py-10">
-      <div class="mx-auto container max-w-7xl md:w-3/4 shadow-md bg-[#e8e8e8]">
-        <div class="bg-gray-100 p-4 border-t-2 bg-opacity-5 border-[#8ae4ff] rounded-t">
-          <div class="max-w-sm mx-auto md:w-full md:mx-0">
-            <div class="inline-flex items-center space-x-4">
-              <!-- icon -->
-              <svg class="size-9 object-cover ml-3" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M26,3H9C7.3,3,6,4.3,6,6v0c0,1.7,1.3,3,3,3h17v8" stroke="#8ae4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M19,29H9c-1.7,0-3-1.3-3-3v0V6" stroke="#8ae4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <line x1="26" y1="6" x2="9" y2="6" stroke="#8ae4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <line x1="10" y1="9" x2="10" y2="29" stroke="#8ae4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <circle cx="24" cy="24" r="7" stroke="#8ae4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <line x1="24" y1="21" x2="24" y2="27" stroke="#8ae4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <line x1="21" y1="24" x2="27" y2="24" stroke="#8ae4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              <h1 class="text-gray-800 text-xl font-bold m-auto">Ingresar Bibliografía</h1>
-              
-            </div>
-          </div>
+    <div class="glass-card rounded-3xl shadow-2xl overflow-hidden border border-white/30 backdrop-blur-2xl">
+      <div class="p-8 border-b border-indigo-100/30 flex flex-col md:flex-row items-center gap-6">
+        <div class="flex items-center justify-center bg-indigo-50/50 p-4 rounded-2xl shadow-inner">
+          <svg class="size-12" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M26,3H9C7.3,3,6,4.3,6,6v0c0,1.7,1.3,3,3,3h17v8" stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M19,29H9c-1.7,0-3-1.3-3-3v0V6" stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="26" y1="6" x2="9" y2="6" stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="10" y1="9" x2="10" y2="29" stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="24" cy="24" r="7" stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="24" y1="21" x2="24" y2="27" stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="21" y1="24" x2="27" y2="24" stroke="#4741A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </div>
+        <div class="text-center md:text-left">
+          <h1 class="text-indigo-950 text-2xl font-extrabold uppercase tracking-tight">Ingresar Bibliografía</h1>
+          <p class="text-indigo-600/70 text-sm font-medium">Complete los detalles para agregar un nuevo registro a la colección.</p>
+        </div>
+      </div>
 
-  <div class="bg-white space-y-8 py-8 px-8 md:px-16 rounded-b-lg">
+      <div class="p-8 space-y-12 bg-white/20">
 
           <!-- Mostrar errores generales y no-field errors -->
           {% if form.non_field_errors %}
@@ -36,17 +34,21 @@
             </div>
           {% endif %}
           <!-- Campos de cota divididos (restaurados) -->
-          <fieldset class="mb-20">
-            <legend class="flex flex-nowrap justify-center font-semibold text-slate-700 mb-4">Datos de la Cota<p class="text-red-600 ml-2">*</p></legend>
-            <div class="mt-2 max-w-4xl mx-auto">
-              <label class="block text-sm text-gray-600">Buscar código de la cota</label>
-              <input id="dict-search" type="text" placeholder="Escribe parte del código (ej. QS 1)" class="w-full p-2 border rounded mt-1" />
-              <ul id="dict-results" class="mt-1 bg-white border rounded max-h-48 overflow-auto hidden"></ul>
+          <fieldset class="space-y-6">
+            <legend class="mx-auto px-6 py-2 glass-card rounded-full font-bold text-indigo-900 shadow-md border border-indigo-100 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+              Datos de la Cota
+            </legend>
+            <div class="max-w-4xl mx-auto space-y-4">
+              <div class="relative group">
+                <input id="dict-search" type="text" placeholder="Buscar código en el diccionario (ej. QS 1)..." class="w-full px-5 py-3 glass-card rounded-2xl border-white/50 focus:ring-4 focus:ring-indigo-200 transition-all outline-none placeholder:text-gray-500 shadow-sm" />
+                <ul id="dict-results" class="absolute z-50 w-full mt-2 glass-card rounded-2xl shadow-2xl border border-white/50 max-h-60 overflow-y-auto hidden divide-y divide-indigo-50/30"></ul>
+              </div>
 
-              <div class="mt-6 md:flex md:items-start md:justify-center md:gap-6">
-                <!-- Recuadro izquierda: Cota 1 y Cota 2 -->
-                <div class="md:w-1/2 bg-[#8ae4ff] p-6 rounded-lg shadow-sm hover:shadow-md transition">
-                  <h3 class="font-semibold text-sm text-slate-700 mb-4">Clasificación Libro Nacional de Medicina</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+                <!-- Cota 1 & 2 -->
+                <div class="p-6 glass-card rounded-2xl border-indigo-100/30 shadow-lg space-y-4 bg-indigo-50/30">
+                  <h3 class="text-xs font-black text-indigo-950 uppercase tracking-widest border-b border-indigo-100 pb-2">Clasificación Medicina</h3>
                   <div class="mb-3">
                     <label class="block text-sm text-gray-700 mb-1">Cota Parte °1</label>
                     {{ form.cota_part1 }}
@@ -62,9 +64,9 @@
                     {% endif %}
                   </div>
                 </div>
-                <!-- Recuadro derecha: Cota 3 y Cota 4 -->
-                <div class="md:w-1/2 bg-[#8ae4ff] p-6 rounded-lg shadow-sm hover:shadow-md transition">
-                  <h3 class="font-semibold text-sm text-slate-700 mb-4">Clasificación Cutter-Sanborn</h3>
+                <!-- Cota 3 & 4 -->
+                <div class="p-6 glass-card rounded-2xl border-indigo-100/30 shadow-lg space-y-4 bg-indigo-50/30">
+                  <h3 class="text-xs font-black text-indigo-950 uppercase tracking-widest border-b border-indigo-100 pb-2">Cutter-Sanborn</h3>
                   <div class="mb-3">
                     <label class="block text-sm text-gray-700 mb-1">Cota Parte °3</label>
                     {{ form.cota_part3 }}
@@ -241,14 +243,13 @@
             </div>
           </fieldset>
 
-            <div class="flex items-center justify-center gap-4 mt-8">
-              
-              <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow hover:bg-indigo-700">Guardar</button>
-
-              <a href="{% url 'create_task' %}" class="inline-flex items-center bg-red-600 text-white hover:bg-red-800 mr-4 rounded-md px-4 py-2">
-                Cancelar
-              </a>
-            </div>
+          <div class="p-8 border-t border-indigo-100/30 flex flex-col md:flex-row justify-end gap-6">
+            <a href="{% url 'create_task' %}" class="flex items-center justify-center gap-2 px-8 py-3 rounded-full font-bold text-gray-700 border-2 border-white/50 hover:bg-white/40 transition-all uppercase text-sm">
+              Cancelar
+            </a>
+            <button type="submit" class="px-10 py-3 bg-indigo-600 text-white rounded-full font-bold shadow-lg hover:shadow-xl hover:bg-indigo-700 transition-all transform hover:-translate-y-0.5 active:scale-95 uppercase text-sm">
+              Guardar Bibliografía
+            </button>
           </div>
         </div>
       </div>

@@ -120,14 +120,13 @@
         {% endif %}
 
         <div class="mt-4 text-center md:pr-6 w-full">
-          {% if user.is_superuser %}
-            <a href="{% url 'task_edit' book.id %}" onclick="window.location=this.href; return false;" class="text-white w-full  max-w-sm rounded-md text-center bg-[#4741a6] mb-2 py-2 px-6 inline-flex items-center focus:outline-none md:float-left space hover:bg-[#2f27a0]">  
-              <svg class="w-4 mr-2" viewBox="0 -3 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="#ffffff" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>checkmark</title> <desc>Created with Sketch Beta.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <g id="Icon-Set-Filled" sketch:type="MSLayerGroup" transform="translate(-518.000000, -1039.000000)" fill="#ffffff"> <path d="M548.783,1040.2 C547.188,1038.57 544.603,1038.57 543.008,1040.2 L528.569,1054.92 L524.96,1051.24 C523.365,1049.62 520.779,1049.62 519.185,1051.24 C517.59,1052.87 517.59,1055.51 519.185,1057.13 L525.682,1063.76 C527.277,1065.39 529.862,1065.39 531.457,1063.76 L548.783,1046.09 C550.378,1044.46 550.378,1041.82 548.783,1040.2" id="checkmark" sketch:type="MSShapeGroup"> </path> </g> </g> </g></svg>Editar</a>
-          {% elif user.is_authenticated and book.is_active %}
-            <a href="{% url 'task_edit' book.id %}" onclick="window.location=this.href; return false;" class="text-white w-full  max-w-sm rounded-md text-center bg-[#4741a6] mb-2 py-2 px-6 inline-flex items-center focus:outline-none md:float-left space hover:bg-[#2f27a0]">  
-              <svg class="w-4 mr-2" viewBox="0 -3 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="#ffffff" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>checkmark</title> <desc>Created with Sketch Beta.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <g id="Icon-Set-Filled" sketch:type="MSLayerGroup" transform="translate(-518.000000, -1039.000000)" fill="#ffffff"> <path d="M548.783,1040.2 C547.188,1038.57 544.603,1038.57 543.008,1040.2 L528.569,1054.92 L524.96,1051.24 C523.365,1049.62 520.779,1049.62 519.185,1051.24 C517.59,1052.87 517.59,1055.51 519.185,1057.13 L525.682,1063.76 C527.277,1065.39 529.862,1065.39 531.457,1063.76 L548.783,1046.09 C550.378,1044.46 550.378,1041.82 548.783,1040.2" id="checkmark" sketch:type="MSShapeGroup"> </path> </g> </g> </g></svg>Editar</a>
-          {% elif user.is_authenticated and not book.is_active %}
-            <button disabled class="text-sm w-full max-w-sm bg-gray-300 text-gray-700 py-2 px-6 rounded mb-2">Editar (inactivo)</button>
+          {% if user.is_staff or user.is_superuser %}
+            {% if book.is_active or user.is_superuser %}
+              <a href="{% url 'task_edit' book.id %}" onclick="window.location=this.href; return false;" class="text-white w-full  max-w-sm rounded-md text-center bg-[#4741a6] mb-2 py-2 px-6 inline-flex items-center focus:outline-none md:float-left space hover:bg-[#2f27a0]">  
+                <svg class="w-4 mr-2" viewBox="0 -3 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="#ffffff" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>checkmark</title> <desc>Created with Sketch Beta.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <g id="Icon-Set-Filled" sketch:type="MSLayerGroup" transform="translate(-518.000000, -1039.000000)" fill="#ffffff"> <path d="M548.783,1040.2 C547.188,1038.57 544.603,1038.57 543.008,1040.2 L528.569,1054.92 L524.96,1051.24 C523.365,1049.62 520.779,1049.62 519.185,1051.24 C517.59,1052.87 517.59,1055.51 519.185,1057.13 L525.682,1063.76 C527.277,1065.39 529.862,1065.39 531.457,1063.76 L548.783,1046.09 C550.378,1044.46 550.378,1041.82 548.783,1040.2" id="checkmark" sketch:type="MSShapeGroup"> </path> </g> </g> </g></svg>Editar</a>
+            {% else %}
+              <button disabled class="text-sm w-full max-w-sm bg-gray-300 text-gray-700 py-2 px-6 rounded mb-2">Editar (inactivo)</button>
+            {% endif %}
           {% endif %}
 
           {% if book.is_active %}
@@ -167,11 +166,7 @@
       <div id="cart-contents" style="max-height:50vh; overflow-y:auto;">
         <p class="text-sm text-gray-600">Cargando...</p>
       </div>
-      <div class="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-2" id="receiver-inputs">
-        <input id="receiver_cedula_input" name="receiver_cedula" placeholder="Cédula receptor " class="border rounded px-2 py-1" />
-        <input id="receiver_first_name_input" name="receiver_first_name" placeholder="Nombre receptor " class="border rounded px-2 py-1" />
-        <input id="receiver_last_name_input" name="receiver_last_name" placeholder="Apellido receptor " class="border rounded px-2 py-1" />
-      </div>
+      <div id="cart-error" class="text-sm text-red-600 mb-2 hidden"></div>
       <div class="mt-4 flex gap-2 justify-end">
         <button id="checkout-btn" class="px-4 py-2 bg-indigo-600 text-white rounded">Confirmar solicitud</button>
       </div>
@@ -256,26 +251,27 @@
       }
 
       function doCheckout(){
-        // leer inputs del receptor del modal
-        var ced = (document.getElementById('receiver_cedula_input') || {}).value || '';
-        var fn = (document.getElementById('receiver_first_name_input') || {}).value || '';
-        var ln = (document.getElementById('receiver_last_name_input') || {}).value || '';
-        // preparar payload urlencoded
-        var params = new URLSearchParams();
-        if(ced) params.append('receiver_cedula', ced);
-        if(fn) params.append('receiver_first_name', fn);
-        if(ln) params.append('receiver_last_name', ln);
+        var errEl = document.getElementById('cart-error');
+        function showError(msg){ if(errEl){ errEl.textContent = msg; errEl.classList.remove('hidden'); } else alert(msg); }
+        function clearError(){ if(errEl){ errEl.textContent = ''; errEl.classList.add('hidden'); } }
+        clearError();
 
         fetch('{% url "cart_checkout" %}', {
           method: 'POST',
           headers: {
             'X-CSRFToken': getCSRF(),
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'X-Requested-With': 'XMLHttpRequest'
           },
-          body: params.toString(),
           credentials: 'same-origin'
-        }).then(()=>{ fetchCart(); alert('Solicitud enviada (si había stock).'); modal.classList.add('hidden'); })
-          .catch(()=>{ alert('Error al confirmar solicitud'); });
+        }).then(r=>{
+          if(!r.ok) return r.json().then(j=>{ throw j; });
+          return r.json();
+        }).then(data=>{
+          if(data && data.ok){ fetchCart(); clearError(); alert('Solicitud enviada correctamente.'); modal.classList.add('hidden'); }
+          else { showError('No se pudo procesar la solicitud'); }
+        }).catch(err=>{
+          showError(err && err.error ? err.error : 'Error al confirmar solicitud');
+        });
       }
 
       if(openBtn){ openBtn.addEventListener('click', function(){ modal.classList.remove('hidden'); fetchCart(); }); }
