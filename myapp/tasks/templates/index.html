@@ -16,11 +16,13 @@
                 {% if user.is_authenticated %}
                   {% if user.is_superuser %}
                     ¡Bienvenido Administrador!
-                  {% else %}
+                  {% elif user.is_staff %}
                     ¡Bienvenido Trabajador!
+                  {% else %}
+                    ¡Bienvenido, {{ user.first_name }}!
                   {% endif %}
                 {% else %}
-                  ¡Bienvenido Usuario!
+                  ¡Bienvenido!
                 {% endif %}
               </h1>
             </div>
