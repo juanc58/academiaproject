@@ -24,5 +24,4 @@ urlpatterns = [
     path('', include('tasks.urls')),  # Todas las rutas de la app 'tasks' se definen en tasks/urls.py
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
